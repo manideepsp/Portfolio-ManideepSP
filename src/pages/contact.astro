@@ -1,0 +1,447 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import config from '../lib/config.json';
+---
+<BaseLayout title="Contact">
+  <section>
+    <h1>Contact</h1>
+    <form id="contactForm" class="contact-form">
+      <div class="form-grid">
+        <label class="form-field">
+          <span class="form-label">Name <span aria-hidden="true">*</span></span>
+          <input class="form-input" name="name" required placeholder="Your full name" aria-required="true" />
+          <div class="field-error" aria-live="polite"></div>
+        </label>
+
+        <label class="form-field">
+          <span class="form-label">Email <span aria-hidden="true">*</span></span>
+          <input class="form-input" name="email" type="email" required placeholder="you@company.com" aria-required="true" />
+          <div class="field-error" aria-live="polite"></div>
+          <div id="emailSuggestion" class="email-suggestion" aria-live="polite"></div>
+        </label>
+
+        <label class="form-field">
+          <span class="form-label">Position</span>
+          <input class="form-input" name="position" placeholder="Role or company (optional)" />
+          <div class="field-error" aria-live="polite"></div>
+        </label>
+
+        <label class="form-field full">
+          <span class="form-label">Message <span aria-hidden="true">*</span></span>
+          <textarea class="form-textarea" name="message" required placeholder="Tell me about your project or opportunity" aria-required="true"></textarea>
+          <div class="field-error" aria-live="polite"></div>
+          <div id="messageCounter" class="char-counter" aria-live="polite">0 / 100</div>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn primary" id="submitBtn">
+          <span id="btnText">Send</span>
+          <svg class="btn-spinner" width="16" height="16" viewBox="0 0 50 50" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" d="M25 5a20 20 0 0 1 0 40"></path></svg>
+        </button>
+        <a id="fallbackBtn" class="btn ghost" style="display:none" target="_blank" rel="noopener">Open GitHub fallback</a>
+      </div>
+
+      <div id="formMessage" class="form-message" role="status" aria-live="polite"></div>
+    </form>
+    <script type="module">
+      const form = document.getElementById('contactForm');
+      const workerUrl = ${JSON.stringify(config.contactWorkerUrl ?? '')};
+      const fallbackConfig = ${JSON.stringify(config.contactFallback ?? {})};
+
+      function makePrefillIssueUrl({ owner, repo, name, email, position, message }) {
+        const title = encodeURIComponent(`[Portfolio Contact] ${name} — ${email}`);
+        const body = encodeURIComponent(`**Name:** ${name}\n**Email:** ${email}\n**Position:** ${position}\n\n---\n\n${message}`);
+        return `https://github.com/${owner}/${repo}/issues/new?title=${title}&body=${body}`;
+      }
+
+      async function submitToWorker(payload) {
+        if (!workerUrl) return { ok: false, reason: 'no-worker' };
+        try {
+          const res = await fetch(workerUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          try { return await res.json(); } catch(e) { return { ok: res.ok }; }
+        } catch (err) {
+          return { ok: false, reason: err.message };
+        }
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const messageEl = document.getElementById('formMessage');
+      const emailInput = form.elements['email'];
+      const emailSuggestionEl = document.getElementById('emailSuggestion');
+
+      // Debounce helper
+      function debounce(fn, wait) {
+        let t = null;
+        return (...args) => {
+          clearTimeout(t);
+          t = setTimeout(() => fn(...args), wait);
+        };
+      }
+
+      // Simple Levenshtein distance for domain suggestion
+      function levenshtein(a, b) {
+        const dp = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+        for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+        for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+        for (let i = 1; i <= a.length; i++) {
+          for (let j = 1; j <= b.length; j++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+          }
+        }
+        return dp[a.length][b.length];
+      }
+
+      const commonDomains = ['gmail.com','hotmail.com','yahoo.com','outlook.com','icloud.com','protonmail.com','proton.me','live.com','aol.com','gmx.com','yahoo.co.uk','hotmail.co.uk'];
+
+      function suggestEmailCorrection(value) {
+        if (!value || value.indexOf('@') === -1) return null;
+        const parts = value.split('@');
+        if (parts.length !== 2) return null;
+        const local = parts[0];
+        const domain = parts[1].toLowerCase();
+        // If domain exactly matches a known one, no suggestion
+        if (commonDomains.includes(domain)) return null;
+
+        // Find nearest domain
+        let best = null; let bestDist = Infinity;
+        for (const d of commonDomains) {
+          const dist = levenshtein(domain, d);
+          if (dist < bestDist) { bestDist = dist; best = d; }
+        }
+        // Only suggest if reasonably small edit distance
+        if (best && bestDist > 0 && bestDist <= 2) {
+          return `${local}@${best}`;
+        }
+        return null;
+      }
+
+      function showEmailSuggestion(suggestion) {
+        if (!suggestion) {
+          emailSuggestionEl.textContent = '';
+          emailSuggestionEl.style.display = 'none';
+          emailInput.removeAttribute('aria-describedby');
+          return;
+        }
+        emailSuggestionEl.innerHTML = `Did you mean <button type="button" class="email-suggest-btn">${suggestion}</button>?`;
+        emailSuggestionEl.style.display = 'block';
+        const btn = emailSuggestionEl.querySelector('.email-suggest-btn');
+        if (btn) {
+          btn.addEventListener('click', () => {
+            emailInput.value = suggestion;
+            emailInput.focus();
+            showEmailSuggestion(null);
+            clearFieldErrors();
+          });
+        }
+        // link suggestion for screen readers
+        emailInput.setAttribute('aria-describedby', 'emailSuggestion');
+      }
+
+      const debouncedSuggest = debounce(() => {
+        try {
+          const val = (emailInput && emailInput.value) ? emailInput.value.trim() : '';
+          const s = suggestEmailCorrection(val);
+          showEmailSuggestion(s);
+        } catch (e) { /* ignore */ }
+      }, 400);
+
+      // validate on blur and provide real-time suggestion on input
+      if (emailInput) {
+        emailInput.addEventListener('input', () => {
+          // clear field error while typing
+          const wrap = emailInput.closest('.form-field');
+          if (wrap) {
+            const err = wrap.querySelector('.field-error'); if (err) err.textContent = '';
+          }
+          emailInput.classList.remove('invalid');
+          emailInput.removeAttribute('aria-invalid');
+          emailInput.removeAttribute('aria-describedby');
+          debouncedSuggest();
+        });
+
+        emailInput.addEventListener('blur', () => {
+          // run quick validation on blur
+          const val = (emailInput.value || '').trim();
+          if (!val) {
+            setFieldError(emailInput, 'Please enter your email address.');
+          } else if (!validateEmail(val)) {
+            setFieldError(emailInput, 'Please enter a valid email address.');
+          }
+        });
+      }
+
+      // add blur validation for all fields
+      form.querySelectorAll('.form-input, .form-textarea').forEach(el => {
+        el.addEventListener('blur', () => {
+          const v = (el.value || '').trim();
+          if (el.required && !v) {
+            setFieldError(el, 'This field is required.');
+          } else if (el.type === 'email' && v && !validateEmail(v)) {
+            setFieldError(el, 'Please enter a valid email address.');
+          } else if (el.tagName.toLowerCase() === 'textarea' && v && v.length < 100) {
+            setFieldError(el, 'Message must be at least 100 characters.');
+          }
+        });
+      });
+
+      // Message character counter behavior
+      const messageInput = form.elements['message'];
+      const messageCounter = document.getElementById('messageCounter');
+      function updateMessageCounter() {
+        if (!messageInput || !messageCounter) return;
+        const len = (messageInput.value || '').length;
+        messageCounter.textContent = `${len} / 100`;
+        if (len >= 100) {
+          messageCounter.classList.remove('low');
+          messageCounter.classList.add('ok');
+          // clear any message-related field error when length requirement met
+          const wrap = messageInput.closest('.form-field');
+          if (wrap) {
+            const err = wrap.querySelector('.field-error'); if (err) err.textContent = '';
+          }
+          messageInput.classList.remove('invalid');
+          messageInput.removeAttribute('aria-invalid');
+        } else {
+          messageCounter.classList.remove('ok');
+          messageCounter.classList.add('low');
+        }
+      }
+
+      if (messageInput) {
+        // update immediately and on input
+        updateMessageCounter();
+        messageInput.addEventListener('input', () => {
+          updateMessageCounter();
+        });
+      }
+
+      function clearFieldErrors() {
+        form.querySelectorAll('.field-error').forEach(el => el.textContent = '');
+        form.querySelectorAll('.form-input, .form-textarea').forEach(el => {
+          el.classList.remove('invalid');
+          el.removeAttribute('aria-invalid');
+          el.removeAttribute('aria-describedby');
+        });
+      }
+
+      function setFieldError(input, msg) {
+        const wrap = input.closest('.form-field');
+        if (wrap) {
+          const err = wrap.querySelector('.field-error');
+          if (err) {
+            // Ensure an id exists so we can reference it from aria-describedby
+            if (!err.id) err.id = `${input.name}-error`;
+            err.textContent = msg;
+            input.setAttribute('aria-describedby', err.id);
+          }
+        }
+        input.classList.add('invalid');
+        input.setAttribute('aria-invalid', 'true');
+        // Add temporary visual emphasis: shake + flash-red for 1s
+        input.classList.remove('shake');
+        input.classList.remove('flash-red');
+        // Force reflow so animation restarts reliably
+        // eslint-disable-next-line no-unused-expressions
+        void input.offsetWidth;
+        input.classList.add('shake');
+        input.classList.add('flash-red');
+        setTimeout(() => {
+          input.classList.remove('shake');
+          input.classList.remove('flash-red');
+        }, 1000);
+      }
+
+      function validateEmail(email) {
+        if (!email || typeof email !== 'string') return false;
+        const v = email.trim();
+        // Strict email validation: RFC-like but practical
+        // Local part allows most common characters, domain enforces labels and TLD >=2
+        const strictEmailRe = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z]{2,})+$/;
+        return strictEmailRe.test(v);
+      }
+
+      function validateForm() {
+        clearFieldErrors();
+        const errors = [];
+        const inputs = Array.from(form.querySelectorAll('.form-input, .form-textarea'));
+
+        for (const input of inputs) {
+          // Trim whitespace for validation purposes
+          const val = input.value != null ? String(input.value).trim() : '';
+          // temporarily set trimmed value for validity checks
+          const original = input.value;
+          input.value = val;
+
+          // Use constraint validation API
+          if (!input.checkValidity()) {
+            // Use validationMessage when available, otherwise fallback
+            const msg = input.validationMessage || 'Please complete this field.';
+            setFieldError(input, msg);
+            errors.push(input);
+          }
+
+          // restore original (in case of textarea with leading/trailing whitespace intended)
+          input.value = original;
+        }
+
+        // Additional custom check for email format (safeguard)
+        const email = form.elements['email'];
+        if (email && email.value && !validateEmail(email.value.trim())) {
+          setFieldError(email, 'Please enter a valid email address.');
+          if (!errors.includes(email)) errors.push(email);
+        }
+
+        return errors;
+      }
+
+      function setLoading(loading) {
+        if (loading) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add('loading');
+          btnText.textContent = 'Sending…';
+          submitBtn.setAttribute('aria-busy', 'true');
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('loading');
+          btnText.textContent = 'Send';
+          submitBtn.removeAttribute('aria-busy');
+        }
+      }
+
+      const fallbackBtn = document.getElementById('fallbackBtn');
+
+      let redirectTimer = null;
+
+      function showMessage(text, type = 'info', fallbackUrl, autoRedirect = false) {
+        // clear any pending redirect
+        if (redirectTimer) {
+          clearTimeout(redirectTimer);
+          redirectTimer = null;
+        }
+
+        messageEl.textContent = text;
+        messageEl.className = `form-message ${type}`;
+        if (fallbackUrl && fallbackConfig.showFallbackButton !== false) {
+          fallbackBtn.href = fallbackUrl;
+          fallbackBtn.style.display = 'inline-block';
+        } else {
+          fallbackBtn.style.display = 'none';
+          fallbackBtn.removeAttribute('href');
+        }
+
+        const delay = Number(fallbackConfig.delayMs) || 5000;
+        if (fallbackUrl && autoRedirect && fallbackConfig.autoRedirect !== false) {
+          // after configured delay open fallback in a new tab so user sees the explanation
+          redirectTimer = setTimeout(() => {
+            try { window.open(fallbackUrl, '_blank'); } catch (e) { /* ignore */ }
+            redirectTimer = null;
+          }, delay);
+        }
+      }
+
+      // Lightweight toast/pop-up notifications
+      function ensureToastContainer() {
+        let c = document.getElementById('toastContainer');
+        if (!c) {
+          c = document.createElement('div');
+          c.id = 'toastContainer';
+          c.className = 'toast-container';
+          document.body.appendChild(c);
+        }
+        return c;
+      }
+
+      function showToast(type, message, ms = 4000) {
+        const container = ensureToastContainer();
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.setAttribute('role', 'status');
+        toast.setAttribute('aria-live', 'polite');
+        toast.innerHTML = `<div class="toast-body">${message}<button class="toast-close" aria-label="Dismiss">×</button></div>`;
+        container.appendChild(toast);
+        // dismiss handler
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+          toast.classList.add('toast-hide');
+          setTimeout(() => toast.remove(), 220);
+        });
+        // auto remove
+        setTimeout(() => {
+          toast.classList.add('toast-hide');
+          setTimeout(() => { try { toast.remove(); } catch (e) {} }, 220);
+        }, ms);
+      }
+
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const fd = new FormData(form);
+        const payload = Object.fromEntries(fd.entries());
+        const post = {
+          owner: '${config.githubUsername}',
+          repo: 'portfolio-site',
+          title: `[Portfolio Contact] ${payload.name} — ${payload.email}`,
+          name: payload.name,
+          email: payload.email,
+          position: payload.position,
+          message: payload.message
+        };
+        // Client-side validation
+        const validationErrors = validateForm();
+        if (validationErrors.length) {
+          // show native browser validation UI and focus first invalid field
+          try { form.reportValidity(); } catch (e) { /* ignore */ }
+          validationErrors[0].focus();
+          showMessage('Please fix the highlighted fields and try again.', 'error');
+          showToast('error', 'Please fix the highlighted fields and try again.');
+          return;
+        }
+
+        // Final safeguard: normalize payload and re-check required fields before sending
+        post.name = post.name ? String(post.name).trim() : '';
+        post.email = post.email ? String(post.email).trim() : '';
+        post.message = post.message ? String(post.message).trim() : '';
+
+        if (!post.name) {
+          const first = form.elements['name']; setFieldError(first, 'Please enter your name.'); first.focus(); showMessage('Please fix the highlighted fields and try again.', 'error'); showToast('error', 'Please enter your name.'); return;
+        }
+        if (!post.email || !validateEmail(post.email)) {
+          const first = form.elements['email']; setFieldError(first, 'Please enter a valid email address.'); first.focus(); showMessage('Please fix the highlighted fields and try again.', 'error'); showToast('error', 'Please enter a valid email address.'); return;
+        }
+        if (!post.message || post.message.length < 100) {
+          const first = form.elements['message']; setFieldError(first, 'Message must be at least 100 characters.'); first.focus(); showMessage('Please fix the highlighted fields and try again.', 'error'); showToast('error', 'Message must be at least 100 characters.'); return;
+        }
+
+        // Try secure Worker proxy first
+        setLoading(true);
+        showMessage('Sending message...', 'info');
+        const resp = await submitToWorker(post);
+        if (resp && resp.ok) {
+          showMessage('Message sent — thank you!', 'success');
+          showToast('success', 'Message sent — thank you!');
+          form.reset();
+          clearFieldErrors();
+          setLoading(false);
+          return;
+        }
+
+        // Fallback: offer prefilled GitHub issue (requires user to sign in)
+        setLoading(false);
+        const fallbackUrl = makePrefillIssueUrl({ owner: post.owner, repo: post.repo, ...post });
+        const seconds = Math.round((Number(fallbackConfig.delayMs) || 5000) / 1000);
+        showMessage(
+          `Could not send via secure proxy. You will be redirected to GitHub in ${seconds} seconds — please make sure you are signed in to GitHub to submit the issue.`,
+          'error',
+          fallbackUrl,
+          true
+        );
+        showToast('error', 'Could not send via secure proxy. Redirecting to fallback.');
+      });
+    </script>
+  </section>
+</BaseLayout>

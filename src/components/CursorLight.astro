@@ -1,0 +1,22 @@
+---
+---
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<script type="module" client:load>
+  const glow = document.querySelector('.cursor-glow');
+  if (!glow) {
+    // nothing to do
+  } else {
+    document.addEventListener('mousemove', (event) => {
+      const mousex = event.clientX - 250;
+      const mousey = event.clientY - 250;
+      glow.style.left = mousex + 'px';
+      glow.style.top = mousey + 'px';
+    });
+
+    document.addEventListener('mouseleave', () => {
+      glow.style.left = '-9999px';
+      glow.style.top = '-9999px';
+    });
+  }
+</script>

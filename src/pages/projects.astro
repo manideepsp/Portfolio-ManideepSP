@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import config from '../lib/config.json';
+import ProjectCard from '../components/ProjectCard.astro';
+import ScrollRevealWrapper from '../components/ScrollRevealWrapper.astro';
+import { fetchReadme } from '../lib/readmeFetcher';
+
+const repos = config.projectsRepoList || [];
+const projects = await Promise.all(repos.map(async r => {
+  const readme = await fetchReadme(r).catch(() => null);
+  const excerpt = readme ? readme.split('\n').find(l => l.trim()) : 'No README available';
+  return { repo: r, excerpt, url: `https://github.com/${r}` };
+}));
+---
+<BaseLayout title="Projects">
+  <section>
+    <h1>Work</h1>
+    <p style="color: var(--muted); margin-bottom: 40px;">A selection of projects I've built and shipped:</p>
+    <div class="grid">
+      {projects.map((p, i) => (
+        <ScrollRevealWrapper delay={i * 100}>
+          <ProjectCard repo={p.repo} excerpt={p.excerpt} url={p.url} />
+        </ScrollRevealWrapper>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+ 

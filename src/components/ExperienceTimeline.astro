@@ -1,0 +1,143 @@
+---
+import fs from 'fs';
+import config from '../lib/config.json';
+
+interface TimelineEntry {
+  rawDate: string;
+  date: string; // normalized date for sorting
+  displayDate: string; // text shown in UI
+  project: string;
+  company: string;
+  description: string;
+  tech: string[];
+}
+
+let entries: TimelineEntry[] = [];
+
+try {
+  const expMd = fs.readFileSync(new URL('../../content/experience.md', import.meta.url), 'utf8');
+  const lines = expMd.split('\n').filter(l => l.trim() && !l.startsWith('#'));
+  
+  const showMonth = Boolean((config.experience && config.experience.showMonth) ?? true);
+  const defaultMonth = (config.experience && config.experience.defaultMonth) || 'Jan';
+
+  entries = lines.map(line => {
+    const parts = line.split('|').map(p => p.trim());
+    if (parts.length >= 5) {
+      const [rawDate, project, company, description, tech] = parts;
+
+      // normalize date for sorting
+      let normalized = rawDate;
+      if (/^\d{4}$/.test(rawDate) && showMonth) {
+        normalized = `${defaultMonth} ${rawDate}`;
+      }
+
+      // determine display date
+      let display = rawDate;
+      if (!showMonth) {
+        const y = rawDate.match(/(\d{4})/);
+        display = y ? y[1] : rawDate;
+      } else {
+        if (/^\d{4}-\d{2}$/.test(rawDate)) {
+          const d = new Date(rawDate + '-01');
+          if (!isNaN(d.getTime())) {
+            display = d.toLocaleString('en', { month: 'short', year: 'numeric' });
+          }
+        } else if (/^\d{4}$/.test(rawDate)) {
+          display = `${defaultMonth} ${rawDate}`;
+        }
+      }
+
+      return {
+        rawDate,
+        date: normalized,
+        displayDate: display,
+        project,
+        company,
+        description,
+        tech: tech.split(',').map(t => t.trim()),
+      } as TimelineEntry;
+    }
+    return null;
+  }).filter(Boolean) as TimelineEntry[];
+
+  const parseToTs = (s: string) => {
+    const d = new Date(s);
+    if (!isNaN(d.getTime())) return d.getTime();
+    const y = s.match(/(\d{4})/);
+    if (y) return new Date(`${defaultMonth} ${y[1]}`).getTime();
+    return 0;
+  };
+
+  entries.sort((a, b) => parseToTs(b.date) - parseToTs(a.date));
+} catch (e) {
+  console.log('No experience data found');
+}
+---
+
+<div class="timeline experience-timeline">
+  {entries.map((entry, idx) => (
+    <div class="experience-item" data-sr style={`--delay: ${idx * 100}ms`}>
+      <div class="experience-content">
+        <div class="experience-header">
+          <h3 class="text-lg font-semibold">
+            {entry.project}
+            <span class="company">@ {entry.company}</span>
+          </h3>
+          <div class="experience-date">{entry.displayDate}</div>
+        </div>
+        {entry.description && <p class="text-sm" style="color: var(--muted);">{entry.description}</p>}
+        <div class="experience-meta">
+          {entry.tech.map(t => (
+            <span class="tech-tag">{t}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .experience-timeline {
+    position: relative;
+    padding: 20px 16px 20px 16px;
+  }
+
+  /* Remove the central connecting line and the per-item bullets */
+  .experience-timeline::before,
+  .experience-item::before {
+    display: none;
+  }
+
+  .experience-item {
+    animation: slideIn 0.6s ease-out forwards;
+    animation-delay: var(--delay, 0ms);
+    opacity: 0;
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  .experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .experience-date {
+    color: var(--muted);
+    font-size: 13px;
+    font-family: var(--font-mono);
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>

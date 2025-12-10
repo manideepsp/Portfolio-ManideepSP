@@ -1,0 +1,44 @@
+---
+const { project } = Astro.props;
+import MarkdownRenderer from './MarkdownRenderer.astro';
+---
+
+<div class="project-detail">
+  <h2>{project.title}</h2>
+  <div class="project-description">
+    <MarkdownRenderer content={project.readme} />
+  </div>
+  <div class="project-meta">
+    <p><strong>Tech Stack:</strong> {project.techStack ? project.techStack.join(', ') : ''}</p>
+    <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">View on GitHub</a>
+  </div>
+</div>
+
+<style>
+  .project-detail {
+    background-color: var(--surface);
+    color: var(--text);
+    padding: 16px;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.8);
+  }
+
+  .project-description {
+    margin-top: 16px;
+  }
+
+  .project-meta {
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+</style>

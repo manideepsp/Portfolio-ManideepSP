@@ -1,0 +1,22 @@
+{
+  "name": "Ashish Sp",
+  "title": "Software Engineer • Data & ML",
+  "githubUsername": "YOUR_GITHUB_USERNAME",
+  "resume": "resume_latest.pdf",
+  "projectsRepoList": [
+    "user/project-a",
+    "user/project-b"
+  ],
+  "customDomain": "",
+  "contactWorkerUrl": "",
+  "contactFallback": {
+    "autoRedirect": true,
+    "delayMs": 5000,
+    "showFallbackButton": true
+  }
+  ,
+  "experience": {
+    "showMonth": true,
+    "defaultMonth": "Jan"
+  }
+}

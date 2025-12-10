@@ -1,0 +1,12 @@
+---
+const { content } = Astro.props;
+import { renderMarkdown } from '../lib/markdown.js';
+let html = '';
+try {
+  html = await renderMarkdown(content || '');
+} catch (e) {
+  html = `<pre>Error rendering markdown: ${e.message}</pre>`;
+}
+---
+
+<div class="markdown-render" innerHTML={html}></div>

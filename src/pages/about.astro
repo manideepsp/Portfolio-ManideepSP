@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ScrollRevealWrapper from '../components/ScrollRevealWrapper.astro';
+import fs from 'fs';
+
+let aboutHtml = '';
+let experienceHtml = '';
+
+try {
+  const md = fs.readFileSync(new URL('../../content/about.md', import.meta.url), 'utf8');
+  aboutHtml = md.split('\n\n').map(p => `<p>${p.replace(/\n/g, ' ')}</p>`).join('');
+} catch (e) {
+  aboutHtml = '<p>No about content yet.</p>';
+}
+
+// Parse experience.md for timeline format
+try {
+  const expMd = fs.readFileSync(new URL('../../content/experience.md', import.meta.url), 'utf8');
+  const lines = expMd.split('\n').filter(l => l.trim());
+  // Simple format: "Year | Role | Company | Tech1, Tech2"
+  experienceHtml = lines.map(line => {
+    const parts = line.split('|').map(p => p.trim());
+    if (parts.length >= 3) {
+      const [year, role, company, tech] = parts;
+      return `<div class="experience-item">
+        <div class="experience-years">${year}</div>
+        <div class="experience-content">
+          <h3>${role} <span style="color: var(--accent);">@</span> ${company}</h3>
+          ${tech ? `<div class="experience-meta">${tech.split(',').map(t => `<span class="tech-tag">${t.trim()}</span>`).join('')}</div>` : ''}
+        </div>
+      </div>`;
+    }
+    return '';
+  }).join('');
+} catch (e) {
+  // Use Timeline component fallback
+}
+---
+<BaseLayout title="About">
+  <section>
+    <ScrollRevealWrapper>
+      <h1>About</h1>
+    </ScrollRevealWrapper>
+    <ScrollRevealWrapper delay={100}>
+      <div class="markdown-render" innerHTML={aboutHtml}></div>
+    </ScrollRevealWrapper>
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+    {experienceHtml ? (
+      <div innerHTML={experienceHtml}></div>
+    ) : (
+      <p>No experience data yet.</p>
+    )}
+  </section>
+</BaseLayout>
+ 

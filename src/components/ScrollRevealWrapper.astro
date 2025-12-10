@@ -1,0 +1,22 @@
+---
+interface Props {
+  delay?: number; // milliseconds
+}
+const { delay = 0 } = Astro.props;
+---
+<div class="scroll-reveal" style={delay ? `--reveal-delay: ${delay}ms` : ''}>
+  <slot />
+</div>
+
+<script type="module" client:load>
+  const elements = document.querySelectorAll('.scroll-reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  elements.forEach(element => observer.observe(element));
+</script>

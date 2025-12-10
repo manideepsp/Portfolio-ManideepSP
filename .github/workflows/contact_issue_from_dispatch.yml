@@ -1,0 +1,42 @@
+name: Create Contact Issue from repository_dispatch
+on:
+  repository_dispatch:
+    types: [contact_form]
+
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Create issue from payload
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          title: "${{ github.event.client_payload.title }}"
+          body: |
+            **From:** ${{ github.event.client_payload.name }}  
+            **Email:** ${{ github.event.client_payload.email }}  
+            **Position:** ${{ github.event.client_payload.position }}
+
+            ${{ github.event.client_payload.message }}
+          assignees: ${{ github.event.client_payload.assignee || '' }}
+name: Create Contact Issue
+on:
+  repository_dispatch:
+    types: [contact_form]
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create issue from payload
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          title: "${{ github.event.client_payload.title }}"
+          body: |
+            **From:** ${{ github.event.client_payload.name }}  
+            **Email:** ${{ github.event.client_payload.email }}  
+            **Position:** ${{ github.event.client_payload.position }}  
+
+            ${{ github.event.client_payload.message }}
+          assignees: your-github-username

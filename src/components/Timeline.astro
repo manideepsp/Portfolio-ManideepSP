@@ -1,0 +1,52 @@
+---
+import fs from 'fs';
+import MarkdownRenderer from './MarkdownRenderer.astro';
+import { parseCSV } from '../lib/csvParser.js';
+
+const experienceData = fs.readFileSync(new URL('../../content/experience.md', import.meta.url), 'utf8');
+const skillsData = fs.readFileSync(new URL('../../content/skills.csv', import.meta.url), 'utf8');
+const skills = parseCSV(skillsData);
+
+---
+
+<section class="timeline">
+  <h2>Experience Timeline</h2>
+  <MarkdownRenderer content={experienceData} />
+  <div class="skills">
+    <h3>Skills</h3>
+    <ul>
+      {skills.map(skill => <li>{skill.Skill}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    background-color: var(--surface);
+    padding: 2rem;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.8);
+  }
+
+  .skills {
+    margin-top: 1.5rem;
+  }
+
+  h2, h3 {
+    color: var(--text);
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    background-color: var(--accent);
+    color: var(--text);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin: 0.5rem 0;
+  }
+
+</style>
