@@ -1057,6 +1057,6 @@ SOFTWARE.
 
 **Built with ❤️ using Astro, Tailwind CSS, and Cloudflare Workers**
 
-If you found this project helpful, please consider giving it a ⭐️!!
+If you found this project helpful, please consider giving it a ⭐️!
 
 </div>
