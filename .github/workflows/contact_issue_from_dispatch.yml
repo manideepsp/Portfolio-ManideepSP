@@ -13,6 +13,8 @@ jobs:
       - name: Create issue from payload (github-script)
         uses: actions/github-script@v6
         with:
+          # Use the GLOBAL_GITHUB_TOKEN secret to authenticate the API call from Actions
+          github-token: ${{ secrets.GLOBAL_GITHUB_TOKEN }}
           script: |
             const payload = github.context.payload.client_payload || {};
             const owner = payload.owner || github.context.repo.owner;
