@@ -1,0 +1,416 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Contact • </title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/Portfolio-ManideepSP/_astro/about.BcVI6abG.css"></head> <body> <div class="bg-spotlight"> <div class="cursor-glow" aria-hidden="true"></div> <script type="module" client:load>
+  const glow = document.querySelector('.cursor-glow');
+  if (!glow) {
+    // nothing to do
+  } else {
+    document.addEventListener('mousemove', (event) => {
+      const mousex = event.clientX - 250;
+      const mousey = event.clientY - 250;
+      glow.style.left = mousex + 'px';
+      glow.style.top = mousey + 'px';
+    });
+
+    document.addEventListener('mouseleave', () => {
+      glow.style.left = '-9999px';
+      glow.style.top = '-9999px';
+    });
+  }
+</script> </div> <div class="page-wrap"> <header class="site-header"> <div class="inner"> <a class="logo text-2xl font-bold" href="/">Ashish Sp</a> <nav class="nav"> <a class="text-sm" href="/">Home</a> <a class="text-sm" href="/projects">Projects</a> <a class="text-sm" href="/resume">Resume</a> <a class="text-sm" href="/about">About</a> <a class="text-sm" href="/contact">Contact</a> </nav> </div> </header> <main class="container">  <section> <h1>Contact</h1> <form id="contactForm" class="contact-form"> <div class="form-grid"> <label class="form-field"> <span class="form-label">Name <span aria-hidden="true">*</span></span> <input class="form-input" name="name" required placeholder="Your full name" aria-required="true"> <div class="field-error" aria-live="polite"></div> </label> <label class="form-field"> <span class="form-label">Email <span aria-hidden="true">*</span></span> <input class="form-input" name="email" type="email" required placeholder="you@company.com" aria-required="true"> <div class="field-error" aria-live="polite"></div> <div id="emailSuggestion" class="email-suggestion" aria-live="polite"></div> </label> <label class="form-field"> <span class="form-label">Position</span> <input class="form-input" name="position" placeholder="Role or company (optional)"> <div class="field-error" aria-live="polite"></div> </label> <label class="form-field full"> <span class="form-label">Message <span aria-hidden="true">*</span></span> <textarea class="form-textarea" name="message" required placeholder="Tell me about your project or opportunity" aria-required="true"></textarea> <div class="field-error" aria-live="polite"></div> <div id="messageCounter" class="char-counter" aria-live="polite">0 / 100</div> </label> </div> <div class="form-actions"> <button type="submit" class="btn primary" id="submitBtn"> <span id="btnText">Send</span> <svg class="btn-spinner" width="16" height="16" viewBox="0 0 50 50" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" d="M25 5a20 20 0 0 1 0 40"></path></svg> </button> <a id="fallbackBtn" class="btn ghost" style="display:none" target="_blank" rel="noopener">Open GitHub fallback</a> </div> <div id="formMessage" class="form-message" role="status" aria-live="polite"></div> </form> <script type="module">const workerUrl = "";
+const fallbackConfig = {"autoRedirect":true,"delayMs":5000,"showFallbackButton":true};
+
+      const form = document.getElementById('contactForm');
+
+      function makePrefillIssueUrl({ owner, repo, name, email, position, message }) {
+        const title = encodeURIComponent(`[Portfolio Contact] ${name} — ${email}`);
+        const body = encodeURIComponent(`**Name:** ${name}\n**Email:** ${email}\n**Position:** ${position}\n\n---\n\n${message}`);
+        return `https://github.com/${owner}/${repo}/issues/new?title=${title}&body=${body}`;
+      }
+
+      async function submitToWorker(payload) {
+        if (!workerUrl) return { ok: false, reason: 'no-worker' };
+        try {
+          const res = await fetch(workerUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          try { return await res.json(); } catch(e) { return { ok: res.ok }; }
+        } catch (err) {
+          return { ok: false, reason: err.message };
+        }
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const messageEl = document.getElementById('formMessage');
+      const emailInput = form.elements['email'];
+      const emailSuggestionEl = document.getElementById('emailSuggestion');
+
+      // Debounce helper
+      function debounce(fn, wait) {
+        let t = null;
+        return (...args) => {
+          clearTimeout(t);
+          t = setTimeout(() => fn(...args), wait);
+        };
+      }
+
+      // Simple Levenshtein distance for domain suggestion
+      function levenshtein(a, b) {
+        const dp = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+        for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+        for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+        for (let i = 1; i <= a.length; i++) {
+          for (let j = 1; j <= b.length; j++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+          }
+        }
+        return dp[a.length][b.length];
+      }
+
+      const commonDomains = ['gmail.com','hotmail.com','yahoo.com','outlook.com','icloud.com','protonmail.com','proton.me','live.com','aol.com','gmx.com','yahoo.co.uk','hotmail.co.uk'];
+
+      function suggestEmailCorrection(value) {
+        if (!value || value.indexOf('@') === -1) return null;
+        const parts = value.split('@');
+        if (parts.length !== 2) return null;
+        const local = parts[0];
+        const domain = parts[1].toLowerCase();
+        // If domain exactly matches a known one, no suggestion
+        if (commonDomains.includes(domain)) return null;
+
+        // Find nearest domain
+        let best = null; let bestDist = Infinity;
+        for (const d of commonDomains) {
+          const dist = levenshtein(domain, d);
+          if (dist < bestDist) { bestDist = dist; best = d; }
+        }
+        // Only suggest if reasonably small edit distance
+        if (best && bestDist > 0 && bestDist <= 2) {
+          return `${local}@${best}`;
+        }
+        return null;
+      }
+
+      function showEmailSuggestion(suggestion) {
+        if (!suggestion) {
+          emailSuggestionEl.textContent = '';
+          emailSuggestionEl.style.display = 'none';
+          emailInput.removeAttribute('aria-describedby');
+          return;
+        }
+        emailSuggestionEl.innerHTML = `Did you mean <button type="button" class="email-suggest-btn">${suggestion}</button>?`;
+        emailSuggestionEl.style.display = 'block';
+        const btn = emailSuggestionEl.querySelector('.email-suggest-btn');
+        if (btn) {
+          btn.addEventListener('click', () => {
+            emailInput.value = suggestion;
+            emailInput.focus();
+            showEmailSuggestion(null);
+            clearFieldErrors();
+          });
+        }
+        // link suggestion for screen readers
+        emailInput.setAttribute('aria-describedby', 'emailSuggestion');
+      }
+
+      const debouncedSuggest = debounce(() => {
+        try {
+          const val = (emailInput && emailInput.value) ? emailInput.value.trim() : '';
+          const s = suggestEmailCorrection(val);
+          showEmailSuggestion(s);
+        } catch (e) { /* ignore */ }
+      }, 400);
+
+      // validate on blur and provide real-time suggestion on input
+      if (emailInput) {
+        emailInput.addEventListener('input', () => {
+          // clear field error while typing
+          const wrap = emailInput.closest('.form-field');
+          if (wrap) {
+            const err = wrap.querySelector('.field-error'); if (err) err.textContent = '';
+          }
+          emailInput.classList.remove('invalid');
+          emailInput.removeAttribute('aria-invalid');
+          emailInput.removeAttribute('aria-describedby');
+          debouncedSuggest();
+        });
+
+        emailInput.addEventListener('blur', () => {
+          // run quick validation on blur
+          const val = (emailInput.value || '').trim();
+          if (!val) {
+            setFieldError(emailInput, 'Please enter your email address.');
+          } else if (!validateEmail(val)) {
+            setFieldError(emailInput, 'Please enter a valid email address.');
+          }
+        });
+      }
+
+      // add blur validation for all fields
+      form.querySelectorAll('.form-input, .form-textarea').forEach(el => {
+        el.addEventListener('blur', () => {
+          const v = (el.value || '').trim();
+          if (el.required && !v) {
+            setFieldError(el, 'This field is required.');
+          } else if (el.type === 'email' && v && !validateEmail(v)) {
+            setFieldError(el, 'Please enter a valid email address.');
+          } else if (el.tagName.toLowerCase() === 'textarea' && v && v.length < 100) {
+            setFieldError(el, 'Message must be at least 100 characters.');
+          }
+        });
+      });
+
+      // Message character counter behavior
+      const messageInput = form.elements['message'];
+      const messageCounter = document.getElementById('messageCounter');
+      function updateMessageCounter() {
+        if (!messageInput || !messageCounter) return;
+        const len = (messageInput.value || '').length;
+        messageCounter.textContent = `${len} / 100`;
+        if (len >= 100) {
+          messageCounter.classList.remove('low');
+          messageCounter.classList.add('ok');
+          // clear any message-related field error when length requirement met
+          const wrap = messageInput.closest('.form-field');
+          if (wrap) {
+            const err = wrap.querySelector('.field-error'); if (err) err.textContent = '';
+          }
+          messageInput.classList.remove('invalid');
+          messageInput.removeAttribute('aria-invalid');
+        } else {
+          messageCounter.classList.remove('ok');
+          messageCounter.classList.add('low');
+        }
+      }
+
+      if (messageInput) {
+        // update immediately and on input
+        updateMessageCounter();
+        messageInput.addEventListener('input', () => {
+          updateMessageCounter();
+        });
+      }
+
+      function clearFieldErrors() {
+        form.querySelectorAll('.field-error').forEach(el => el.textContent = '');
+        form.querySelectorAll('.form-input, .form-textarea').forEach(el => {
+          el.classList.remove('invalid');
+          el.removeAttribute('aria-invalid');
+          el.removeAttribute('aria-describedby');
+        });
+      }
+
+      function setFieldError(input, msg) {
+        const wrap = input.closest('.form-field');
+        if (wrap) {
+          const err = wrap.querySelector('.field-error');
+          if (err) {
+            // Ensure an id exists so we can reference it from aria-describedby
+            if (!err.id) err.id = `${input.name}-error`;
+            err.textContent = msg;
+            input.setAttribute('aria-describedby', err.id);
+          }
+        }
+        input.classList.add('invalid');
+        input.setAttribute('aria-invalid', 'true');
+        // Add temporary visual emphasis: shake + flash-red for 1s
+        input.classList.remove('shake');
+        input.classList.remove('flash-red');
+        // Force reflow so animation restarts reliably
+        // eslint-disable-next-line no-unused-expressions
+        void input.offsetWidth;
+        input.classList.add('shake');
+        input.classList.add('flash-red');
+        setTimeout(() => {
+          input.classList.remove('shake');
+          input.classList.remove('flash-red');
+        }, 1000);
+      }
+
+      function validateEmail(email) {
+        if (!email || typeof email !== 'string') return false;
+        const v = email.trim();
+        // Strict email validation: RFC-like but practical
+        // Local part allows most common characters, domain enforces labels and TLD >=2
+        const strictEmailRe = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z]{2,})+$/;
+        return strictEmailRe.test(v);
+      }
+
+      function validateForm() {
+        clearFieldErrors();
+        const errors = [];
+        const inputs = Array.from(form.querySelectorAll('.form-input, .form-textarea'));
+
+        for (const input of inputs) {
+          // Trim whitespace for validation purposes
+          const val = input.value != null ? String(input.value).trim() : '';
+          // temporarily set trimmed value for validity checks
+          const original = input.value;
+          input.value = val;
+
+          // Use constraint validation API
+          if (!input.checkValidity()) {
+            // Use validationMessage when available, otherwise fallback
+            const msg = input.validationMessage || 'Please complete this field.';
+            setFieldError(input, msg);
+            errors.push(input);
+          }
+
+          // restore original (in case of textarea with leading/trailing whitespace intended)
+          input.value = original;
+        }
+
+        // Additional custom check for email format (safeguard)
+        const email = form.elements['email'];
+        if (email && email.value && !validateEmail(email.value.trim())) {
+          setFieldError(email, 'Please enter a valid email address.');
+          if (!errors.includes(email)) errors.push(email);
+        }
+
+        return errors;
+      }
+
+      function setLoading(loading) {
+        if (loading) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add('loading');
+          btnText.textContent = 'Sending…';
+          submitBtn.setAttribute('aria-busy', 'true');
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('loading');
+          btnText.textContent = 'Send';
+          submitBtn.removeAttribute('aria-busy');
+        }
+      }
+
+      const fallbackBtn = document.getElementById('fallbackBtn');
+
+      let redirectTimer = null;
+
+      function showMessage(text, type = 'info', fallbackUrl, autoRedirect = false) {
+        // clear any pending redirect
+        if (redirectTimer) {
+          clearTimeout(redirectTimer);
+          redirectTimer = null;
+        }
+
+        messageEl.textContent = text;
+        messageEl.className = `form-message ${type}`;
+        if (fallbackUrl && fallbackConfig.showFallbackButton !== false) {
+          fallbackBtn.href = fallbackUrl;
+          fallbackBtn.style.display = 'inline-block';
+        } else {
+          fallbackBtn.style.display = 'none';
+          fallbackBtn.removeAttribute('href');
+        }
+
+        const delay = Number(fallbackConfig.delayMs) || 5000;
+        if (fallbackUrl && autoRedirect && fallbackConfig.autoRedirect !== false) {
+          // after configured delay open fallback in a new tab so user sees the explanation
+          redirectTimer = setTimeout(() => {
+            try { window.open(fallbackUrl, '_blank'); } catch (e) { /* ignore */ }
+            redirectTimer = null;
+          }, delay);
+        }
+      }
+
+      // Lightweight toast/pop-up notifications
+      function ensureToastContainer() {
+        let c = document.getElementById('toastContainer');
+        if (!c) {
+          c = document.createElement('div');
+          c.id = 'toastContainer';
+          c.className = 'toast-container';
+          document.body.appendChild(c);
+        }
+        return c;
+      }
+
+      function showToast(type, message, ms = 4000) {
+        const container = ensureToastContainer();
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.setAttribute('role', 'status');
+        toast.setAttribute('aria-live', 'polite');
+        toast.innerHTML = `<div class="toast-body">${message}<button class="toast-close" aria-label="Dismiss">×</button></div>`;
+        container.appendChild(toast);
+        // dismiss handler
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+          toast.classList.add('toast-hide');
+          setTimeout(() => toast.remove(), 220);
+        });
+        // auto remove
+        setTimeout(() => {
+          toast.classList.add('toast-hide');
+          setTimeout(() => { try { toast.remove(); } catch (e) {} }, 220);
+        }, ms);
+      }
+
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const fd = new FormData(form);
+        const payload = Object.fromEntries(fd.entries());
+        const post = {
+          owner: '${config.githubUsername}',
+          repo: 'portfolio-site',
+          title: `[Portfolio Contact] ${payload.name} — ${payload.email}`,
+          name: payload.name,
+          email: payload.email,
+          position: payload.position,
+          message: payload.message
+        };
+        // Client-side validation
+        const validationErrors = validateForm();
+        if (validationErrors.length) {
+          // show native browser validation UI and focus first invalid field
+          try { form.reportValidity(); } catch (e) { /* ignore */ }
+          validationErrors[0].focus();
+          showMessage('Please fix the highlighted fields and try again.', 'error');
+          showToast('error', 'Please fix the highlighted fields and try again.');
+          return;
+        }
+
+        // Final safeguard: normalize payload and re-check required fields before sending
+        post.name = post.name ? String(post.name).trim() : '';
+        post.email = post.email ? String(post.email).trim() : '';
+        post.message = post.message ? String(post.message).trim() : '';
+
+        if (!post.name) {
+          const first = form.elements['name']; setFieldError(first, 'Please enter your name.'); first.focus(); showMessage('Please fix the highlighted fields and try again.', 'error'); showToast('error', 'Please enter your name.'); return;
+        }
+        if (!post.email || !validateEmail(post.email)) {
+          const first = form.elements['email']; setFieldError(first, 'Please enter a valid email address.'); first.focus(); showMessage('Please fix the highlighted fields and try again.', 'error'); showToast('error', 'Please enter a valid email address.'); return;
+        }
+        if (!post.message || post.message.length < 100) {
+          const first = form.elements['message']; setFieldError(first, 'Message must be at least 100 characters.'); first.focus(); showMessage('Please fix the highlighted fields and try again.', 'error'); showToast('error', 'Message must be at least 100 characters.'); return;
+        }
+
+        // Try secure Worker proxy first
+        setLoading(true);
+        showMessage('Sending message...', 'info');
+        const resp = await submitToWorker(post);
+        if (resp && resp.ok) {
+          showMessage('Message sent — thank you!', 'success');
+          showToast('success', 'Message sent — thank you!');
+          form.reset();
+          clearFieldErrors();
+          setLoading(false);
+          return;
+        }
+
+        // Fallback: offer prefilled GitHub issue (requires user to sign in)
+        setLoading(false);
+        const fallbackUrl = makePrefillIssueUrl({ owner: post.owner, repo: post.repo, ...post });
+        const seconds = Math.round((Number(fallbackConfig.delayMs) || 5000) / 1000);
+        showMessage(
+          `Could not send via secure proxy. You will be redirected to GitHub in ${seconds} seconds — please make sure you are signed in to GitHub to submit the issue.`,
+          'error',
+          fallbackUrl,
+          true
+        );
+        showToast('error', 'Could not send via secure proxy. Redirecting to fallback.');
+      });
+    </script> </section>  </main> <footer class="site-footer" id="site-footer"> <div class="inner footer-grid"> <div class="footer-col footer-brand"> <a class="logo text-2xl font-bold" href="/">Ashish Sp</a> <p class="text-sm" style="color:var(--muted); margin-top:8px;">Software Engineer • Data &amp; ML</p> </div> <div class="footer-col footer-links"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Explore</h4> <ul class="footer-nav" style="margin:0;padding:0;list-style:none;"> <li><a href="/">Home</a></li> <li><a href="/projects">Projects</a></li> <li><a href="/resume">Resume</a></li> <li><a href="/about">About</a></li> <li><a href="/contact">Contact</a></li> </ul> </div> <div class="footer-col footer-contact"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Connect</h4> <div class="socials" style="display:flex;gap:10px;align-items:center;"> <a class="social-link" href="https://github.com/manideepsp" target="_blank" rel="noopener" aria-label="GitHub"> <!-- GitHub SVG --> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 .5C5.73.5.75 5.48.75 11.76c0 4.95 3.2 9.14 7.64 10.62.56.1.77-.24.77-.54 0-.27-.01-1-.02-1.96-3.11.68-3.77-1.5-3.77-1.5-.51-1.3-1.25-1.64-1.25-1.64-1.02-.7.08-.69.08-.69 1.12.08 1.71 1.15 1.71 1.15 1 .17 1.57-.77 1.57-.77.92-1.57 2.42-1.12 3.01-.86.09-.67.39-1.12.71-1.38-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.43-2.22 1.14-3-.11-.28-.5-1.4.11-2.92 0 0 .93-.3 3.05 1.13.89-.25 1.85-.38 2.8-.39.95.01 1.91.14 2.8.39 2.11-1.44 3.04-1.13 3.04-1.13.62 1.52.23 2.64.11 2.92.71.78 1.14 1.78 1.14 3 0 4.29-2.62 5.23-5.11 5.51.4.35.75 1.03.75 2.08 0 1.5-.01 2.71-.01 3.08 0 .3.2.65.78.54 4.43-1.49 7.63-5.68 7.63-10.62C23.25 5.48 18.27.5 12 .5z" fill="currentColor"></path></svg> </a> <a class="social-link" href="mailto:undefined" aria-label="Email"> <!-- Mail SVG --> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8.99l8 6 8-6V18H4z" fill="currentColor"></path></svg> </a> <a class="social-link" href="https://www.linkedin.com/in/" target="_blank" rel="noopener" aria-label="LinkedIn"> <!-- LinkedIn SVG --> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.08 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.84v2.16h.05c.54-1.02 1.86-2.16 3.83-2.16 4.1 0 4.85 2.7 4.85 6.2V24h-4V15.2c0-2.1-.04-4.8-2.92-4.8-2.92 0-3.37 2.28-3.37 4.64V24h-4V8z" fill="currentColor"></path></svg> </a> </div> <a class="back-to-top text-sm" href="#top" style="display:inline-block;margin-top:10px;color:var(--muted);">Back to top ↑</a> </div> </div> <div class="inner footer-credits" style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.03);padding-top:18px;"> <p class="text-sm" style="color:var(--muted);margin:0;">&copy; 2025 Ashish Sp. Built with ❤.</p> </div> </footer> </div> <script type="module" src="/Portfolio-ManideepSP/lib/sr.js" defer></script> </body> </html>
