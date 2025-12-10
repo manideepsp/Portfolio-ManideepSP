@@ -10,16 +10,63 @@ jobs:
       contents: read
       issues: write
     steps:
-      - name: Create issue from payload (github-script)
-        uses: actions/github-script@v6
-        with:
-          # Use the GLOBAL_GITHUB_TOKEN secret to authenticate the API call from Actions
-          github-token: ${{ secrets.GLOBAL_GITHUB_TOKEN }}
-          script: |
-            const payload = github.context.payload.client_payload || {};
-            const owner = payload.owner || github.context.repo.owner;
-            const repo = payload.repo || github.context.repo.repo;
-            const title = payload.title || 'Portfolio Contact';
-            const body = `**From:** ${payload.name || 'Unknown'}  \n**Email:** ${payload.email || 'n/a'}  \n**Position:** ${payload.position || ''}\n\n${payload.message || ''}`;
-            const assignees = payload.assignee ? String(payload.assignee).split(',').map(s => s.trim()).filter(Boolean) : [];
-            await github.rest.issues.create({ owner, repo, title, body, assignees });
+      - name: Create issue from repository_dispatch payload (python)
+        env:
+          GH_API_TOKEN: ${{ secrets.GLOBAL_GITHUB_TOKEN }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, sys, urllib.request
+
+          event_path = os.environ.get('GITHUB_EVENT_PATH')
+          repo = os.environ.get('GITHUB_REPOSITORY')
+          token = os.environ.get('GH_API_TOKEN')
+
+          if not event_path or not repo or not token:
+              print('Missing required environment variables', file=sys.stderr)
+              sys.exit(1)
+
+          with open(event_path, 'r') as f:
+              event = json.load(f)
+
+          payload = event.get('client_payload', {})
+          owner, repo_name = repo.split('/', 1)
+
+          title = payload.get('title') or 'Portfolio Contact'
+          name = payload.get('name', 'Unknown')
+          email = payload.get('email', 'n/a')
+          position = payload.get('position', '')
+          message = payload.get('message', '')
+          assignees_raw = payload.get('assignee') or ''
+
+          body_text = f"**From:** {name}  \n**Email:** {email}  \n**Position:** {position}\n\n{message}"
+
+          data = {'title': title, 'body': body_text}
+          if assignees_raw:
+              assignees = [a.strip() for a in str(assignees_raw).split(',') if a.strip()]
+              data['assignees'] = assignees
+
+          req = urllib.request.Request(
+              f'https://api.github.com/repos/{owner}/{repo_name}/issues',
+              data=json.dumps(data).encode('utf-8'),
+              headers={
+                  'Authorization': f'Bearer {token}',
+                  'Accept': 'application/vnd.github.v3+json',
+                  'User-Agent': 'portfolio-contact-proxy (https://github.com/manideepsp/Portfolio-ManideepSP)'
+              },
+              method='POST'
+          )
+
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  resp_data = resp.read().decode('utf-8')
+                  print('GitHub API response status:', resp.status)
+                  print(resp_data)
+          except urllib.error.HTTPError as e:
+              err = e.read().decode('utf-8')
+              print('GitHub API error status:', e.code, file=sys.stderr)
+              print(err, file=sys.stderr)
+              sys.exit(1)
+          PY

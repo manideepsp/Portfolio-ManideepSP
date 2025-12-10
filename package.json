@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "deploy:worker": "node -e \"const {spawnSync} = require('child_process'); const env = process.env.WRANGLER_ENV || 'production'; const r = spawnSync('npx', ['wrangler','deploy','--env', env], { stdio: 'inherit' }); process.exit(r.status);\"",
+    "secret:put:worker": "node -e \"const {spawnSync} = require('child_process'); const env = process.env.WRANGLER_ENV || 'production'; const r = spawnSync('npx', ['wrangler','secret','put','GLOBAL_GITHUB_TOKEN','--env', env], { stdio: 'inherit' }); process.exit(r.status);\""
   },
   "dependencies": {
     "astro": "^5.16.4",

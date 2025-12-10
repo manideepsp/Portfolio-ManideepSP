@@ -21,14 +21,24 @@ async function handle(event) {
     };
 
     const url = `https://api.github.com/repos/${owner}/${repo}/dispatches`;
-    const token = GLOBAL_GITHUB_TOKEN; // set via Worker secret/ENV (see README)
+
+    // Resolve GitHub token from common Worker binding/env names.
+    // Cloudflare Worker secrets are exposed as global bindings (globalThis).
+    // Check a few common names to be resilient to naming differences.
+    const token = globalThis.GLOBAL_GITHUB_TOKEN || globalThis.GITHUB_TOKEN || globalThis.GH_TOKEN || null;
+    // If token is still not found, return an informative error for debugging.
+    if (!token) {
+      return new Response(JSON.stringify({ ok: false, error: 'GLOBAL_GITHUB_TOKEN not defined in Worker bindings' }), { status: 500 });
+    }
 
     const res = await fetch(url, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        // GitHub requires a User-Agent header on REST API requests
+        'User-Agent': 'portfolio-contact-proxy (https://github.com/manideepsp/Portfolio-ManideepSP)'
       },
       body: JSON.stringify({ event_type: 'contact_form', client_payload })
     });

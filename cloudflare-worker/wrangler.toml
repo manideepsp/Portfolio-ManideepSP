@@ -1,8 +1,16 @@
 name = "portfolio-contact-proxy"
-type = "javascript"
 account_id = "c966ec77e8ff9a837aad7c8ad38b4119"
 compatibility_date = "2025-12-10"
 workers_dev = true
+
+# Entry point for the Worker script
+main = "contact-proxy.js"
+
+# Environment for production so `--env production` works
+[env.production]
+# You can override settings for production here, e.g.:
+# account_id = "..."
+# route = "example.com/contact"
 
 # If you intend to publish static assets with the worker, configure site bucket
 # site = { bucket = "../dist", entry-point = "workers-site" }
