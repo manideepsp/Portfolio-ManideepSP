@@ -10,33 +10,14 @@ jobs:
       contents: read
       issues: write
     steps:
-      - name: Create issue from payload
-        uses: peter-evans/create-issue-from-file@v4
+      - name: Create issue from payload (github-script)
+        uses: actions/github-script@v6
         with:
-          title: "${{ github.event.client_payload.title }}"
-          body: |
-            **From:** ${{ github.event.client_payload.name }}  
-            **Email:** ${{ github.event.client_payload.email }}  
-            **Position:** ${{ github.event.client_payload.position }}
-
-            ${{ github.event.client_payload.message }}
-          assignees: ${{ github.event.client_payload.assignee || '' }}
-name: Create Contact Issue
-on:
-  repository_dispatch:
-    types: [contact_form]
-jobs:
-  create_issue:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create issue from payload
-        uses: peter-evans/create-issue-from-file@v4
-        with:
-          title: "${{ github.event.client_payload.title }}"
-          body: |
-            **From:** ${{ github.event.client_payload.name }}  
-            **Email:** ${{ github.event.client_payload.email }}  
-            **Position:** ${{ github.event.client_payload.position }}  
-
-            ${{ github.event.client_payload.message }}
-          assignees: your-github-username
+          script: |
+            const payload = github.context.payload.client_payload || {};
+            const owner = payload.owner || github.context.repo.owner;
+            const repo = payload.repo || github.context.repo.repo;
+            const title = payload.title || 'Portfolio Contact';
+            const body = `**From:** ${payload.name || 'Unknown'}  \n**Email:** ${payload.email || 'n/a'}  \n**Position:** ${payload.position || ''}\n\n${payload.message || ''}`;
+            const assignees = payload.assignee ? String(payload.assignee).split(',').map(s => s.trim()).filter(Boolean) : [];
+            await github.rest.issues.create({ owner, repo, title, body, assignees });

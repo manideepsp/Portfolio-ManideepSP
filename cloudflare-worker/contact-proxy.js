@@ -9,8 +9,8 @@ async function handle(event) {
     const payload = await req.json();
 
     // Prepare dispatch payload for repository_dispatch
-    const owner = payload.owner || 'YOUR_GITHUB_USERNAME';
-    const repo = payload.repo || 'portfolio-site';
+    const owner = payload.owner || 'manideepsp';
+    const repo = payload.repo || 'Portfolio-ManideepSP';
     const client_payload = {
       title: payload.title,
       name: payload.name,

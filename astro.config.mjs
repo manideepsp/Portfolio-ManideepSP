@@ -1,6 +1,6 @@
 export default {
-  site: 'https://your-portfolio-url.com',
-  base: '/',
+  site: 'https://manideepsp.github.io',
+  base: '/Portfolio-ManideepSP',
   buildOptions: {
     outDir: 'dist',
   },

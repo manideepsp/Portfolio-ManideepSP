@@ -44,10 +44,8 @@ import config from '../lib/config.json';
 
       <div id="formMessage" class="form-message" role="status" aria-live="polite"></div>
     </form>
-    <script type="module">
+    <script type="module" define:vars={{ workerUrl: config.contactWorkerUrl ?? '', fallbackConfig: config.contactFallback ?? {} }}>
       const form = document.getElementById('contactForm');
-      const workerUrl = ${JSON.stringify(config.contactWorkerUrl ?? '')};
-      const fallbackConfig = ${JSON.stringify(config.contactFallback ?? {})};
 
       function makePrefillIssueUrl({ owner, repo, name, email, position, message }) {
         const title = encodeURIComponent(`[Portfolio Contact] ${name} — ${email}`);
