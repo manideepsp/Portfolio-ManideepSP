@@ -8,21 +8,57 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+      - name: Checkout repository (manual)
+        run: |
+          set -euo pipefail
+          echo "Cloning repository..."
+          git clone https://x-access-token:${{ secrets.GLOBAL_GITHUB_TOKEN }}@github.com/${{ github.repository }} repo
+          cd repo
+          # Ensure we're on the pushed branch
+          git checkout ${{ github.ref_name }} || true
+          # Move repository contents to workspace root for following steps
+          rsync -a --delete ./ ../
+          cd ../
+
+      - name: Install Node 18
+        run: |
+          set -euo pipefail
+          echo "Setting up Node 18..."
+          curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+
       - name: Install dependencies
         run: npm ci
+
       - name: Build
         run: npm run build
+
       - name: Create CNAME if configured
         run: node .github/scripts/write-cname.mjs
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          # Use a repository secret (GLOBAL_GITHUB_TOKEN) so you can manage/rotate a PAT easily
-          github_token: ${{ secrets.GLOBAL_GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./dist
+
+      - name: Deploy to gh-pages (manual push)
+        env:
+          GITHUB_TOKEN_FOR_PUSH: ${{ secrets.GLOBAL_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          echo "Preparing gh-pages branch"
+          PUBLISH_DIR=dist
+          if [ ! -d "$PUBLISH_DIR" ]; then
+            echo "Publish directory $PUBLISH_DIR does not exist" >&2
+            exit 1
+          fi
+
+          TMPDIR=$(mktemp -d)
+          echo "Creating temporary git repo in $TMPDIR"
+          cp -r $PUBLISH_DIR/* $TMPDIR || true
+          cd $TMPDIR
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add --all
+          git commit -m "chore: publish site to gh-pages [ci skip]"
+
+          # Push to gh-pages branch using token
+          REPO_URL="https://x-access-token:${GITHUB_TOKEN_FOR_PUSH}@github.com/${{ github.repository }}"
+          git push --force $REPO_URL master:gh-pages
+          echo "Published to gh-pages"
