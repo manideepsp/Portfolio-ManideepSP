@@ -8,17 +8,21 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout repository (manual)
+      - name: Checkout repository (manual, safe copy)
         run: |
           set -euo pipefail
-          echo "Cloning repository..."
-          git clone https://x-access-token:${{ secrets.GLOBAL_GITHUB_TOKEN }}@github.com/${{ github.repository }} repo
-          cd repo
-          # Ensure we're on the pushed branch
-          git checkout ${{ github.ref_name }} || true
-          # Move repository contents to workspace root for following steps
-          rsync -a --delete ./ ../
-          cd ../
+          echo "Cloning repository into a temporary directory..."
+          TMPDIR=$(mktemp -d)
+          git clone https://x-access-token:${{ secrets.GLOBAL_GITHUB_TOKEN }}@github.com/${{ github.repository }} "$TMPDIR/repo"
+          cd "$TMPDIR/repo"
+          # Ensure we're on the pushed branch if present
+          git checkout "${{ github.ref_name }}" || true
+
+          echo "Synchronizing files from temporary clone into the workspace"
+          # Clean workspace (keep Github workspace metadata safe)
+          rm -rf "$GITHUB_WORKSPACE"/* || true
+          rsync -a --delete "$TMPDIR/repo/" "$GITHUB_WORKSPACE/"
+          ls -la "$GITHUB_WORKSPACE" || true
 
       - name: Install Node 18
         run: |
