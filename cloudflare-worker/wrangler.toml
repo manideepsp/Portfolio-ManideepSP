@@ -1,0 +1,8 @@
+name = "portfolio-contact-proxy"
+type = "javascript"
+account_id = "c966ec77e8ff9a837aad7c8ad38b4119"
+compatibility_date = "2025-12-10"
+workers_dev = true
+
+# If you intend to publish static assets with the worker, configure site bucket
+# site = { bucket = "../dist", entry-point = "workers-site" }
