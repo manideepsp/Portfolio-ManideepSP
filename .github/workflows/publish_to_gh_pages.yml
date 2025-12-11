@@ -44,15 +44,19 @@ jobs:
           # Ensure GitHub Pages does not run Jekyll
           touch .nojekyll
 
-          # Normalize asset paths: move `_astro` to `assets` and update HTML references
+          # Normalize asset paths: rename `_astro` to `assets` and update HTML references
           if [ -d "_astro" ]; then
-            mkdir -p assets
-            # Move the directory (git mv may not work inside a fresh repo yet)
-            mv _astro assets/
+            # Rename the directory (not move into)
+            mv _astro assets
+            echo "Renamed _astro -> assets"
+            ls -la assets | head -10
             # Update references in html files to point to /assets/ instead of /_astro/
             # Also handle repo-base prefixed references like /Portfolio-ManideepSP/_astro/
             find . -type f -name '*.html' -print0 | xargs -0 sed -i 's|/Portfolio-ManideepSP/_astro/|/Portfolio-ManideepSP/assets/|g'
             find . -type f -name '*.html' -print0 | xargs -0 sed -i 's|/_astro/|/assets/|g'
+            echo "Updated HTML references"
+          else
+            echo "WARNING: _astro directory not found in dist"
           fi
 
           # Ensure assets exist after normalization — fail early if not present.
