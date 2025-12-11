@@ -55,6 +55,16 @@ jobs:
             find . -type f -name '*.html' -print0 | xargs -0 sed -i 's|/_astro/|/assets/|g'
           fi
 
+          # Ensure assets exist after normalization — fail early if not present.
+          if [ -d "assets" ]; then
+            echo "assets directory present"
+          else
+            echo "ERROR: assets directory missing; aborting publish." >&2
+            echo "---- dist listing for debugging ----" >&2
+            ls -la || true
+            exit 1
+          fi
+
           # Initialize a fresh git repo and commit the build output
           git init
           git config user.name "github-actions[bot]"
