@@ -55,6 +55,9 @@ export const sr = {
 function initScrollReveal() {
   if (typeof window === 'undefined') return;
   
+  // Add js-loaded class to enable CSS animations (progressive enhancement)
+  document.documentElement.classList.add('js-loaded');
+  
   const elements = document.querySelectorAll('.scroll-reveal');
   if (!elements.length) return;
   

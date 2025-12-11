@@ -484,6 +484,12 @@ body {
 
 /* Scroll-reveal wrapper animation */
 .scroll-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Only apply animation if JS has initialized (adds .js-loaded to html) */
+html.js-loaded .scroll-reveal {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 600ms cubic-bezier(.22,.9,.35,1), 
@@ -491,6 +497,7 @@ body {
   transition-delay: var(--reveal-delay, 0ms);
 }
 
+html.js-loaded .scroll-reveal.reveal,
 .scroll-reveal.reveal {
   opacity: 1;
   transform: translateY(0);
