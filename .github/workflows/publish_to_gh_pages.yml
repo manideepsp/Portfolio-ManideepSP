@@ -41,8 +41,19 @@ jobs:
           # Move into the build output
           cd dist
 
-          # Ensure GitHub Pages does not run Jekyll (so `_astro` and other underscored folders are served)
+          # Ensure GitHub Pages does not run Jekyll
           touch .nojekyll
+
+          # Normalize asset paths: move `_astro` to `assets` and update HTML references
+          if [ -d "_astro" ]; then
+            mkdir -p assets
+            # Move the directory (git mv may not work inside a fresh repo yet)
+            mv _astro assets/
+            # Update references in html files to point to /assets/ instead of /_astro/
+            # Also handle repo-base prefixed references like /Portfolio-ManideepSP/_astro/
+            find . -type f -name '*.html' -print0 | xargs -0 sed -i 's|/Portfolio-ManideepSP/_astro/|/Portfolio-ManideepSP/assets/|g'
+            find . -type f -name '*.html' -print0 | xargs -0 sed -i 's|/_astro/|/assets/|g'
+          fi
 
           # Initialize a fresh git repo and commit the build output
           git init
