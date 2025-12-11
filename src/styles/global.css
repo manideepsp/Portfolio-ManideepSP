@@ -94,6 +94,7 @@ body {
 .logo {
   font-weight: 700;
   font-size: 18px;
+  font-family: var(--font-heading);
   color: var(--text);
   text-decoration: none;
 }
@@ -117,8 +118,9 @@ body {
 }
 
 .headline {
-  font-size: clamp(40px, 5vw, 64px);
-  font-weight: 800;
+  font-size: clamp(40px, 5vw, 60px);
+  font-weight: 700;
+  font-family: var(--font-heading);
   margin: 0 0 16px;
   line-height: 1.05;
   color: var(--text);
@@ -156,6 +158,17 @@ body {
 
 .about-block {
   max-width: 800px;
+}
+
+.about-block h2,
+.projects-column h2,
+.timeline-column h2,
+section h1,
+section h2,
+.card .title,
+.project-card .title {
+  font-family: var(--font-heading);
+  letter-spacing: -0.01em;
 }
 
 .split-layout {
