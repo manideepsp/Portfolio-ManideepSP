@@ -58,7 +58,20 @@ jobs:
           # Push to gh-pages branch. This updates gh-pages to the exact build output.
           # We use --force-with-lease to avoid accidental clobbering when there is a concurrent update.
           git remote add origin "https://x-access-token:${TOKEN}@github.com/${REPO}.git"
-          git push --force-with-lease origin HEAD:gh-pages
+
+          # Try to fetch the remote gh-pages branch so --force-with-lease has a lease to work with.
+          # If the branch doesn't exist yet, fetch will exit non-zero; ignore errors.
+          git fetch origin gh-pages || true
+
+          # First attempt a safe push. If the remote has changed since the workflow started,
+          # --force-with-lease will fail. In that case, fall back to a plain --force push
+          # because `gh-pages` is generated output and we intentionally overwrite it.
+          if git push --force-with-lease origin HEAD:gh-pages; then
+            echo "Pushed gh-pages with --force-with-lease"
+          else
+            echo "--force-with-lease failed, falling back to --force"
+            git push --force origin HEAD:gh-pages
+          fi
 
       - name: Done
         run: echo "Published to gh-pages"
