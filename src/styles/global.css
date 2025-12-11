@@ -9,6 +9,7 @@ body {
   padding: 0;
   /* allow page scrolling */
   overflow-y: auto;
+  overflow-x: hidden; /* prevent horizontal scroll on mobile */
   font-family: var(--font-body);
   color: var(--text);
   line-height: 1.6;
@@ -264,6 +265,89 @@ section h2,
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
+}
+
+/* Mobile-first stacking and full-width adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 32px 18px 48px;
+    width: 100%;
+  }
+
+  .split-layout {
+    display: block;
+  }
+
+  .projects-column {
+    margin-bottom: 40px;
+  }
+
+  .timeline-column {
+    padding-left: 0;
+  }
+
+  .projects-list .card,
+  .projects-list article {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Tighter, friendlier mobile typography */
+  h1, .headline {
+    font-size: clamp(28px, 8vw, 36px);
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: clamp(20px, 6vw, 24px);
+    margin-bottom: 12px;
+  }
+
+  p, .text-lg, .text-sm {
+    line-height: 1.6;
+  }
+
+  /* Hero spacing and CTA stacking on mobile */
+  .hero {
+    padding: 48px 0 56px;
+  }
+
+  .ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ctas .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Project cards: taller imagery and softer gaps on mobile */
+  .project-card {
+    gap: 14px;
+  }
+
+  .project-card-row {
+    display: block;
+  }
+
+  .project-card-image {
+    width: 100%;
+    height: 180px;
+    border-radius: 12px;
+  }
+
+  .project-card-body {
+    padding: 10px;
+  }
+
+  /* Timeline spacing */
+  .experience-item {
+    margin-bottom: 28px;
+  }
 }
 
 .card {
