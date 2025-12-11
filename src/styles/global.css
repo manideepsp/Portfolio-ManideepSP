@@ -482,6 +482,28 @@ body {
   transition: opacity 600ms cubic-bezier(.22,.9,.35,1), transform 600ms cubic-bezier(.22,.9,.35,1);
 }
 
+/* Scroll-reveal wrapper animation */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms cubic-bezier(.22,.9,.35,1), 
+              transform 600ms cubic-bezier(.22,.9,.35,1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.scroll-reveal.reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* Featured project grid helper classes (do NOT modify existing project styles) */
 .featured-projects-grid {
   display: grid;

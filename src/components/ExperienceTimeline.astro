@@ -1,78 +1,58 @@
 ---
-import fs from 'fs';
 import config from '../lib/config.json';
 
-interface TimelineEntry {
-  rawDate: string;
-  date: string; // normalized date for sorting
-  displayDate: string; // text shown in UI
-  project: string;
+interface ExperienceEntry {
+  title: string;
   company: string;
+  date: string;
+  displayDate: string;
   description: string;
-  tech: string[];
+  skills: string[];
 }
 
-let entries: TimelineEntry[] = [];
+// Read experience from config JSON
+const rawExperience = config.experience || [];
+const settings = config.experienceSettings || { showMonth: true, dateFormat: 'short' };
 
-try {
-  const expMd = fs.readFileSync(new URL('../../content/experience.md', import.meta.url), 'utf8');
-  const lines = expMd.split('\n').filter(l => l.trim() && !l.startsWith('#'));
+const entries: ExperienceEntry[] = rawExperience.map((exp: any) => {
+  let displayDate = exp.date;
   
-  const showMonth = Boolean((config.experience && config.experience.showMonth) ?? true);
-  const defaultMonth = (config.experience && config.experience.defaultMonth) || 'Jan';
-
-  entries = lines.map(line => {
-    const parts = line.split('|').map(p => p.trim());
-    if (parts.length >= 5) {
-      const [rawDate, project, company, description, tech] = parts;
-
-      // normalize date for sorting
-      let normalized = rawDate;
-      if (/^\d{4}$/.test(rawDate) && showMonth) {
-        normalized = `${defaultMonth} ${rawDate}`;
+  // Parse date and format for display
+  if (exp.date) {
+    // Handle YYYY-MM format
+    if (/^\d{4}-\d{2}$/.test(exp.date)) {
+      const d = new Date(exp.date + '-01');
+      if (!isNaN(d.getTime())) {
+        displayDate = settings.showMonth 
+          ? d.toLocaleString('en', { month: 'short', year: 'numeric' })
+          : d.getFullYear().toString();
       }
-
-      // determine display date
-      let display = rawDate;
-      if (!showMonth) {
-        const y = rawDate.match(/(\d{4})/);
-        display = y ? y[1] : rawDate;
-      } else {
-        if (/^\d{4}-\d{2}$/.test(rawDate)) {
-          const d = new Date(rawDate + '-01');
-          if (!isNaN(d.getTime())) {
-            display = d.toLocaleString('en', { month: 'short', year: 'numeric' });
-          }
-        } else if (/^\d{4}$/.test(rawDate)) {
-          display = `${defaultMonth} ${rawDate}`;
-        }
-      }
-
-      return {
-        rawDate,
-        date: normalized,
-        displayDate: display,
-        project,
-        company,
-        description,
-        tech: tech.split(',').map(t => t.trim()),
-      } as TimelineEntry;
+    } 
+    // Handle YYYY format
+    else if (/^\d{4}$/.test(exp.date)) {
+      displayDate = settings.showMonth ? `Jan ${exp.date}` : exp.date;
     }
-    return null;
-  }).filter(Boolean) as TimelineEntry[];
+  }
 
-  const parseToTs = (s: string) => {
-    const d = new Date(s);
-    if (!isNaN(d.getTime())) return d.getTime();
-    const y = s.match(/(\d{4})/);
-    if (y) return new Date(`${defaultMonth} ${y[1]}`).getTime();
+  return {
+    title: exp.title,
+    company: exp.company,
+    date: exp.date,
+    displayDate,
+    description: exp.description,
+    skills: exp.skills || []
+  };
+});
+
+// Sort by date descending (most recent first)
+entries.sort((a, b) => {
+  const parseDate = (d: string) => {
+    if (/^\d{4}-\d{2}$/.test(d)) return new Date(d + '-01').getTime();
+    if (/^\d{4}$/.test(d)) return new Date(`${d}-01-01`).getTime();
     return 0;
   };
-
-  entries.sort((a, b) => parseToTs(b.date) - parseToTs(a.date));
-} catch (e) {
-  console.log('No experience data found');
-}
+  return parseDate(b.date) - parseDate(a.date);
+});
 ---
 
 <div class="timeline experience-timeline">
@@ -81,14 +61,14 @@ try {
       <div class="experience-content">
         <div class="experience-header">
           <h3 class="text-lg font-semibold">
-            {entry.project}
+            {entry.title}
             <span class="company">@ {entry.company}</span>
           </h3>
           <div class="experience-date">{entry.displayDate}</div>
         </div>
         {entry.description && <p class="text-sm" style="color: var(--muted);">{entry.description}</p>}
         <div class="experience-meta">
-          {entry.tech.map(t => (
+          {entry.skills.map(t => (
             <span class="tech-tag">{t}</span>
           ))}
         </div>

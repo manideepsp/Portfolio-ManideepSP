@@ -50,4 +50,33 @@ export const sr = {
   },
 };
 
+// Initialize scroll-reveal elements using IntersectionObserver
+// This handles elements with class="scroll-reveal" that use CSS transitions
+function initScrollReveal() {
+  if (typeof window === 'undefined') return;
+  
+  const elements = document.querySelectorAll('.scroll-reveal');
+  if (!elements.length) return;
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  elements.forEach(element => observer.observe(element));
+}
+
+// Run on DOM ready
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+}
+
 export default sr;

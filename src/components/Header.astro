@@ -1,18 +1,18 @@
 ---
 import config from '../lib/config.json';
 // Compute base path from Astro.site so links work when site is hosted under a repo path
-const basePath = (typeof Astro.site === 'string') ? (new URL(Astro.site).pathname || '/') : '/Portfolio-ManideepSP/';
+const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : '';
 ---
 
 <header class="site-header">
   <div class="inner">
-    <a class="logo text-2xl font-bold" href={basePath}>{config.name}</a>
+    <a class="logo text-2xl font-bold" href={basePath + '/'}>{config.hero.name}</a>
     <nav class="nav">
-      <a class="text-sm" href={basePath}>Home</a>
-      <a class="text-sm" href={basePath + 'projects'}>Projects</a>
-      <a class="text-sm" href={basePath + 'resume'}>Resume</a>
-      <a class="text-sm" href={basePath + 'about'}>About</a>
-      <a class="text-sm" href={basePath + 'contact'}>Contact</a>
+      <a class="text-sm" href={basePath + '/'}>Home</a>
+      <a class="text-sm" href={basePath + '/projects'}>Projects</a>
+      <a class="text-sm" href={basePath + '/resume'}>Resume</a>
+      <a class="text-sm" href={basePath + '/about'}>About</a>
+      <a class="text-sm" href={basePath + '/contact'}>Contact</a>
     </nav>
   </div>
 </header>

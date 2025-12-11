@@ -4,8 +4,10 @@ import config from '../lib/config.json';
 import ProjectCard from '../components/ProjectCard.astro';
 import ExperienceTimeline from '../components/ExperienceTimeline.astro';
 import ScrollRevealWrapper from '../components/ScrollRevealWrapper.astro';
-import { fetchReadme } from '../lib/readmeFetcher';
 import fs from 'fs';
+
+// Compute base path for assets
+const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : '';
 
 let aboutHtml = '';
 try {
@@ -15,23 +17,18 @@ try {
   aboutHtml = '<p>No about content yet.</p>';
 }
 
-const repos = config.projectsRepoList || [];
-const projects = await Promise.all(repos.map(async r => {
-  const readme = await fetchReadme(r).catch(() => null);
-  const excerpt = readme ? readme.split('\n').find(l => l.trim()) : 'No README available';
-  const repoName = r.split('/').pop() || r;
-  return { repo: r, excerpt, url: `https://github.com/${r}`, image: `/images/projects/${repoName}.png` };
-}));
+// Use projects from config
+const projects = config.projects || [];
 ---
 <BaseLayout title="Home">
   <section class="hero single-page">
-    <p class="uppercase tracking-widest text-sm font-semibold" style="color: var(--accent);">Software Engineer</p>
-    <h1 class="text-5xl font-bold leading-tight">{config.name}</h1>
-    <p class="text-lg" style="color: var(--muted);">{config.title}</p>
-    <p class="text-lg" style="color: var(--muted); font-weight: 400;">I build data & ML systems that scale. Currently shipping backend services and production ML pipelines at scale.</p>
+    <p class="uppercase tracking-widest text-sm font-semibold" style="color: var(--accent);">{config.hero.role}</p>
+    <h1 class="text-5xl font-bold leading-tight">{config.hero.name}</h1>
+    <p class="text-lg" style="color: var(--muted);">{config.hero.title}</p>
+    <p class="text-lg" style="color: var(--muted); font-weight: 400;">{config.hero.tagline}</p>
     <div class="ctas">
-      <a class="btn primary" href={`https://github.com/${config.githubUsername}`} target="_blank">GitHub</a>
-      <a class="btn ghost" href={`/resumes/${config.resume}`} target="_blank">Download Resume</a>
+      <a class="btn primary" href={`https://github.com/${config.social.github}`} target="_blank">GitHub</a>
+      <a class="btn ghost" href={`${basePath}${config.resume.displayLink}`} target="_blank">Download Resume</a>
     </div>
   </section>
 
@@ -46,7 +43,12 @@ const projects = await Promise.all(repos.map(async r => {
       <div class="projects-list">
         {projects.map((p, i) => (
           <ScrollRevealWrapper delay={i * 80}>
-            <ProjectCard repo={p.repo} excerpt={p.excerpt} url={p.url} />
+            <ProjectCard 
+              title={p.title} 
+              description={p.description} 
+              image={p.image} 
+              repoUrl={p.repoUrl} 
+            />
           </ScrollRevealWrapper>
         ))}
       </div>

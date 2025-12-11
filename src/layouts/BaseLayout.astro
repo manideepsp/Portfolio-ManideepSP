@@ -2,18 +2,19 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CursorLight from '../components/CursorLight.astro';
+import config from '../lib/config.json';
 import '../styles/global.css';
 const { title } = Astro.props;
-const siteHost = (typeof Astro.site === 'string') ? (Astro.site.split('://')[1] ?? Astro.site) : '';
+const siteName = config.hero.name || 'Portfolio';
 // Compute a base path for assets (e.g. "/Portfolio-ManideepSP/") from the configured site.
-const basePath = (typeof Astro.site === 'string') ? (new URL(Astro.site).pathname || '/') : '/Portfolio-ManideepSP/';
+const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : '/Portfolio-ManideepSP';
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title ? `${title} • ${siteHost}` : (siteHost || '')}</title>
+    <title>{title ? `${title} • ${siteName}` : siteName}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   </head>
   <body>
@@ -27,7 +28,6 @@ const basePath = (typeof Astro.site === 'string') ? (new URL(Astro.site).pathnam
       </main>
       <Footer />
     </div>
-    <script type="module" src={basePath + 'lib/sr.js'} defer></script>
-    <script type="module" src={basePath + 'lib/sr.js'} defer></script>
+    <script type="module" src={`${basePath}/lib/sr.js`} defer></script>
   </body>
 </html>

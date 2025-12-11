@@ -1,22 +1,93 @@
 {
-  "name": "Manideep Sriperambudhuru",
-  "title": "Software Engineer • Data & ML",
-  "githubUsername": "manideepsp",
-  "resume": "resume_latest.pdf",
-  "projectsRepoList": [
-    "user/project-a",
-    "user/project-b"
+  "hero": {
+    "name": "Manideep Sriperambudhuru",
+    "role": "Software Engineer",
+    "title": "Software Engineer • Data & ML",
+    "tagline": "I build data & ML systems that scale. Currently shipping backend services and production ML pipelines at scale."
+  },
+
+  "social": {
+    "github": "manideepsp",
+    "linkedin": "manideepsp",
+    "email": "your.email@example.com"
+  },
+
+  "resume": {
+    "displayLink": "/resumes/resume_latest.pdf",
+    "downloadFilename": "resume_latest.pdf"
+  },
+
+  "experience": [
+    {
+      "title": "Data Quality Platform",
+      "company": "Acme Corp",
+      "date": "2024-01",
+      "description": "Built ML-driven data quality scoring platform reducing incident noise by 35%",
+      "skills": ["Python", "TypeScript", "React", "AWS", "Airflow"]
+    },
+    {
+      "title": "Realtime Analytics",
+      "company": "Nimbus Labs",
+      "date": "2023-01",
+      "description": "Delivered realtime metrics pipeline (Kafka/Flink) for product analytics",
+      "skills": ["Java", "Kafka", "Flink", "ClickHouse", "Grafana"]
+    },
+    {
+      "title": "Growth Experiments",
+      "company": "Tech Startup",
+      "date": "2022-01",
+      "description": "Shipped experiment platform and feature flags, boosting activation by 12%",
+      "skills": ["JavaScript", "Node.js", "PostgreSQL", "Docker", "Redis"]
+    },
+    {
+      "title": "Design System",
+      "company": "Digital Agency",
+      "date": "2020-01",
+      "description": "Rolled out design system and tooling across 6 client web properties",
+      "skills": ["React", "CSS", "Storybook", "Git"]
+    },
+    {
+      "title": "Web Revamp",
+      "company": "Web Studio",
+      "date": "2018-01",
+      "description": "Rebuilt marketing sites with performance and a11y focus",
+      "skills": ["HTML", "CSS", "JavaScript"]
+    }
   ],
-  "customDomain": "",
+
+  "projects": [
+    {
+      "title": "Project Alpha",
+      "description": "A machine learning pipeline for real-time data processing and anomaly detection.",
+      "image": "/images/projects/project-alpha.png",
+      "repoUrl": "https://github.com/manideepsp/project-alpha",
+      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/project-alpha/main/README.md"
+    },
+    {
+      "title": "DataFlow Engine",
+      "description": "High-performance ETL framework built with Python and Apache Spark.",
+      "image": "/images/projects/dataflow-engine.png",
+      "repoUrl": "https://github.com/manideepsp/dataflow-engine",
+      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/dataflow-engine/main/README.md"
+    },
+    {
+      "title": "ML Dashboard",
+      "description": "Interactive dashboard for monitoring ML model performance and drift detection.",
+      "image": "/images/projects/ml-dashboard.png",
+      "repoUrl": "https://github.com/manideepsp/ml-dashboard",
+      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/ml-dashboard/main/README.md"
+    }
+  ],
+
+  "experienceSettings": {
+    "showMonth": true,
+    "dateFormat": "short"
+  },
+
   "contactWorkerUrl": "",
   "contactFallback": {
     "autoRedirect": true,
     "delayMs": 5000,
     "showFallbackButton": true
-  }
-  ,
-  "experience": {
-    "showMonth": true,
-    "defaultMonth": "Jan"
   }
 }

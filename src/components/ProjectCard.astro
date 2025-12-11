@@ -1,6 +1,12 @@
 ---
-const { repo, excerpt, url, image } = Astro.props;
-const repoName = repo.split('/').pop() || repo;
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  repoUrl: string;
+}
+
+const { title, description, image, repoUrl } = Astro.props;
 ---
 
 <article class="card project-card" data-sr>
@@ -8,21 +14,21 @@ const repoName = repo.split('/').pop() || repo;
     {image ? (
       <div class="project-card-row">
         <div class="project-card-media">
-          <img src={image} alt={repoName} class="project-card-image" />
+          <img src={image} alt={title} class="project-card-image" />
         </div>
         <div class="project-card-info">
-          <h3 class="text-lg font-semibold"><a href={url} target="_blank" rel="noopener">{repoName}</a></h3>
-          <p class="text-sm" style="color: var(--muted);">{excerpt}</p>
+          <h3 class="text-lg font-semibold"><a href={repoUrl} target="_blank" rel="noopener">{title}</a></h3>
+          <p class="text-sm" style="color: var(--muted);">{description}</p>
         </div>
       </div>
     ) : (
       <div>
-        <h3 class="text-lg font-semibold"><a href={url} target="_blank" rel="noopener">{repoName}</a></h3>
-        <p class="text-sm" style="color: var(--muted);">{excerpt}</p>
+        <h3 class="text-lg font-semibold"><a href={repoUrl} target="_blank" rel="noopener">{title}</a></h3>
+        <p class="text-sm" style="color: var(--muted);">{description}</p>
       </div>
     )}
   </div>
-  <a class="project-link" href={url} target="_blank" rel="noopener">View Project →</a>
+  <a class="project-link" href={repoUrl} target="_blank" rel="noopener">View Project →</a>
 </article>
 
 <style>
