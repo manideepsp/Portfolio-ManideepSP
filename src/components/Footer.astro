@@ -1,5 +1,6 @@
 ---
 import config from '../lib/config.json';
+const basePath = (typeof Astro.site === 'string') ? (new URL(Astro.site).pathname || '/') : '/Portfolio-ManideepSP/';
 ---
 <footer class="site-footer" id="site-footer">
   <div class="inner footer-grid">
@@ -11,11 +12,11 @@ import config from '../lib/config.json';
     <div class="footer-col footer-links">
       <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Explore</h4>
       <ul class="footer-nav" style="margin:0;padding:0;list-style:none;">
-        <li><a href="/">Home</a></li>
-        <li><a href="/projects">Projects</a></li>
-        <li><a href="/resume">Resume</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href={basePath}>Home</a></li>
+        <li><a href={basePath + 'projects'}>Projects</a></li>
+        <li><a href={basePath + 'resume'}>Resume</a></li>
+        <li><a href={basePath + 'about'}>About</a></li>
+        <li><a href={basePath + 'contact'}>Contact</a></li>
       </ul>
     </div>
 
