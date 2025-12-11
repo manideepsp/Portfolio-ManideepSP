@@ -17,6 +17,10 @@
     "downloadFilename": "resume_latest.pdf"
   },
 
+  "about": {
+    "markdownFile": "/content/about.md"
+  },
+
   "experience": [
     {
       "title": "Data Quality Platform",

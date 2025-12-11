@@ -2,13 +2,17 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ScrollRevealWrapper from '../components/ScrollRevealWrapper.astro';
 import ExperienceTimeline from '../components/ExperienceTimeline.astro';
+import config from '../lib/config.json';
+import { renderMarkdown } from '../lib/markdown.js';
 import fs from 'fs';
 
 let aboutHtml = '';
 
 try {
-  const md = fs.readFileSync(new URL('../../content/about.md', import.meta.url), 'utf8');
-  aboutHtml = md.split('\n\n').map(p => `<p>${p.replace(/\n/g, ' ')}</p>`).join('');
+  // Read markdown file path from config
+  const mdPath = config.about?.markdownFile || '/content/about.md';
+  const md = fs.readFileSync(new URL(`../..${mdPath}`, import.meta.url), 'utf8');
+  aboutHtml = await renderMarkdown(md);
 } catch (e) {
   aboutHtml = '<p>No about content yet.</p>';
 }
@@ -19,7 +23,7 @@ try {
       <h1>About</h1>
     </ScrollRevealWrapper>
     <ScrollRevealWrapper delay={100}>
-      <div class="markdown-render" innerHTML={aboutHtml}></div>
+      <div class="markdown-render" set:html={aboutHtml}></div>
     </ScrollRevealWrapper>
   </section>
 
