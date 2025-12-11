@@ -41,6 +41,9 @@ jobs:
           # Move into the build output
           cd dist
 
+          # Ensure GitHub Pages does not run Jekyll (so `_astro` and other underscored folders are served)
+          touch .nojekyll
+
           # Initialize a fresh git repo and commit the build output
           git init
           git config user.name "github-actions[bot]"
