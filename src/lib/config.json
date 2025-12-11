@@ -57,7 +57,7 @@
 
   "projects": [
     {
-      "title": "Project Alpha",
+      "title": "Project Veni Vici Vedi",
       "description": "A machine learning pipeline for real-time data processing and anomaly detection.",
       "image": "/images/projects/project-alpha.png",
       "repoUrl": "https://github.com/manideepsp/project-alpha",
