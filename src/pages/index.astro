@@ -4,21 +4,9 @@ import config from '../lib/config.json';
 import ProjectCard from '../components/ProjectCard.astro';
 import ExperienceTimeline from '../components/ExperienceTimeline.astro';
 import ScrollRevealWrapper from '../components/ScrollRevealWrapper.astro';
-import { renderMarkdown } from '../lib/markdown.js';
-import fs from 'fs';
 
 // Compute base path for assets
 const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : '';
-
-let aboutHtml = '';
-try {
-  // Read markdown file path from config
-  const mdPath = config.about?.markdownFile || '/content/about.md';
-  const md = fs.readFileSync(new URL(`../..${mdPath}`, import.meta.url), 'utf8');
-  aboutHtml = await renderMarkdown(md);
-} catch (e) {
-  aboutHtml = '<p>No about content yet.</p>';
-}
 
 // Use projects from config
 const projects = config.projects || [];
@@ -33,11 +21,6 @@ const projects = config.projects || [];
       <a class="btn primary" href={`https://github.com/${config.social.github}`} target="_blank">GitHub</a>
       <a class="btn ghost" href={`${basePath}${config.resume.displayLink}`} target="_blank">Download Resume</a>
     </div>
-  </section>
-
-  <section class="single-page about-block">
-    <h2>About</h2>
-    <div class="markdown-render" set:html={aboutHtml}></div>
   </section>
 
   <section class="single-page split-layout">
