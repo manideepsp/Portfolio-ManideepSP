@@ -28,5 +28,30 @@ const basePath = (typeof Astro.site === 'string') ? (new URL(Astro.site).pathnam
       <Footer />
     </div>
     <script type="module" src={basePath + 'lib/sr.js'} defer></script>
+    <!-- Fallback: if GitHub Pages fails to serve _astro CSS, swap to raw.githubusercontent URL -->
+    <script>
+      (function(){
+        try {
+          const base = (typeof Astro.site === 'string') ? (new URL(Astro.site).pathname || '/') : '/Portfolio-ManideepSP/';
+          const repoRawBase = 'https://raw.githubusercontent.com/manideepsp/Portfolio-ManideepSP/gh-pages';
+          const links = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+            .filter(l => l.href && l.href.includes(base + '_astro/'));
+          links.forEach(link => {
+            // Check the stylesheet resource; if missing, replace href with raw.githubusercontent URL
+            fetch(link.href, { method: 'HEAD', cache: 'no-store' }).then(res => {
+              if (!res.ok) {
+                const rawHref = link.href.replace(window.location.origin + base.slice(0,-1), repoRawBase);
+                link.href = rawHref + '?r=' + Date.now();
+              }
+            }).catch(() => {
+              const rawHref = link.href.replace(window.location.origin + base.slice(0,-1), repoRawBase);
+              link.href = rawHref + '?r=' + Date.now();
+            });
+          });
+        } catch (e) {
+          // no-op
+        }
+      })();
+    </script>
   </body>
 </html>
