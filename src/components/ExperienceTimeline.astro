@@ -55,10 +55,9 @@ entries.sort((a, b) => {
 });
 ---
 
-<div class="timeline experience-timeline timeline-modern">
+<div class="timeline experience-timeline">
   {entries.map((entry, idx) => (
-    <div class="experience-item experience-card" data-sr style={`--delay: ${idx * 100}ms`}>
-      <div class="timeline-dot"></div>
+    <div class="experience-item" data-sr style={`--delay: ${idx * 100}ms`}>
       <div class="experience-content">
         <div class="experience-header">
           <h3 class="text-lg font-semibold">
@@ -67,7 +66,7 @@ entries.sort((a, b) => {
           </h3>
           <div class="experience-date">{entry.displayDate}</div>
         </div>
-        {entry.description && <p class="text-sm exp-desc">{entry.description}</p>}
+        {entry.description && <p class="text-sm" style="color: var(--muted);">{entry.description}</p>}
         <div class="experience-meta">
           {entry.skills.map(t => (
             <span class="tech-tag">{t}</span>
@@ -79,64 +78,23 @@ entries.sort((a, b) => {
 </div>
 
 <style>
-  .timeline-modern {
+  .experience-timeline {
     position: relative;
-    padding: 20px 0 20px 0;
-    margin-left: 18px;
+    padding: 20px 16px 20px 16px;
   }
 
-  .timeline-modern::before {
-    content: '';
-    position: absolute;
-    left: 18px;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: linear-gradient(180deg, var(--accent), rgba(45,212,191,0.12) 80%, transparent 100%);
-    border-radius: 2px;
-    z-index: 0;
+  /* Remove the central connecting line and the per-item bullets */
+  .experience-timeline::before,
+  .experience-item::before {
+    display: none;
   }
 
   .experience-item {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 44px;
     animation: slideIn 0.6s ease-out forwards;
     animation-delay: var(--delay, 0ms);
     opacity: 0;
-  }
-
-  .timeline-dot {
-    position: absolute;
-    left: -18px;
-    top: 32px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 3px solid var(--accent);
-    box-shadow: 0 0 0 6px rgba(45,212,191,0.10);
-    z-index: 2;
-    transition: box-shadow 0.2s;
-  }
-  .experience-item:hover .timeline-dot {
-    box-shadow: 0 0 0 12px rgba(45,212,191,0.18);
-  }
-
-  .experience-card {
-    background: rgba(15, 23, 42, 0.82);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(45,212,191,0.08), 0 2px 12px rgba(99,102,241,0.06);
-    border: 1.5px solid rgba(148, 163, 184, 0.13);
-    padding: 32px 32px 24px 48px;
-    margin-left: 18px;
-    width: 100%;
-    transition: box-shadow 0.18s, border-color 0.18s;
-  }
-  .experience-card:hover {
-    border-color: var(--accent);
-    box-shadow: 0 12px 36px rgba(45,212,191,0.13), 0 2px 12px rgba(99,102,241,0.10);
+    display: block;
+    margin-bottom: 32px;
   }
 
   .experience-header {
@@ -144,38 +102,22 @@ entries.sort((a, b) => {
     justify-content: space-between;
     align-items: baseline;
     gap: 16px;
-    margin-bottom: 8px;
   }
 
   .experience-date {
     color: var(--muted);
     font-size: 13px;
     font-family: var(--font-mono);
-    white-space: nowrap;
-  }
-
-  .exp-desc {
-    color: var(--muted);
-    margin-bottom: 12px;
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  .experience-meta {
-    margin-top: 8px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
   }
 
   @keyframes slideIn {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateX(-20px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(0);
     }
   }
 </style>
