@@ -27,7 +27,7 @@ const projects = (config.projects || []).map((p) => ({ ...p, slug: p.slug || slu
       </div>
       <div class="hero-asset">
         <!-- Animated SVG asset (example: dataflow-engine.svg) -->
-        <img src="/images/projects/dataflow-engine.svg" alt="Animated Data Flow" class="hero-svg-anim" loading="eager" decoding="async" />
+        <img src={`${basePath}/images/projects/dataflow-engine.svg`} alt="Animated Data Flow" class="hero-svg-anim" loading="eager" decoding="async" />
       </div>
     </div>
     <div class="hero-bg-gradient" aria-hidden="true"></div>
@@ -44,7 +44,9 @@ const projects = (config.projects || []).map((p) => ({ ...p, slug: p.slug || slu
               description={p.description} 
               image={p.image} 
               repoUrl={p.repoUrl}
+              demoUrl={p.demoUrl}
               slug={p.slug}
+              tags={p.tags}
             />
           </ScrollRevealWrapper>
         ))}
