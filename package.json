@@ -1,12 +1,15 @@
 {
   "name": "portfolio-site",
   "version": "1.0.0",
+  "type": "module",
   "description": "A dark modern portfolio website showcasing projects and skills.",
   "main": "index.js",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "validate": "node scripts/validate-projects.js",
+    "prebuild": "npm run validate",
     "deploy:worker": "node -e \"const {spawnSync} = require('child_process'); const env = process.env.WRANGLER_ENV || 'production'; const r = spawnSync('npx', ['wrangler','deploy','--env', env], { stdio: 'inherit' }); process.exit(r.status);\"",
     "secret:put:worker": "node -e \"const {spawnSync} = require('child_process'); const env = process.env.WRANGLER_ENV || 'production'; const r = spawnSync('npx', ['wrangler','secret','put','GLOBAL_GITHUB_TOKEN','--env', env], { stdio: 'inherit' }); process.exit(r.status);\""
   },

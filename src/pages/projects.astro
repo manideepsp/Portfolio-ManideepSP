@@ -19,7 +19,8 @@ const projects = (config.projects || []).map((p) => ({ ...p, slug: p.slug || slu
             title={p.title} 
             description={p.description} 
             image={p.image} 
-            repoUrl={p.repoUrl} 
+            repoUrl={p.repoUrl}
+            slug={p.slug}
           />
         </ScrollRevealWrapper>
       ))}

@@ -62,7 +62,7 @@
     {
       "title": "PHQ-9 DSM-5 Based Mental Health Predictor",
       "description": "A machine learning pipeline for real-time data processing and anomaly detection.",
-      "image": "/images/projects/images/PHQ-9-Predictor-Architecture-Diagram.svg",
+      "image": "/images/projects/PHQ-9-Predictor-Architecture-Diagram.svg",
       "repoUrl": "https://github.com/manideepsp/PHQ-9",
       "slug": "phq-9-dsm-5-based-mental-health-predictor",
       "readmeUrl": "https://raw.githubusercontent.com/manideepsp/PHQ-9/main/README.md"
@@ -70,7 +70,7 @@
     {
       "title": "DataFlow Engine",
       "description": "High-performance ETL framework built with Python and Apache Spark.",
-      "image": "/images/projects/dataflow-engine.png",
+      "image": "/images/projects/dataflow-engine.svg",
       "repoUrl": "https://github.com/manideepsp/dataflow-engine",
       "slug": "dataflow-engine",
       "readmeUrl": "https://raw.githubusercontent.com/manideepsp/dataflow-engine/main/README.md"
@@ -78,7 +78,7 @@
     {
       "title": "ML Dashboard",
       "description": "Interactive dashboard for monitoring ML model performance and drift detection.",
-      "image": "/images/projects/ml-dashboard.png",
+      "image": "/images/projects/ml-dashboard.svg",
       "repoUrl": "https://github.com/manideepsp/ml-dashboard",
       "slug": "ml-dashboard",
       "readmeUrl": "https://raw.githubusercontent.com/manideepsp/ml-dashboard/main/README.md"
