@@ -33,6 +33,7 @@
     {
       "title": "Data Quality Platform",
       "company": "Acme Corp",
+      "companyLink": "https://cognine.com/",
       "date": "2024-01",
       "description": "Built ML-driven data quality scoring platform reducing incident noise by 35%",
       "skills": ["Python", "TypeScript", "React", "AWS", "Airflow"]

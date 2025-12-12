@@ -4,6 +4,7 @@ import config from '../lib/config.json';
 interface ExperienceEntry {
   title: string;
   company: string;
+  companyLink?: string; // Added companyLink to the interface
   date: string;
   displayDate: string;
   description: string;
@@ -37,6 +38,7 @@ const entries: ExperienceEntry[] = rawExperience.map((exp: any) => {
   return {
     title: exp.title,
     company: exp.company,
+    companyLink: exp.companyLink, // Added companyLink to the return object
     date: exp.date,
     displayDate,
     description: exp.description,
@@ -62,7 +64,24 @@ entries.sort((a, b) => {
         <div class="experience-header">
           <h3 class="text-lg font-semibold">
             {entry.title}
-            <span class="company">@ {entry.company}</span>
+            {entry.companyLink ? (
+              <a
+                class="company"
+                href={entry.companyLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={`color: ${config.experienceSettings?.companyAccent || 'var(--accent, #4f8cff)'}; font-weight: 600; text-decoration: underline;`}
+              >
+                @ {entry.company}
+              </a>
+            ) : (
+              <span
+                class="company"
+                style={`color: ${config.experienceSettings?.companyAccent || 'var(--accent, #4f8cff)'}; font-weight: 600;`}
+              >
+                @ {entry.company}
+              </span>
+            )}
           </h3>
           <div class="experience-date">{entry.displayDate}</div>
         </div>
@@ -97,11 +116,17 @@ entries.sort((a, b) => {
     margin-bottom: 32px;
   }
 
+
   .experience-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     gap: 16px;
+  }
+
+  .company {
+    margin-left: 8px;
+    /* color and font-weight set inline for config-driven accent */
   }
 
   .experience-date {
