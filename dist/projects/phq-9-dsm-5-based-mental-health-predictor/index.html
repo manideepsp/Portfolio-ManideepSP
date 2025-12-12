@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PHQ-9 DSM-5 Based Mental Health Predictor | Projects • Manideep Sriperambudhuru</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"><link rel="stylesheet" href="/Portfolio-ManideepSP/_astro/about.CYEiajbx.css">
+<style>.project-detail-page[data-astro-cid-ovxcmftc]{display:flex;flex-direction:column;gap:24px}.project-detail-header[data-astro-cid-ovxcmftc]{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.project-title[data-astro-cid-ovxcmftc]{margin:6px 0 0}.project-detail-image[data-astro-cid-ovxcmftc] img[data-astro-cid-ovxcmftc]{width:100%;max-height:360px;object-fit:contain;border-radius:12px;border:1px solid rgba(255,255,255,.08);background-color:#ffffff05;box-shadow:0 8px 30px #020617b3}.project-readme[data-astro-cid-ovxcmftc]{background:var(--surface);border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,.04);box-shadow:0 8px 30px #020617b3}.eyebrow[data-astro-cid-ovxcmftc]{text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:var(--accent);margin:0}@media(max-width:768px){.project-detail-header[data-astro-cid-ovxcmftc]{flex-direction:column;align-items:flex-start}.project-detail-image[data-astro-cid-ovxcmftc] img[data-astro-cid-ovxcmftc]{max-height:260px}}
+</style></head> <body> <div class="bg-spotlight"> <div class="cursor-glow" aria-hidden="true"></div> <script type="module" client:load>
+  const glow = document.querySelector('.cursor-glow');
+  if (!glow) {
+    // nothing to do
+  } else {
+    document.addEventListener('mousemove', (event) => {
+      const mousex = event.clientX - 250;
+      const mousey = event.clientY - 250;
+      glow.style.left = mousex + 'px';
+      glow.style.top = mousey + 'px';
+    });
+
+    document.addEventListener('mouseleave', () => {
+      glow.style.left = '-9999px';
+      glow.style.top = '-9999px';
+    });
+  }
+</script> </div> <div class="page-wrap"> <header class="site-header"> <div class="inner"> <a class="logo text-2xl font-bold" href="/Portfolio-ManideepSP/">Manideep Sriperambudhuru</a> <nav class="nav"> <a class="text-sm" href="/Portfolio-ManideepSP/">Home</a> <a class="text-sm" href="/Portfolio-ManideepSP/projects">Projects</a> <a class="text-sm" href="/Portfolio-ManideepSP/resume">Resume</a> <a class="text-sm" href="/Portfolio-ManideepSP/about">About</a> <a class="text-sm" href="/Portfolio-ManideepSP/contact">Contact</a> </nav> </div> </header> <main class="container">  <section class="project-detail-page single-page" data-astro-cid-ovxcmftc> <div class="project-detail-header" data-astro-cid-ovxcmftc> <div data-astro-cid-ovxcmftc> <p class="eyebrow" data-astro-cid-ovxcmftc>Project</p> <h1 class="project-title" data-astro-cid-ovxcmftc>PHQ-9 DSM-5 Based Mental Health Predictor</h1> </div> <a class="btn primary" href="https://github.com/manideepsp/PHQ-9" target="_blank" rel="noopener" data-astro-cid-ovxcmftc>View project on GitHub</a> </div> <div class="project-detail-image" data-astro-cid-ovxcmftc> <img src="/Portfolio-ManideepSP/images/projects/images/PHQ-9-Predictor-Architecture-Diagram.svg" alt="PHQ-9 DSM-5 Based Mental Health Predictor preview" loading="lazy" data-astro-cid-ovxcmftc> </div> <div class="project-readme" data-astro-cid-ovxcmftc><h1>🧠 PHQ-9 AI-Powered Medical Consultation System</h1>
+<p>A full-stack mental health consultation platform integrating <strong>PHQ-9 depression screening</strong>, <strong>AI-driven predictions</strong>, and <strong>LLM-based interventions</strong>.<br>
+It enables <strong>patients</strong> to self-assess depressive symptoms and allows <strong>doctors</strong> to analyze patient progress, visualize trends, and receive AI-generated recommendations.</p>
+<hr>
+<h2>🏗️ System Architecture</h2>
+<p>This project is composed of two main repositories:</p>
+<p>| Component | Tech Stack | Repository |
+|------------|-------------|-------------|
+| 🖥️ <strong>Frontend</strong> | React 18 + Vite + Tailwind CSS + Recharts + Axios | <a href="#">phq9-frontend</a> |
+| ⚙️ <strong>Backend</strong> | Flask + PostgreSQL + SQLAlchemy + bcrypt + ML/AI | <a href="#">phq9-backend</a> |</p>
+<p><strong>Architecture Overview</strong></p>
+<pre><code>
+[ Patient / Doctor UI (React) ]
+|
+|  Axios (REST API)
+v
+[ Flask Backend (API + ML + AI) ]
+|
+|  SQLAlchemy ORM + Qdrant (Vector DB)
+v
+[ PostgreSQL + Local Models + Embeddings ]
+
+</code></pre>
+<h2><img src="PHQ-9-Predictor-Architecture-Diagram.svg" alt="Architecture diagram"></h2>
+<h2>🚀 Key Features</h2>
+<h3>🧍‍♂️ Patient Portal</h3>
+<ul>
+<li>Secure registration and login</li>
+<li>Daily PHQ-9 consultation submission</li>
+<li>Submission history and score tracking</li>
+<li>Optional notes for patient reflection</li>
+</ul>
+<h3>👨‍⚕️ Doctor Portal</h3>
+<ul>
+<li>Dashboard showing all patient submissions</li>
+<li>Consultation history with PHQ-9 and DSM-5 details</li>
+<li>Editable doctor notes</li>
+<li><strong>AI-generated predictions</strong> (future PHQ-9 scores)</li>
+<li><strong>AI-generated markdown interventions</strong> (LLM summaries)</li>
+<li>Line chart visualization of score trends</li>
+</ul>
+<h3>🤖 AI, ML &#x26; Vector Intelligence</h3>
+<ul>
+<li><strong>LSTM Timeline Predictor</strong>: Predicts future PHQ-9 scores and potential relapses.</li>
+<li><strong>Intervention Generator (LLM)</strong>: Generates natural-language advice using context-aware retrieval.</li>
+<li><strong>Qdrant Vector DB</strong>: Stores past interventions and embeddings for semantic retrieval.</li>
+<li><strong>SentenceTransformer Embeddings</strong>: Uses <code>BAAI/bge-m3</code> to create vector representations of intervention content.</li>
+<li><strong>RAG (Retrieval-Augmented Generation)</strong>: Combines contextual retrieval from Qdrant with local LLM inference via Ollama (e.g., <code>phi3</code>, <code>llama3</code>).</li>
+<li><strong>Data Processing Pipeline</strong>: Includes feature normalization, correlation analysis, TF-IDF keyword extraction, and sentiment computation.</li>
+</ul>
+<hr>
+<h2>🧩 Tech Stack Summary</h2>
+<p>| Layer | Technology | Purpose |
+|-------|-------------|---------|
+| Frontend | React 18, Vite, Tailwind CSS 4, Recharts, Axios | UI and visualization |
+| Backend | Flask, SQLAlchemy, bcrypt, Flask-CORS | API &#x26; data management |
+| Database | PostgreSQL | Persistent data storage |
+| Machine Learning | TensorFlow / scikit-learn (LSTM) | Timeline &#x26; score prediction |
+| AI Model | Ollama (Phi-3 / LLaMA-3 local model) | Contextual intervention generation |
+| Vector Database | Qdrant | Semantic search &#x26; retrieval |
+| Embeddings | SentenceTransformer (<code>BAAI/bge-m3</code>) | Text vectorization for RAG |</p>
+<hr>
+<h2>⚙️ Setup Instructions</h2>
+<h3>1. Backend Setup</h3>
+<pre><code>cd phq9-backend
+python -m venv venv
+venv\Scripts\activate        # (Windows)
+# or source venv/bin/activate (Linux/macOS)
+pip install -r requirements.txt
+python app.py
+</code></pre>
+<p>Backend runs on <strong><a href="http://localhost:5000">http://localhost:5000</a></strong></p>
+<h4>Additional Backend Dependencies</h4>
+<p>Make sure these services are available:</p>
+<ul>
+<li><strong>PostgreSQL</strong> → stores user data and PHQ-9 results</li>
+<li><strong>Qdrant</strong> → vector DB for semantic retrieval</li>
+<li><strong>Ollama</strong> → local LLM inference server</li>
+</ul>
+<p>Example Ollama setup:</p>
+<pre><code>ollama pull phi3
+ollama serve
+</code></pre>
+<hr>
+<h3>2. Frontend Setup</h3>
+<pre><code>cd phq9-frontend
+npm install
+npm run dev
+</code></pre>
+<p>Frontend runs on <strong><a href="http://localhost:5173">http://localhost:5173</a></strong></p>
+<p>Set API base URL in <code>.env</code>:</p>
+<pre><code>VITE_API_BASE_URL=http://localhost:5000/api
+</code></pre>
+<hr>
+<h2>🔌 API Overview</h2>
+<p>| Endpoint                         | Method | Description                          |
+| -------------------------------- | ------ | ------------------------------------ |
+| <code>/api/register</code>                  | POST   | Register new user                    |
+| <code>/api/login</code>                     | POST   | Login user                           |
+| <code>/api/phq9/questions</code>            | GET    | Fetch PHQ-9 questions                |
+| <code>/api/phq9/submit</code>               | POST   | Submit consultation                  |
+| <code>/api/phq9/history?user_id={id}</code> | GET    | Fetch consultation history           |
+| <code>/api/predictions/{userId}</code>      | GET    | Fetch AI predictions &#x26; interventions |
+| <code>/phq9/train-model</code>              | GET    | Train ML model manually              |</p>
+<hr>
+<h2>💻 Running the Full Stack</h2>
+<ol>
+<li>Start <strong>PostgreSQL</strong>, <strong>Qdrant</strong>, and <strong>Ollama</strong></li>
+<li>Run Flask backend</li>
+<li>Run Vite frontend</li>
+<li>Open <strong><a href="http://localhost:5173">http://localhost:5173</a></strong></li>
+<li>Register or login as a patient</li>
+<li>Submit a PHQ-9 assessment</li>
+<li>Login as <strong>Doctor (<code>rajeev</code> / <code>rajeev</code>)</strong> to view analytics, predictions, and AI interventions</li>
+</ol>
+<hr>
+<h2>📊 Example Dashboard Layout</h2>
+<ul>
+<li>
+<p><strong>Top Section:</strong> AI-generated markdown intervention (full-width card)</p>
+</li>
+<li>
+<p><strong>Bottom Section:</strong></p>
+<ul>
+<li>Left (70%): Line graph of PHQ-9 trends</li>
+<li>Right (30%): Scrollable consultation history cards</li>
+</ul>
+</li>
+<li>
+<p><strong>Color Legend:</strong></p>
+<ul>
+<li>🟢 <strong>Green line:</strong> Actual (non-predicted) PHQ-9 scores</li>
+<li>🔵 <strong>Blue line:</strong> Predicted PHQ-9 scores</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>🧱 Database Schema (Simplified)</h2>
+<pre><code>user
+ ├─ id (PK)
+ ├─ username
+ ├─ emailid
+ ├─ password (hashed)
+ ├─ role ('patient' | 'doctor')
+
+phq9_assessment
+ ├─ id (PK)
+ ├─ user_id (FK)
+ ├─ phq9_total_score
+ ├─ patients_notes
+ ├─ doctor_notes
+ ├─ created_at
+
+dsm_5_assessment
+ ├─ id (PK)
+ ├─ phq9_assessment_id (FK)
+ ├─ dsm5_mdd_assessment_enc
+ ├─ relapse
+
+interventions
+ ├─ id (PK)
+ ├─ user_id (FK)
+ ├─ intervention (Markdown)
+ ├─ embedding (Vector)
+ ├─ created_at
+</code></pre>
+<hr>
+<h2>🧠 ML &#x26; AI Flow</h2>
+<ol>
+<li>
+<p><strong>Data Cleaning:</strong>
+<code>extract_clean_data.py</code> prepares input data, computes correlations, sentiment, and statistical features.</p>
+</li>
+<li>
+<p><strong>Model Training:</strong>
+<code>train_timeline_predection.py</code> trains an <strong>LSTM</strong> on sequential PHQ-9 scores to predict future values.</p>
+</li>
+<li>
+<p><strong>AI Intervention Generation:</strong>
+<code>interventions.py</code>:</p>
+<ul>
+<li>Embeds historical interventions using <code>SentenceTransformer (BAAI/bge-m3)</code>.</li>
+<li>Stores vectors in <strong>Qdrant</strong>.</li>
+<li>Retrieves relevant contexts for the current patient.</li>
+<li>Sends combined context + summary prompt to <strong>Ollama</strong> (LLM).</li>
+<li>Returns generated markdown to frontend.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>🧪 Development Tips</h2>
+<ul>
+<li>Run backend first to avoid CORS issues</li>
+<li>Monitor Ollama logs for prompt latency</li>
+<li>Use <code>ngrok</code> for external backend access</li>
+<li>Clear <code>localStorage</code> if auth issues occur</li>
+<li>Test responsiveness using browser dev tools</li>
+</ul>
+<hr>
+<h2>🔐 Security &#x26; Privacy</h2>
+<ul>
+<li>Passwords hashed via <strong>bcrypt</strong></li>
+<li>CORS restricted to frontend origin</li>
+<li>HTTPS recommended for deployment</li>
+<li>Data anonymized before ML training</li>
+<li>Strictly for <strong>educational and research use</strong> — not clinical deployment</li>
+</ul>
+<hr>
+<h2>📜 License</h2>
+<p><strong>MIT License</strong> — Copyright © 2025
+<strong>Developers:</strong> Manideep &#x26; Rajeev</p>
+<hr>
+<h2>🙌 Contributors</h2>
+<ul>
+<li><strong>Manideep</strong> — Data Science, Backend, ML/AI Pipeline</li>
+<li><strong>Rajeev</strong> — Frontend, Dashboard Design, Integration</li>
+</ul>
+<hr>
+<p><strong>Disclaimer:</strong>
+This project is an educational prototype integrating PHQ-9 assessment with AI-assisted analysis.
+It is <strong>not intended for medical diagnosis or treatment</strong>.</p></div> </section>  </main> <footer class="site-footer" id="site-footer"> <div class="inner footer-grid"> <div class="footer-col footer-brand"> <a class="logo text-2xl font-bold" href="/Portfolio-ManideepSP/">Manideep Sriperambudhuru</a> <p class="text-sm" style="color:var(--muted); margin-top:8px;">AI • Data • ML</p> </div> <div class="footer-col footer-links"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Explore</h4> <ul class="footer-nav" style="margin:0;padding:0;list-style:none;"> <li><a href="/Portfolio-ManideepSP/">Home</a></li> <li><a href="/Portfolio-ManideepSP/projects">Projects</a></li> <li><a href="/Portfolio-ManideepSP/resume">Resume</a></li> <li><a href="/Portfolio-ManideepSP/about">About</a></li> <li><a href="/Portfolio-ManideepSP/contact">Contact</a></li> </ul> </div> <div class="footer-col footer-contact"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Connect</h4> <div class="socials" style="display:flex;gap:10px;align-items:center;"> <a class="social-link" href="https://github.com/manideepsp" target="_blank" rel="noopener" aria-label="GitHub"> <!-- GitHub SVG --> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 .5C5.73.5.75 5.48.75 11.76c0 4.95 3.2 9.14 7.64 10.62.56.1.77-.24.77-.54 0-.27-.01-1-.02-1.96-3.11.68-3.77-1.5-3.77-1.5-.51-1.3-1.25-1.64-1.25-1.64-1.02-.7.08-.69.08-.69 1.12.08 1.71 1.15 1.71 1.15 1 .17 1.57-.77 1.57-.77.92-1.57 2.42-1.12 3.01-.86.09-.67.39-1.12.71-1.38-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.43-2.22 1.14-3-.11-.28-.5-1.4.11-2.92 0 0 .93-.3 3.05 1.13.89-.25 1.85-.38 2.8-.39.95.01 1.91.14 2.8.39 2.11-1.44 3.04-1.13 3.04-1.13.62 1.52.23 2.64.11 2.92.71.78 1.14 1.78 1.14 3 0 4.29-2.62 5.23-5.11 5.51.4.35.75 1.03.75 2.08 0 1.5-.01 2.71-.01 3.08 0 .3.2.65.78.54 4.43-1.49 7.63-5.68 7.63-10.62C23.25 5.48 18.27.5 12 .5z" fill="currentColor"></path></svg> </a> <a class="social-link" href="mailto:manideepsp.16@gmail.com" aria-label="Email"> <!-- Mail SVG --> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8.99l8 6 8-6V18H4z" fill="currentColor"></path></svg> </a> <a class="social-link" href="https://www.linkedin.com/in/manideepsp" target="_blank" rel="noopener" aria-label="LinkedIn"> <!-- LinkedIn SVG --> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.08 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.84v2.16h.05c.54-1.02 1.86-2.16 3.83-2.16 4.1 0 4.85 2.7 4.85 6.2V24h-4V15.2c0-2.1-.04-4.8-2.92-4.8-2.92 0-3.37 2.28-3.37 4.64V24h-4V8z" fill="currentColor"></path></svg> </a> </div> <a class="back-to-top text-sm" href="#top" style="display:inline-block;margin-top:10px;color:var(--muted);">Back to top ↑</a> </div> </div> <div class="inner footer-credits" style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.03);padding-top:18px;"> <p class="text-sm" style="color:var(--muted);margin:0;">&copy; 2025 Manideep Sriperambudhuru. Built with ❤.</p> </div> </footer> </div> <script type="module" src="/Portfolio-ManideepSP/lib/sr.js" defer></script> </body> </html> 

@@ -4,12 +4,13 @@ import config from '../lib/config.json';
 import ProjectCard from '../components/ProjectCard.astro';
 import ExperienceTimeline from '../components/ExperienceTimeline.astro';
 import ScrollRevealWrapper from '../components/ScrollRevealWrapper.astro';
+import { slugify } from '../lib/slugify.js';
 
 // Compute base path for assets
 const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : '';
 
 // Use projects from config
-const projects = config.projects || [];
+const projects = (config.projects || []).map((p) => ({ ...p, slug: p.slug || slugify(p.title) }));
 ---
 <BaseLayout title="Home">
   <section class="hero single-page">

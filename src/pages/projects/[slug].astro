@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import config from '../../lib/config.json';
+import { renderMarkdown } from '../../lib/markdown.js';
+import { fetchReadme } from '../../lib/readmeFetcher.js';
+import { slugify } from '../../lib/slugify.js';
+
+export async function getStaticPaths() {
+  const fallbackMd = '# README not available\n\nThis project does not have a README yet.';
+  const parseOwnerRepo = (url = '') => {
+    try {
+      const parsed = new URL(url);
+      const [owner, repo] = parsed.pathname.replace(/^\//, '').split('/');
+      if (owner && repo) return `${owner}/${repo}`;
+    } catch (e) {
+      // ignore parse errors, handled by fallback
+    }
+    return null;
+  };
+
+  const loadReadme = async (project) => {
+    // Prefer explicit readmeUrl, then fall back to repoUrl using GitHub raw fetcher
+    if (project.readmeUrl) {
+      try {
+        const res = await fetch(project.readmeUrl);
+        if (!res.ok) throw new Error(`Failed to fetch README: ${res.status}`);
+        return await res.text();
+      } catch (e) {
+        return fallbackMd;
+      }
+    }
+
+    const ownerRepo = parseOwnerRepo(project.repoUrl);
+    if (ownerRepo) {
+      try {
+        return await fetchReadme(ownerRepo);
+      } catch (e) {
+        return fallbackMd;
+      }
+    }
+
+    return fallbackMd;
+  };
+
+  const projects = config.projects || [];
+  const paths = await Promise.all(
+    projects.map(async (project) => {
+      const slug = project.slug || slugify(project.title || 'project');
+      const md = await loadReadme(project);
+      const readmeHtml = await renderMarkdown(md);
+      return {
+        params: { slug },
+        props: {
+          project: {
+            ...project,
+            slug,
+            readmeHtml,
+          },
+        },
+      };
+    })
+  );
+
+  return paths;
+}
+
+const { project } = Astro.props;
+const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : '';
+const imageSrc = project.image?.startsWith('http') ? project.image : project.image ? `${basePath}${project.image}` : '';
+---
+
+<BaseLayout title={`${project.title} | Projects`}>
+  <section class="project-detail-page single-page">
+    <div class="project-detail-header">
+      <div>
+        <p class="eyebrow">Project</p>
+        <h1 class="project-title">{project.title}</h1>
+      </div>
+      {project.repoUrl ? (
+        <a class="btn primary" href={project.repoUrl} target="_blank" rel="noopener">View project on GitHub</a>
+      ) : null}
+    </div>
+
+    {imageSrc ? (
+      <div class="project-detail-image">
+        <img src={imageSrc} alt={`${project.title} preview`} loading="lazy" />
+      </div>
+    ) : null}
+
+    <div class="project-readme" set:html={project.readmeHtml}></div>
+  </section>
+</BaseLayout>
+
+<style>
+.project-detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.project-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.project-title {
+  margin: 6px 0 0;
+}
+
+.project-detail-image img {
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background-color: rgba(255,255,255,0.02);
+  box-shadow: 0 8px 30px rgba(2,6,23,0.7);
+}
+
+.project-readme {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 8px 30px rgba(2,6,23,0.7);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  color: var(--accent);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .project-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-detail-image img {
+    max-height: 260px;
+  }
+}
+</style>
