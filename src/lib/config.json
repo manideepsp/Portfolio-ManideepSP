@@ -61,11 +61,11 @@
 
   "projects": [
     {
-      "title": "Project Veni Vici Vedi",
+      "title": "PHQ-9 DSM-5 Based Mental Health Predictor",
       "description": "A machine learning pipeline for real-time data processing and anomaly detection.",
-      "image": "/images/projects/project-alpha.png",
-      "repoUrl": "https://github.com/manideepsp/project-alpha",
-      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/project-alpha/main/README.md"
+      "image": "/images/projects/images/PHQ-9-Predictor-Architecture-Diagram.svg",
+      "repoUrl": "https://github.com/manideepsp/PHQ-9",
+      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/PHQ-9/main/README.md"
     },
     {
       "title": "DataFlow Engine",
