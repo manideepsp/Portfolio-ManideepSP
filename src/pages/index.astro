@@ -13,15 +13,24 @@ const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : 
 const projects = (config.projects || []).map((p) => ({ ...p, slug: p.slug || slugify(p.title) }));
 ---
 <BaseLayout title="Home">
-  <section class="hero single-page">
-    <p class="uppercase tracking-widest text-sm font-semibold" style="color: var(--accent);">{config.hero.role}</p>
-    <h1 class="text-5xl font-bold leading-tight">{config.hero.name}</h1>
-    <p class="text-lg" style="color: var(--muted);">{config.hero.title}</p>
-    <p class="text-lg" style="color: var(--muted); font-weight: 400;">{config.hero.tagline}</p>
-    <div class="ctas">
-      <a class="btn primary" href={`https://github.com/${config.social.github}`} target="_blank">GitHub</a>
-      <a class="btn ghost" href={`${basePath}${config.resume.displayLink}`} target="_blank">Download Resume</a>
+  <section class="hero single-page hero-modern">
+    <div class="hero-content">
+      <div class="hero-text">
+        <span class="eyebrow">{config.hero.role}</span>
+        <h1 class="headline">{config.hero.name}</h1>
+        <div class="sub">{config.hero.title}</div>
+        <div class="sub" style="font-weight:400;">{config.hero.tagline}</div>
+        <div class="ctas">
+          <a class="btn primary" href={`https://github.com/${config.social.github}`} target="_blank">GitHub</a>
+          <a class="btn ghost" href={`${basePath}${config.resume.displayLink}`} target="_blank">Download Resume</a>
+        </div>
+      </div>
+      <div class="hero-asset">
+        <!-- Animated SVG asset (example: dataflow-engine.svg) -->
+        <img src="/images/projects/dataflow-engine.svg" alt="Animated Data Flow" class="hero-svg-anim" loading="eager" decoding="async" />
+      </div>
     </div>
+    <div class="hero-bg-gradient" aria-hidden="true"></div>
   </section>
 
   <section class="single-page split-layout">

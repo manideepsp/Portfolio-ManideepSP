@@ -7,12 +7,36 @@ const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : 
 <header class="site-header">
   <div class="inner">
     <a class="logo text-2xl font-bold" href={basePath + '/'}>{config.hero.name}</a>
-    <nav class="nav">
-      <a class="text-sm" href={basePath + '/'}>Home</a>
-      <a class="text-sm" href={basePath + '/projects'}>Projects</a>
-      <a class="text-sm" href={basePath + '/resume'}>Resume</a>
-      <a class="text-sm" href={basePath + '/about'}>About</a>
-      <a class="text-sm" href={basePath + '/contact'}>Contact</a>
+    <nav class="nav nav-animated" id="main-nav">
+      {config.navLinks && config.navLinks.map(link => (
+        <a class="text-sm nav-link" href={basePath + link.href}>{link.label}</a>
+      ))}
+      <span class="nav-underline" id="nav-underline"></span>
     </nav>
   </div>
+  <script type="module" client:load>
+    // Animated underline for nav
+    const nav = document.getElementById('main-nav');
+    const underline = document.getElementById('nav-underline');
+    if (nav && underline) {
+      const links = nav.querySelectorAll('.nav-link');
+      function moveUnderline(target) {
+        const rect = target.getBoundingClientRect();
+        const navRect = nav.getBoundingClientRect();
+        underline.style.width = rect.width + 'px';
+        underline.style.left = (rect.left - navRect.left) + 'px';
+        underline.style.opacity = 1;
+      }
+      links.forEach(link => {
+        link.addEventListener('mouseenter', e => moveUnderline(e.target));
+        link.addEventListener('focus', e => moveUnderline(e.target));
+      });
+      nav.addEventListener('mouseleave', () => {
+        underline.style.opacity = 0;
+      });
+      // Optionally, highlight current page
+      const current = Array.from(links).find(link => link.href === window.location.href);
+      if (current) moveUnderline(current);
+    }
+  </script>
 </header>
