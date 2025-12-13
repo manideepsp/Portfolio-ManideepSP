@@ -3,8 +3,9 @@
   --surface: #0f172a;
   --muted: #94a3b8;
   --text: #e2e8f0;
-  --accent: #2dd4bf;
-  --accent-2: #6366f1;
+  /* Toned accents to sit better with the deep navy theme */
+  --accent: #1fb6a0; /* softer teal */
+  --accent-2: #5b6bff; /* muted indigo */
   --glass: rgba(148, 163, 184, 0.08);
   --glass-strong: rgba(15, 23, 42, 0.82);
   --radius: 14px;

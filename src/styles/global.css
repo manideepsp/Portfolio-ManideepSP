@@ -220,12 +220,14 @@ section h2 {
   margin: 0 auto;
   width: 100%;
   position: relative;
-  z-index: 2;
+  z-index: 12; /* ensure hero content sits above the asset */
 }
 
 .hero-text {
   flex: 1 1 0;
   min-width: 320px;
+  position: relative;
+  z-index: 14; /* bring text (and buttons) to front */
 }
 
 .hero-asset {
@@ -234,15 +236,25 @@ section h2 {
   align-items: center;
   justify-content: center;
   min-width: 260px;
-  max-width: 420px;
+  max-width: 360px;
+  /* Reduce the asset's vertical size so it reads more like a background accent */
+  max-height: 320px;
+  position: relative;
+  z-index: 2; /* keep asset visually behind text */
 }
 
 .hero-svg-anim {
-  width: 100%;
-  max-width: 380px;
-  min-width: 220px;
+  /* Let the SVG scale by height first so its vertical size matches the hero card (reduced) */
+  height: 100%;
+  max-height: 300px;
+  width: auto;
+  max-width: 360px;
+  min-width: 180px;
   filter: drop-shadow(0 8px 32px rgba(45,212,191,0.18));
   animation: hero-float 3.2s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 2; /* ensure it doesn't float above the hero text */
+  pointer-events: none; /* allow clicks on underlying buttons */
 }
 
 @keyframes hero-float {
@@ -251,13 +263,50 @@ section h2 {
 }
 
 .hero-bg-gradient {
+  /* Remove strong inner gradient to avoid card-like rectangle; keep a very subtle vignette */
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(45,212,191,0.18) 0%, rgba(99,102,241,0.10) 60%, transparent 100%);
-  opacity: 0.85;
+  background: radial-gradient(circle at 70% 40%, rgba(45,212,191,0.035) 0%, rgba(45,212,191,0.02) 12%, rgba(99,102,241,0.015) 30%, transparent 55%);
+  opacity: 1;
   transition: opacity 0.4s;
+}
+
+/* Ensure hero area visually blends with the page: remove card-like border/shadow */
+/* Ensure hero area has no inner card background or border */
+.hero-modern, .hero-modern .hero-content {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* If any .card styles were applied inside the hero, neutralize them */
+.hero-modern .card {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* Force complete visual blending: remove any remaining backgrounds, borders,
+   shadows, outlines, and backdrop filters for the hero and its descendants */
+.hero, .hero-modern, .hero *,
+.hero::before, .hero::after,
+.hero *::before, .hero *::after {
+  background: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* If a subtle vignette still shows from the global spotlight, completely hide it */
+.hero-bg-gradient {
+  display: none !important;
 }
 
 .ctas {
@@ -265,6 +314,55 @@ section h2 {
   gap: 16px;
   align-items: center;
   margin-top: 24px;
+  position: relative;
+  z-index: 16; /* highest within hero so buttons are always visible */
+}
+
+/* Ensure buttons render above any decorative elements */
+.hero .btn {
+  position: relative;
+  z-index: 18;
+}
+
+/* Restore button visuals inside the hero (override the broad transparency rule) */
+.hero .btn {
+  display: inline-block !important;
+  padding: 12px 22px !important;
+  border-radius: 999px !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.01em !important;
+  transition: all 0.25s ease !important;
+  cursor: pointer !important;
+}
+
+/* Primary button (restore gradient background and shadow) */
+.hero .btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+  color: #0f172a !important;
+  border-color: transparent !important;
+  box-shadow: 0 10px 30px rgba(45, 212, 191, 0.28) !important;
+}
+
+/* Ghost button (restore outline and muted color) */
+.hero .btn.ghost {
+  background: transparent !important;
+  border-color: var(--muted) !important;
+  color: var(--muted) !important;
+  box-shadow: none !important;
+}
+
+/* Hover states (hero) */
+.hero .btn.primary:hover {
+  background: transparent !important;
+  color: var(--accent) !important;
+  box-shadow: inset 0 0 0 2px var(--accent) !important;
+}
+.hero .btn.ghost:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.18) !important;
 }
 
 /* ============================================
