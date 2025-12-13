@@ -257,6 +257,21 @@ section h2 {
   pointer-events: none; /* allow clicks on underlying buttons */
 }
 
+/* Responsive image handling: ensure the hero image scales and hide on small screens
+   to avoid broken image placeholders when the asset is missing on mobile */
+.hero-asset img, .hero-svg-anim {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+@media (max-width: 760px) {
+  .hero-asset {
+    display: none !important; /* hide decorative asset on mobile to prevent broken image */
+  }
+}
+
 @keyframes hero-float {
   0% { transform: translateY(0px) scale(1); }
   100% { transform: translateY(-18px) scale(1.03); }

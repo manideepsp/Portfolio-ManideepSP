@@ -26,8 +26,12 @@ const projects = (config.projects || []).map((p) => ({ ...p, slug: p.slug || slu
         </div>
       </div>
       <div class="hero-asset">
-        <!-- Animated SVG asset (example: dataflow-engine.svg) -->
-        <img src={`${basePath}/images/Hero-animation/josh-happy-dark.webp`} alt="Animated Hero" class="hero-svg-anim" loading="eager" decoding="async" />
+        <!-- Decorative hero image with WebP + fallback for broader mobile support -->
+        <picture>
+          <source type="image/webp" srcset={`${basePath}/images/Hero-animation/josh-happy-dark.webp`} />
+          <source type="image/svg+xml" srcset={`${basePath}/images/projects/dataflow-engine.svg`} />
+          <img src={`${basePath}/images/Hero-animation/josh-happy-light.webp`} alt="Animated Hero" class="hero-svg-anim" loading="eager" decoding="async" />
+        </picture>
       </div>
     </div>
     <div class="hero-bg-gradient" aria-hidden="true"></div>
