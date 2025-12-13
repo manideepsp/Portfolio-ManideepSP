@@ -267,9 +267,27 @@ section h2 {
 }
 
 @media (max-width: 760px) {
+  /* Show a smaller decorative asset on mobile rather than hiding it */
   .hero-asset {
-    display: none !important; /* hide decorative asset on mobile to prevent broken image */
+    display: flex !important;
+    max-width: 220px !important;
+    max-height: 160px !important;
+    margin-left: 12px;
+    margin-right: 12px;
+    align-self: center;
   }
+
+  .hero-svg-anim, .hero-asset img {
+    max-height: 140px !important;
+    max-width: 200px !important;
+    min-width: 120px !important;
+    height: auto !important;
+    width: auto !important;
+  }
+
+  /* Reduce spacing on smaller screens */
+  .hero-content { gap: 20px; padding: 36px 12px; }
+  .headline { font-size: clamp(32px, 6vw, 44px); }
 }
 
 @keyframes hero-float {
