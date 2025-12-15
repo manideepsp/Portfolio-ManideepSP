@@ -11,18 +11,21 @@ const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : 
 
 // Use projects from config
 const projects = (config.projects || []).map((p) => ({ ...p, slug: p.slug || slugify(p.title) }));
+// Split full name into parts for responsive line-break control
+// Prefer explicit first/last if provided in config
+const firstName = (config.hero && config.hero.firstName) ? config.hero.firstName : ((config.hero && config.hero.name) ? config.hero.name.split(' ')[0] : '');
+const lastName = (config.hero && config.hero.lastName) ? config.hero.lastName : ((config.hero && config.hero.name) ? config.hero.name.split(' ').slice(1).join(' ') : '');
 ---
 <BaseLayout title="Home">
   <section class="hero single-page hero-modern">
     <div class="hero-content">
-      <div class="hero-text">
-        <span class="eyebrow">{config.hero.role}</span>
-        <h1 class="headline">{config.hero.name}</h1>
-        <div class="sub">{config.hero.title}</div>
-        <div class="sub" style="font-weight:400;">{config.hero.tagline}</div>
-        <div class="ctas">
-          <a class="btn primary" href={`https://github.com/${config.social.github}`} target="_blank">GitHub</a>
-          <a class="btn ghost" href={`${basePath}${config.resume.displayLink}`} target="_blank">Download Resume</a>
+      <div class="hero-main">
+        <div class="hero-text">
+          <span class="eyebrow">{config.hero.role}</span>
+          <h1 class="headline">
+            <span class="headline-first">{firstName}</span>
+            <span class="headline-last">{lastName}</span>
+          </h1>
         </div>
       </div>
       <div class="hero-asset">
@@ -31,7 +34,18 @@ const projects = (config.projects || []).map((p) => ({ ...p, slug: p.slug || slu
           <img src={`${basePath}/images/Hero-animation/josh-happy-dark.webp`} alt="Animated Hero" class="hero-svg-anim" loading="eager" decoding="async" />
         </picture>
       </div>
+
+      <!-- Details (subtitles + CTAs) are part of the hero grid and live in row 2 -->
+      <div class="hero-details">
+        <div class="sub hero-body">{config.hero.title}</div>
+        <div class="sub hero-tagline">{config.hero.tagline}</div>
+        <div class="ctas">
+          <a class="btn primary" href={`https://github.com/${config.social.github}`} target="_blank">GitHub</a>
+          <a class="btn ghost" href={`${basePath}${config.resume.displayLink}`} target="_blank">Download Resume</a>
+        </div>
+      </div>
     </div>
+
     <div class="hero-bg-gradient" aria-hidden="true"></div>
   </section>
 

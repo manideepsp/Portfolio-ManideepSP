@@ -1,6 +1,8 @@
 {
   "hero": {
     "name": "Manideep Sriperambudhuru",
+    "firstName": "Manideep",
+    "lastName": "Sriperambudhuru",
     "role": "AI Fullstack Engineer",
     "title": "AI • Data • ML",
     "tagline": "I build data & ML systems that scale. Currently shipping backend services and production ML pipelines at scale."

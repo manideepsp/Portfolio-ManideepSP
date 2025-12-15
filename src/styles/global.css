@@ -210,6 +210,14 @@ section h2 {
   z-index: 1;
 }
 
+/* Hero-specific headline: make the hero title the largest on the page
+   Larger on desktop while remaining responsive on smaller screens */
+.hero .headline {
+  font-size: clamp(48px, 6.5vw, 88px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
 /* =============================================
    HERO LAYOUT: CSS Grid for predictable structure
    Desktop: [text | image] side by side
@@ -220,9 +228,10 @@ section h2 {
 .hero-content {
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-template-rows: auto;
+  /* row 1: headline+asset, row 2: details */
+  grid-template-rows: auto auto;
   align-items: center;
-  gap: 40px;
+  gap: 40px 24px;
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
@@ -243,6 +252,14 @@ section h2 {
   z-index: 14;
 }
 
+/* Wrapper that holds eyebrow + headline in the main grid column */
+.hero-main {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: flex-start;
+}
+
 /* Image container: decorative asset */
 .hero-asset {
   grid-column: 2;
@@ -250,8 +267,8 @@ section h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 260px;
-  height: 260px;
+  width: 340px;
+  height: 340px;
   flex-shrink: 0;
   position: relative;
   z-index: 2;
@@ -260,8 +277,8 @@ section h2 {
 .hero-svg-anim {
   width: 100%;
   height: 100%;
-  max-width: 260px;
-  max-height: 260px;
+  max-width: 340px;
+  max-height: 340px;
   filter: drop-shadow(0 8px 32px rgba(45,212,191,0.18));
   animation: hero-float 3.2s ease-in-out infinite alternate;
   object-fit: contain;
@@ -289,13 +306,13 @@ section h2 {
   }
 
   .hero-asset {
-    width: 200px;
-    height: 200px;
+    width: 260px;
+    height: 260px;
   }
 
   .hero-svg-anim, .hero-asset img {
-    max-width: 200px;
-    max-height: 200px;
+    max-width: 260px;
+    max-height: 260px;
   }
 
   .headline {
@@ -327,14 +344,19 @@ section h2 {
   }
 
   /* Text splits into title area (row 1) and details (row 2) */
+  /* On mobile keep eyebrow+headline in the first column, and place details below the grid
+     as a separate block so the hero image never overlaps text */
+  .hero-main {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+  }
+
   .hero-text {
-    grid-column: 1 / -1; /* span full width */
-    grid-row: 1 / 3;     /* span both rows */
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto auto auto auto;
-    gap: 4px 12px;
-    align-items: start;
+    display: block;
+    grid-column: 1;
+    grid-row: 1;
+    padding-right: 8px;
   }
 
   /* Eyebrow: top left, full width of text column */
@@ -372,38 +394,56 @@ section h2 {
     grid-row: 4;
   }
 
-  /* CTAs: bottom, full width */
-  .hero-text .ctas {
-    grid-column: 1 / -1;
-    grid-row: 5;
-    margin-top: 12px;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+  /* CTAs: now live inside .hero-details below the grid (see markup change) */
 
   .hero-text .ctas .btn {
     padding: 10px 18px;
     font-size: 13px;
   }
 
-  /* Image: positioned in the text grid, top right */
+  /* Image: keep in its own grid column (not absolute) so it never overlaps text */
   .hero-asset {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 70px;
-    height: 70px;
+    position: relative;
     grid-column: 2;
-    grid-row: 1 / 3;
+    grid-row: 1;
+    width: 120px;
+    height: 120px;
+    align-self: start;
   }
 
   .hero-svg-anim, .hero-asset img {
-    width: 70px;
-    height: 70px;
-    max-width: 70px;
-    max-height: 70px;
+    width: 120px;
+    height: 120px;
+    max-width: 120px;
+    max-height: 120px;
+    object-fit: contain;
   }
 }
+
+/* Hero details block (subtitles + CTAs) placed below the hero grid to avoid overlap */
+.hero-details {
+  /* Placed inside .hero-content grid as row 2 and spans both columns */
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin-top: 6px;
+  padding: 0 0 0 0;
+}
+
+.hero-details .sub { margin-bottom: 8px; }
+
+/* Specific hero detail parts for fine-grained styling */
+.hero-details .hero-body {
+  font-size: 18px;
+  color: var(--muted);
+}
+
+.hero-details .hero-tagline {
+  font-size: 16px;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 6px;
+}
+
 
 /* Very small screens (≤400px) */
 @media (max-width: 400px) {
@@ -412,15 +452,15 @@ section h2 {
   }
 
   .hero-asset {
-    width: 55px;
-    height: 55px;
+    width: 88px;
+    height: 88px;
   }
 
   .hero-svg-anim, .hero-asset img {
-    width: 55px;
-    height: 55px;
-    max-width: 55px;
-    max-height: 55px;
+    width: 88px;
+    height: 88px;
+    max-width: 88px;
+    max-height: 88px;
   }
 
   .hero-text .sub {
@@ -435,6 +475,18 @@ section h2 {
 
 @keyframes hero-float {
   0% { transform: translateY(0px) scale(1); }
+
+  /* Reduce primary GitHub button width on mobile to give the hero image more visual weight */
+  .hero-text .ctas .btn.primary {
+    max-width: 160px;
+    width: auto;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  /* Put last name on its own line on mobile for better spacing */
+  .headline-first { display: inline-block; }
+  .headline-last { display: block; margin-top: 4px; }
   100% { transform: translateY(-14px) scale(1.02); }
 }
 
