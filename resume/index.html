@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Manideep Sriperambudhuru – Portfolio. I build data &#38; ML systems that scale. Currently shipping backend services and production ML pipelines at scale."><title>Resume • Manideep Sriperambudhuru</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"></noscript><link rel="stylesheet" href="/Portfolio-ManideepSP/assets/about.Izt7aPll.css"></head> <body> <a href="#main-content" class="skip-link">Skip to content</a> <div class="bg-spotlight"> <div class="cursor-glow" aria-hidden="true"></div> <script type="module" client:load>
+  const glow = document.querySelector('.cursor-glow');
+  if (glow) {
+    document.addEventListener('mousemove', (event) => {
+      const x = event.clientX - 250;
+      const y = event.clientY - 250;
+      glow.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      glow.style.transform = 'translate3d(-9999px, -9999px, 0)';
+    });
+  }
+</script> </div> <div class="page-wrap"> <header class="site-header" role="banner"> <div class="inner"> <a class="logo text-2xl font-bold" href="/Portfolio-ManideepSP/">Manideep Sriperambudhuru</a> <nav class="nav nav-animated" id="main-nav" aria-label="Main navigation"> <a class="text-sm nav-link" href="/Portfolio-ManideepSP/">Home</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/projects">Projects</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/resume">Resume</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/about">About</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/contact">Contact</a> <span class="nav-underline" id="nav-underline"></span> </nav> </div> <script type="module" client:load>
+    // Animated underline for nav
+    const nav = document.getElementById('main-nav');
+    const underline = document.getElementById('nav-underline');
+    if (nav && underline) {
+      const links = nav.querySelectorAll('.nav-link');
+      function moveUnderline(target) {
+        const rect = target.getBoundingClientRect();
+        const navRect = nav.getBoundingClientRect();
+        underline.style.width = rect.width + 'px';
+        underline.style.left = (rect.left - navRect.left) + 'px';
+        underline.style.opacity = 1;
+      }
+      links.forEach(link => {
+        link.addEventListener('mouseenter', e => moveUnderline(e.target));
+        link.addEventListener('focus', e => moveUnderline(e.target));
+      });
+      nav.addEventListener('mouseleave', () => {
+        underline.style.opacity = 0;
+      });
+      // Optionally, highlight current page
+      const current = Array.from(links).find(link => link.href === window.location.href);
+      if (current) moveUnderline(current);
+    }
+  </script> </header> <main id="main-content" class="container" tabindex="-1">  <section> <h1>Resume</h1> <div class="resume-viewer card"> <div class="controls" style="margin-bottom:12px;"> <a class="btn primary" href="/Portfolio-ManideepSP/resumes/resume_latest.pdf" target="_blank" rel="noopener">Download Resume</a> </div> <iframe src="/Portfolio-ManideepSP/resumes/resume_latest.pdf#toolbar=0" style="width:100%;height:70vh;border:0;border-radius:12px;" title="Resume viewer"></iframe> </div> </section>  </main> <footer class="site-footer" id="site-footer" role="contentinfo"> <div class="inner footer-grid"> <div class="footer__col footer__brand"> <div class="footer__brand-grid"> <div class="brand-monogram"> <div class="monogram-wrapper" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:999px;overflow:hidden;flex:0 0 36px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071024;font-weight:800;font-size:12px" aria-hidden="false"> <a class="monogram-link" href="https://github.com/manideepsp" target="_blank" rel="noopener" aria-label="View manideepsp on GitHub" style="display:inline-block;width:36px;height:36px;flex:0 0 36px;"> <img src="https://github.com/manideepsp.png?s=36" alt="manideepsp avatar" width="36" height="36" class style="display:block;width:100%;height:100%;object-fit:contain;border-radius:999px;" loading="lazy"> </a> </div> </div> <div class="brand-name"> <a class="footer__name logo text-2xl font-bold" href="/Portfolio-ManideepSP/">Manideep Sriperambudhuru</a> </div> <div class="brand-tag text-sm">AI • Data • ML</div> <div class="brand-email text-sm"><a href="mailto:manideepsp.16@gmail.com">manideepsp.16@gmail.com</a></div> </div> </div> <div class="footer__col footer__links"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Explore</h4> <ul class="footer-nav" style="margin:0;padding:0;list-style:none;"> <li><a href="/Portfolio-ManideepSP/">Home</a></li> <li><a href="/Portfolio-ManideepSP/projects">Projects</a></li> <li><a href="/Portfolio-ManideepSP/resume">Resume</a></li> <li><a href="/Portfolio-ManideepSP/about">About</a></li> <li><a href="/Portfolio-ManideepSP/contact">Contact</a></li> </ul> </div> <div class="footer__col footer__contact"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Connect</h4> <div class="socials" style="display:flex;gap:10px;align-items:center;"> <a class="social-link" href="https://github.com/manideepsp" target="_blank" rel="noopener" aria-label="GitHub"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#github"></use></svg> </a> <a class="social-link" href="mailto:manideepsp.16@gmail.com" aria-label="Email"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#mail"></use></svg> </a> <a class="social-link" href="https://www.linkedin.com/in/manideepsp" target="_blank" rel="noopener" aria-label="LinkedIn"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#linkedin"></use></svg> </a> </div> <a class="back-to-top text-sm" href="#top" style="display:inline-block;margin-top:10px;color:var(--muted);">Back to top ↑</a> </div> </div> <div class="inner footer__credits" style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.03);padding-top:18px;"> <p class="text-sm" style="color:var(--muted);margin:0;">&copy; 2025 Manideep Sriperambudhuru. Built with ❤.</p> </div> </footer> </div> <script type="module" src="/Portfolio-ManideepSP/lib/sr.js" defer></script> </body> </html>
