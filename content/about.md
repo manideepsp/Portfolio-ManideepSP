@@ -1,6 +1,6 @@
 # About Me
 
-Hello! I'm Ashish Sp, a passionate Software Engineer specializing in Data and Machine Learning. With a strong foundation in software development and a keen interest in data-driven solutions, I strive to create impactful applications that solve real-world problems.
+Hello! I'm Manideep Sriperambudhuru, a passionate AI Fullstack Engineer specializing in Data and Machine Learning. With a strong foundation in software development and a keen interest in data-driven solutions, I strive to create impactful applications that solve real-world problems.
 
 ## My Journey
 
