@@ -1,0 +1,16 @@
+---
+const { username = '', initials = '', size = 44, href = null, class: className = '' } = Astro.props;
+const imgUrl = username ? `https://github.com/${username}.png?s=${size}` : null;
+const wrapperStyle = `display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;border-radius:999px;overflow:hidden;flex:0 0 ${size}px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071024;font-weight:800;font-size:${Math.max(12, Math.floor(size/3))}px`;
+
+---
+
+<div class="monogram-wrapper" style={wrapperStyle} aria-hidden={imgUrl ? 'false' : 'true'}>
+  {imgUrl ? (
+    <a class="monogram-link" href={`https://github.com/${username}`} target="_blank" rel="noopener" aria-label={`View ${username} on GitHub`} style={`display:inline-block;width:${size}px;height:${size}px;flex:0 0 ${size}px;`}>
+      <img src={imgUrl} alt={`${username} avatar`} width={size} height={size} class={className} style={`display:block;width:100%;height:100%;object-fit:contain;border-radius:999px;`} loading="lazy" />
+    </a>
+  ) : (
+    <span class={className} style={`display:inline-flex;align-items:center;justify-content:center;width:100%;height:100%;font-weight:800;`} aria-hidden="true">{initials}</span>
+  )}
+</div>

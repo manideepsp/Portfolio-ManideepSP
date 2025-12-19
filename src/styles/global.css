@@ -376,7 +376,7 @@ img, svg {
 
 .hero-avatar img {
   width: 100%;
-  max-width: 90px;
+  max-width: 72px;
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 12px 32px rgba(45,212,191,0.18));
@@ -996,6 +996,151 @@ img, svg {
 
 .site-footer .footer-nav a:hover {
   color: var(--accent);
+}
+
+/* Footer icon colors - match experience highlight */
+.site-footer .footer__col.footer__brand .footer__email {
+  color: var(--accent);
+  transition: color 0.18s ease;
+}
+.site-footer .footer__col.footer__brand .footer__email:hover {
+  color: var(--accent-2);
+}
+
+/* Footer social icons: circular gradient buttons that match the site's accent */
+.site-footer .socials {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.site-footer .social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  /* subtle translucent backdrop using accent hues for contrast */
+  background: linear-gradient(135deg, rgba(31,182,160,0.06), rgba(91,107,255,0.04));
+  color: var(--accent); /* icon color = experience highlight */
+  box-shadow: 0 6px 18px rgba(11,18,30,0.12);
+  transition: transform 150ms ease, box-shadow 150ms ease, opacity 150ms ease, color 150ms ease;
+  text-decoration: none;
+}
+.site-footer .social-link svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: currentColor;
+}
+.site-footer .social-link:hover,
+.site-footer .social-link:focus {
+  transform: translateY(-3px);
+  color: var(--accent-2);
+  opacity: 0.98;
+  box-shadow: 0 12px 30px rgba(31,182,160,0.12);
+}
+.site-footer .social-link[aria-label] { outline: none; }
+
+/* Footer brand layout moved from inline styles */
+.footer__brand {
+  display: block;
+}
+.footer__brand-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap; /* keep monogram and name on a single line */
+}
+.footer__name {
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 360px;
+}
+.footer__brand-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+/* Prevent the brand text column from forcing the monogram to wrap */
+.footer__brand-text { min-width: 0; }
+.footer__brand-top .monogram-wrapper { flex: 0 0 auto; }
+
+/* Fine-tune vertical alignment between monogram and name */
+.footer__brand-top .monogram-wrapper {
+  display: inline-flex; /* ensure baseline-friendly inline layout */
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+.footer__brand-top .footer__name {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1; /* tightly align text with avatar center */
+}
+
+/* Brand area grid: 2 columns x 3 rows
+   Matrix mapping (row, col):
+     (0,0) monogram, (0,1) name
+     (1,0) empty,     (1,1) tag
+     (2,0) empty,     (2,1) email
+*/
+.footer__brand-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 6px 12px;
+  align-items: center;
+}
+.brand-monogram { grid-column: 1; grid-row: 1; }
+.brand-name { grid-column: 2; grid-row: 1; align-self: center; }
+.brand-tag  { grid-column: 2; grid-row: 2; }
+.brand-email { grid-column: 2; grid-row: 3; }
+
+/* Keep left column (monogram) from collapsing */
+.brand-monogram .monogram-wrapper { flex: 0 0 auto; }
+.footer__brand-role,
+.footer__brand-email {
+  color: var(--muted);
+  margin-top: 8px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 420px;
+}
+.footer__brand-email a { color: var(--muted); text-decoration: none; }
+
+/* Monogram avatar ring for contrast on dark backgrounds */
+.monogram-wrapper {
+  border-radius: 999px;
+  /* subtle ring using semi-transparent accent */
+  box-shadow: 0 0 0 2px rgba(31, 182, 160, 0.08);
+  transition: box-shadow 180ms ease;
+}
+.monogram-wrapper img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 999px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .footer__brand-top { gap: 8px; }
+  .footer__name { max-width: 200px; font-size: 16px; }
+  .footer__brand-role, .footer__brand-email { max-width: 260px; font-size: 13px; }
+  .site-footer .footer-grid { grid-template-columns: 1fr; gap: 20px; }
+}
+
+@media (min-width: 481px) and (max-width: 900px) {
+  .footer__name { max-width: 280px; }
+  .footer__brand-role, .footer__brand-email { max-width: 320px; }
 }
 
 /* ============================================
