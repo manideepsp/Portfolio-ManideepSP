@@ -4,10 +4,10 @@ import config from '../lib/config.json';
 const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : '';
 ---
 
-<header class="site-header">
+<header class="site-header" role="banner">
   <div class="inner">
     <a class="logo text-2xl font-bold" href={basePath + '/'}>{config.hero.name}</a>
-    <nav class="nav nav-animated" id="main-nav">
+    <nav class="nav nav-animated" id="main-nav" aria-label="Main navigation">
       {config.navLinks && config.navLinks.map(link => (
         <a class="text-sm nav-link" href={basePath + link.href}>{link.label}</a>
       ))}

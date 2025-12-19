@@ -7,7 +7,7 @@ const initials = (config.hero && config.hero.name)
   ? config.hero.name.split(' ').filter(Boolean).map(n => n[0]).slice(0,2).join('').toUpperCase()
   : '';
 ---
-<footer class="site-footer" id="site-footer">
+<footer class="site-footer" id="site-footer" role="contentinfo">
   <div class="inner footer-grid">
     <div class="footer__col footer__brand">
       <div class="footer__brand-grid">
