@@ -108,8 +108,9 @@
     "dateFormat": "short"
   },
 
-  "contactWorkerUrl": "",
+  "contactWorkerUrl": "https://portfolio-manideepsp.manideepsp-16.workers.dev/",
   "contactFallback": {
+    "repo": "Portfolio-ManideepSP",
     "autoRedirect": true,
     "delayMs": 5000,
     "showFallbackButton": true
