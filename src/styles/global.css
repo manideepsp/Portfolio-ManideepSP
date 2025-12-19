@@ -74,6 +74,34 @@ main {
   z-index: 0;
 }
 
+.bg-spotlight::after {
+  content: '';
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  width: 140vmax;
+  height: 140vmax;
+  background:
+    radial-gradient(40% 40% at 30% 35%, rgba(45,212,191,0.10), transparent 55%),
+    radial-gradient(38% 38% at 70% 30%, rgba(99,102,241,0.10), transparent 58%),
+    radial-gradient(42% 42% at 45% 70%, rgba(15, 155, 255, 0.08), transparent 60%);
+  filter: blur(120px);
+  opacity: 0.8;
+  transform: translate3d(0,0,0);
+  mix-blend-mode: screen;
+  animation: bg-aurora 26s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+@keyframes bg-aurora {
+  0%   { transform: translate3d(-6%, -4%, 0) scale(1); }
+  50%  { transform: translate3d(4%, 6%, 0) scale(1.06); }
+  100% { transform: translate3d(8%, -2%, 0) scale(1.04); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-spotlight::after { animation: none; }
+}
+
 /* ============================================
    TYPOGRAPHY
    ============================================ */
