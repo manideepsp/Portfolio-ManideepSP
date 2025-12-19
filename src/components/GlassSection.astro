@@ -1,0 +1,17 @@
+---
+const { title = '', subtitle = '', variant = '', class: extra = '' } = Astro.props;
+---
+
+<section class={`glass-section ${variant ? `glass-section--${variant}` : ''} ${extra}`}>
+  <div class="glass-pulse" aria-hidden="true"></div>
+  {title || subtitle ? (
+    <header class="glass-header">
+      {title ? <h3>{title}</h3> : null}
+      {subtitle ? <p class="glass-sub">{subtitle}</p> : null}
+    </header>
+  ) : null}
+
+  <div class="glass-body">
+    <slot />
+  </div>
+</section>
