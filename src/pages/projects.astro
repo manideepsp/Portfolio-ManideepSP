@@ -9,22 +9,80 @@ import { slugify } from '../lib/slugify.js';
 const projects = (config.projects || []).map((p) => ({ ...p, slug: p.slug || slugify(p.title) }));
 ---
 <BaseLayout title="Projects">
-  <section>
-    <h1>Work</h1>
-    <p style="color: var(--muted); margin-bottom: 40px;">A selection of projects I've built and shipped:</p>
-    <div class="grid">
+  <section class="projects-section">
+    <div class="projects-header">
+      <p class="eyebrow">Portfolio</p>
+      <h1>Featured Work</h1>
+      <p class="projects-intro">A selection of projects I've built and shipped — from ML pipelines to data platforms.</p>
+    </div>
+    <div class="projects-grid">
       {projects.map((p, i) => (
-        <ScrollRevealWrapper delay={i * 100}>
+        <ScrollRevealWrapper delay={i * 120}>
           <ProjectCard 
             title={p.title} 
             description={p.description} 
             image={p.image} 
             repoUrl={p.repoUrl}
             slug={p.slug}
+            tags={p.tags}
           />
         </ScrollRevealWrapper>
       ))}
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .projects-section {
+    padding-top: 20px;
+  }
+
+  .projects-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+
+  .projects-header h1 {
+    margin: 0 0 16px;
+    font-size: clamp(2rem, 5vw, 2.75rem);
+  }
+
+  .projects-intro {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+  }
+
+  @media (max-width: 480px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .projects-header {
+      margin-bottom: 32px;
+    }
+
+    .projects-intro {
+      font-size: 0.95rem;
+    }
+  }
+</style>
  

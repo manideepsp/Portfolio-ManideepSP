@@ -25,7 +25,8 @@
     "remark-rehype": "^10.1.0",
     "scrollreveal": "^4.0.9",
     "tailwindcss": "^3.0.0",
-    "unified": "^10.1.2"
+    "unified": "^10.1.2",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "eslint": "^8.0.0",
