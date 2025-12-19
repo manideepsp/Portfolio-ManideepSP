@@ -689,6 +689,7 @@ import config from '../lib/config.json';
           try { ensureSharedToast().then(m => m && m.showToast('success', 'Message sent — thank you!')); } catch (e) { /* ignore */ }
           form.reset();
           clearFieldErrors();
+          updateMessageCounter(); // Reset character counter
           setLoading(false);
           return;
         }
