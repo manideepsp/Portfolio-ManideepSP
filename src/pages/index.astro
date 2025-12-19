@@ -17,36 +17,34 @@ const firstName = (config.hero && config.hero.firstName) ? config.hero.firstName
 const lastName = (config.hero && config.hero.lastName) ? config.hero.lastName : ((config.hero && config.hero.name) ? config.hero.name.split(' ').slice(1).join(' ') : '');
 ---
 <BaseLayout title="Home">
-  <section class="hero single-page hero-modern">
-    <div class="hero-content">
-      <div class="hero-main">
-        <div class="hero-text">
-          <span class="eyebrow">{config.hero.role}</span>
-          <h1 class="headline">
-            <span class="headline-first">{firstName}</span>
-            <span class="headline-last">{lastName}</span>
-          </h1>
+  <!-- =============================================
+       HERO SECTION - Clean, responsive, no overflow
+       Desktop: [Text | Avatar] side-by-side
+       Tablet:  [Text | Avatar] slightly smaller
+       Mobile:  Stacked vertically
+       ============================================= -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-text-content">
+        <span class="hero-eyebrow">{config.hero.role}</span>
+        <h1 class="hero-title">
+          <span class="hero-name-first">{firstName}</span>
+          <span class="hero-name-last">{lastName}</span>
+        </h1>
+        <p class="hero-subtitle">{config.hero.title}</p>
+        <p class="hero-tagline">{config.hero.tagline}</p>
+        <div class="hero-ctas">
+          <a class="hero-btn hero-btn-primary" href={`https://github.com/${config.social.github}`} target="_blank">GitHub</a>
+          <a class="hero-btn hero-btn-ghost" href={`${basePath}${config.resume.displayLink}`} target="_blank">Download Resume</a>
         </div>
       </div>
-      <div class="hero-asset">
+      <div class="hero-avatar">
         <picture>
           <source type="image/webp" srcset={`${basePath}/images/Hero-animation/josh-happy-dark.webp`} />
-          <img src={`${basePath}/images/Hero-animation/josh-happy-dark.webp`} alt="Animated Hero" class="hero-svg-anim" loading="eager" decoding="async" />
+          <img src={`${basePath}/images/Hero-animation/josh-happy-dark.webp`} alt="Avatar illustration" loading="eager" decoding="async" />
         </picture>
       </div>
-
-      <!-- Details (subtitles + CTAs) are part of the hero grid and live in row 2 -->
-      <div class="hero-details">
-        <div class="sub hero-body">{config.hero.title}</div>
-        <div class="sub hero-tagline">{config.hero.tagline}</div>
-        <div class="ctas">
-          <a class="btn primary" href={`https://github.com/${config.social.github}`} target="_blank">GitHub</a>
-          <a class="btn ghost" href={`${basePath}${config.resume.displayLink}`} target="_blank">Download Resume</a>
-        </div>
-      </div>
     </div>
-
-    <div class="hero-bg-gradient" aria-hidden="true"></div>
   </section>
 
   <section class="single-page split-layout">

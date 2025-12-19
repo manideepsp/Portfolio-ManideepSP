@@ -144,8 +144,9 @@ section h2 {
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
-  max-width: 1080px;
+  max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .logo {
@@ -192,378 +193,336 @@ section h2 {
   z-index: 1;
 }
 
-/* ============================================
-   HERO SECTION
-   ============================================ */
-
-.hero {
-  padding: 72px 0 96px;
-}
-
-.hero-modern {
-  position: relative;
-  min-height: 420px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 0 64px;
-  z-index: 1;
-}
-
-/* Hero-specific headline: make the hero title the largest on the page
-   Larger on desktop while remaining responsive on smaller screens */
-.hero .headline {
-  font-size: clamp(48px, 6.5vw, 88px);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-}
-
-/* =============================================
-   HERO LAYOUT: CSS Grid for predictable structure
-   Desktop: [text | image] side by side
-   Tablet:  [text | image] side by side, smaller
-   Mobile:  [title + image] row, then [details] below
-   ============================================= */
-
-.hero-content {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  /* row 1: headline+asset, row 2: details */
-  grid-template-rows: auto auto;
-  align-items: center;
-  gap: 40px 24px;
-  max-width: 1100px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 24px;
-  position: relative;
-  z-index: 12;
-}
-
-/* Text container: all hero text content */
-.hero-text {
-  grid-column: 1;
-  grid-row: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0; /* allow shrinking */
-  position: relative;
-  z-index: 14;
-}
-
-/* Wrapper that holds eyebrow + headline in the main grid column */
-.hero-main {
-  grid-column: 1;
-  grid-row: 1;
-  display: flex;
-  align-items: flex-start;
-}
-
-/* Image container: decorative asset */
-.hero-asset {
-  grid-column: 2;
-  grid-row: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 340px;
-  height: 340px;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 2;
-}
-
-.hero-svg-anim {
-  width: 100%;
-  height: 100%;
-  max-width: 340px;
-  max-height: 340px;
-  filter: drop-shadow(0 8px 32px rgba(45,212,191,0.18));
-  animation: hero-float 3.2s ease-in-out infinite alternate;
-  object-fit: contain;
-  pointer-events: none;
-}
-
-/* Ensure images maintain aspect ratio */
-.hero-asset img, .hero-svg-anim {
-  display: block;
-  object-fit: contain;
-}
-
-/* =============================================
-   TABLET (761px - 1024px): side by side, smaller
-   ============================================= */
+/* Tablet navbar: reduce gaps and font size to prevent overflow */
 @media (min-width: 761px) and (max-width: 1024px) {
-  .hero-modern {
-    padding: 40px 0 56px;
-    min-height: 380px;
+  .site-header .inner {
+    padding: 14px 16px;
   }
-
-  .hero-content {
-    gap: 24px;
-    padding: 0 20px;
+  .nav {
+    gap: 20px;
   }
-
-  .hero-asset {
-    width: 260px;
-    height: 260px;
+  .nav-link {
+    font-size: 13px;
   }
-
-  .hero-svg-anim, .hero-asset img {
-    max-width: 260px;
-    max-height: 260px;
-  }
-
-  .headline {
-    font-size: clamp(28px, 4vw, 44px);
-  }
-
-  .hero-text .sub {
+  .logo {
     font-size: 16px;
   }
 }
 
-/* =============================================
-   MOBILE (≤760px): Grid restructured
-   Row 1: [title | image]
-   Row 2: [details spanning full width]
-   ============================================= */
+/* Mobile navbar: further reduce spacing */
 @media (max-width: 760px) {
-  .hero-modern {
-    padding: 24px 0 32px;
-    min-height: auto;
+  .site-header .inner {
+    padding: 12px 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
   }
-
-  .hero-content {
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    gap: 12px 16px;
-    padding: 0 16px;
-    align-items: start;
-  }
-
-  /* Text splits into title area (row 1) and details (row 2) */
-  /* On mobile keep eyebrow+headline in the first column, and place details below the grid
-     as a separate block so the hero image never overlaps text */
-  .hero-main {
-    grid-column: 1;
-    grid-row: 1;
+  .logo {
     width: 100%;
+    text-align: center;
+    font-size: 16px;
   }
-
-  .hero-text {
-    display: block;
-    grid-column: 1;
-    grid-row: 1;
-    padding-right: 8px;
+  .nav {
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
   }
-
-  /* Eyebrow: top left, full width of text column */
-  .hero-text .eyebrow {
-    grid-column: 1;
-    grid-row: 1;
-    font-size: 10px;
-    margin: 0;
-  }
-
-  /* Headline: below eyebrow, left of image */
-  .hero-text .headline {
-    grid-column: 1;
-    grid-row: 2;
-    font-size: clamp(22px, 6vw, 30px);
-    margin: 0;
-    line-height: 1.15;
-    padding-right: 8px;
-  }
-
-  /* Subtitles: below headline, full width */
-  .hero-text .sub {
-    grid-column: 1 / -1;
-    font-size: 13px;
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  .hero-text .sub:nth-of-type(1) {
-    grid-row: 3;
-    margin-top: 8px;
-  }
-
-  .hero-text .sub:nth-of-type(2) {
-    grid-row: 4;
-  }
-
-  /* CTAs: now live inside .hero-details below the grid (see markup change) */
-
-  .hero-text .ctas .btn {
-    padding: 10px 18px;
+  .nav-link {
     font-size: 13px;
   }
-
-  /* Image: keep in its own grid column (not absolute) so it never overlaps text */
-  .hero-asset {
-    position: relative;
-    grid-column: 2;
-    grid-row: 1;
-    width: 120px;
-    height: 120px;
-    align-self: start;
-  }
-
-  .hero-svg-anim, .hero-asset img {
-    width: 120px;
-    height: 120px;
-    max-width: 120px;
-    max-height: 120px;
-    object-fit: contain;
-  }
 }
 
-/* Hero details block (subtitles + CTAs) placed below the hero grid to avoid overlap */
-.hero-details {
-  /* Placed inside .hero-content grid as row 2 and spans both columns */
-  grid-column: 1 / -1;
-  grid-row: 2;
-  margin-top: 6px;
-  padding: 0 0 0 0;
+/* ============================================
+   NEW HERO SECTION - Clean, Responsive, No Overflow
+   Mobile-first approach with CSS Grid
+   ============================================ */
+
+/* Global safety - prevent horizontal scroll */
+html, body {
+  overflow-x: hidden;
 }
 
-.hero-details .sub { margin-bottom: 8px; }
-
-/* Specific hero detail parts for fine-grained styling */
-.hero-details .hero-body {
-  font-size: 18px;
-  color: var(--muted);
+img, svg {
+  max-width: 100%;
+  height: auto;
 }
 
-.hero-details .hero-tagline {
-  font-size: 16px;
-  color: var(--muted);
-  font-weight: 400;
-  margin-top: 6px;
+/* Hero Section Container */
+.hero-section {
+  width: 100%;
+  padding: 48px 0 64px;
+  position: relative;
 }
 
-
-/* Very small screens (≤400px) */
-@media (max-width: 400px) {
-  .hero-text .headline {
-    font-size: clamp(20px, 5.5vw, 26px);
-  }
-
-  .hero-asset {
-    width: 88px;
-    height: 88px;
-  }
-
-  .hero-svg-anim, .hero-asset img {
-    width: 88px;
-    height: 88px;
-    max-width: 88px;
-    max-height: 88px;
-  }
-
-  .hero-text .sub {
-    font-size: 12px;
-  }
-
-  .hero-text .ctas .btn {
-    padding: 8px 14px;
-    font-size: 12px;
-  }
-}
-
-@keyframes hero-float {
-  0% { transform: translateY(0px) scale(1); }
-
-  /* Reduce primary GitHub button width on mobile to give the hero image more visual weight */
-  .hero-text .ctas .btn.primary {
-    max-width: 160px;
-    width: auto;
-    padding: 8px 14px;
-    font-size: 13px;
-  }
-
-  /* Put last name on its own line on mobile for better spacing */
-  .headline-first { display: inline-block; }
-  .headline-last { display: block; margin-top: 4px; }
-  100% { transform: translateY(-14px) scale(1.02); }
-}
-
-.hero-bg-gradient {
-  /* Remove strong inner gradient to avoid card-like rectangle; keep a very subtle vignette */
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at 70% 40%, rgba(45,212,191,0.035) 0%, rgba(45,212,191,0.02) 12%, rgba(99,102,241,0.015) 30%, transparent 55%);
-  opacity: 1;
-  transition: opacity 0.4s;
-}
-
-/* Ensure hero area visually blends with the page: remove card-like border/shadow */
-/* Ensure hero area has no inner card background or border */
-.hero-modern, .hero-modern .hero-content {
-  background-color: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  border: 0 !important;
-}
-
-/* If any .card styles were applied inside the hero, neutralize them */
-.hero-modern .card {
-  background: transparent !important;
-  box-shadow: none !important;
-  border: 0 !important;
-}
-
-/* Force complete visual blending: remove any remaining backgrounds, borders,
-   shadows, outlines, and backdrop filters for the hero and its descendants */
-.hero, .hero-modern, .hero *,
-.hero::before, .hero::after,
-.hero *::before, .hero *::after {
-  background: transparent !important;
-  background-image: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  outline: 0 !important;
-  border-radius: 0 !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}
-
-/* If a subtle vignette still shows from the global spotlight, completely hide it */
-.hero-bg-gradient {
-  display: none !important;
-}
-
-.ctas {
-  display: flex;
-  gap: 16px;
+/* Hero Grid Container */
+.hero-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
   align-items: center;
-  margin-top: 24px;
-  position: relative;
-  z-index: 16; /* highest within hero so buttons are always visible */
+  text-align: center;
 }
 
-/* Ensure buttons render above any decorative elements */
-.hero .btn {
-  position: relative;
-  z-index: 18;
+/* Text Content Area */
+.hero-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
 }
 
-/* Restore button visuals inside the hero (override the broad transparency rule) */
-.hero .btn {
-  display: inline-block !important;
-  padding: 12px 22px !important;
-  border-radius: 999px !important;
-  text-decoration: none !important;
-  font-weight: 500 !important;
-  font-size: 14px !important;
-  letter-spacing: 0.01em !important;
-  transition: all 0.25s ease !important;
-  cursor: pointer !important;
+/* Eyebrow / Role Label */
+.hero-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
 }
+
+/* Hero Title - Using clamp for fluid typography */
+.hero-title {
+  font-size: clamp(32px, 8vw, 48px);
+  font-weight: 800;
+  font-family: var(--font-heading);
+  line-height: 1.1;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.hero-name-first,
+.hero-name-last {
+  display: block;
+}
+
+/* Subtitle */
+.hero-subtitle {
+  font-size: clamp(14px, 3vw, 18px);
+  color: var(--muted);
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+/* Tagline */
+.hero-tagline {
+  font-size: clamp(13px, 2.5vw, 16px);
+  color: var(--muted);
+  margin: 4px 0 0;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* CTA Buttons Container */
+.hero-ctas {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Hero Buttons */
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.hero-btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #0f172a;
+  box-shadow: 0 8px 24px rgba(45, 212, 191, 0.25);
+}
+
+.hero-btn-primary:hover {
+  background: transparent;
+  color: var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.hero-btn-ghost {
+  background: transparent;
+  border-color: var(--muted);
+  color: var(--muted);
+}
+
+.hero-btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+}
+
+/* Avatar Container */
+.hero-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  order: -1; /* Avatar above text on mobile */
+}
+
+.hero-avatar img {
+  width: 100%;
+  max-width: 90px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 32px rgba(45,212,191,0.18));
+  animation: avatar-float 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes avatar-float {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(-12px) scale(1.02); }
+}
+
+/* =============================================
+   TABLET (768px - 1023px): Side by side
+   ============================================= */
+@media (min-width: 768px) {
+  .hero-section {
+    padding: 56px 0 72px;
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr 280px;
+    gap: 40px;
+    text-align: left;
+  }
+
+  .hero-text-content {
+    gap: 8px;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+  }
+
+  .hero-title {
+    font-size: clamp(36px, 5vw, 52px);
+  }
+
+  .hero-ctas {
+    justify-content: flex-start;
+    gap: 16px;
+    flex-wrap: nowrap;
+  }
+
+  .hero-btn {
+    padding: 12px 22px;
+    font-size: 14px;
+  }
+
+  .hero-avatar {
+    order: 0; /* Reset order - avatar on right */
+  }
+
+  .hero-avatar img {
+    max-width: 140px;
+  }
+}
+
+/* =============================================
+   DESKTOP (≥1024px): Full layout
+   ============================================= */
+@media (min-width: 1024px) {
+  .hero-section {
+    padding: 64px 0 88px;
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr 360px;
+    gap: 48px;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .hero-title {
+    font-size: clamp(48px, 5.5vw, 72px);
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    margin-top: 12px;
+  }
+
+  .hero-tagline {
+    font-size: 16px;
+  }
+
+  .hero-ctas {
+    margin-top: 28px;
+  }
+
+  .hero-avatar img {
+    max-width: 180px;
+  }
+}
+
+/* =============================================
+   LARGE DESKTOP (≥1280px): Larger avatar
+   ============================================= */
+@media (min-width: 1280px) {
+  .hero-container {
+    grid-template-columns: 1fr 400px;
+    gap: 56px;
+    max-width: 1200px;
+  }
+
+  .hero-title {
+    font-size: clamp(56px, 6vw, 80px);
+  }
+
+  .hero-avatar img {
+    max-width: 220px;
+  }
+}
+
+/* =============================================
+   SMALL MOBILE (≤375px): Compact layout
+   ============================================= */
+@media (max-width: 375px) {
+  .hero-section {
+    padding: 32px 0 48px;
+  }
+
+  .hero-container {
+    padding: 0 16px;
+    gap: 24px;
+  }
+
+  .hero-title {
+    font-size: clamp(28px, 9vw, 36px);
+  }
+
+  .hero-avatar img {
+    max-width: 70px;
+  }
+
+  .hero-btn {
+    padding: 8px 18px;
+    font-size: 12px;
+  }
+}
+
+/* ============================================
+   LEGACY HERO CLASSES - Keep for backward compat
+   ============================================ */
 
 /* Primary button (restore gradient background and shadow) */
 .hero .btn.primary {
