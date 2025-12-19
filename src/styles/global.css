@@ -1393,6 +1393,7 @@ html.js-loaded .scroll-reveal.reveal,
   
   .timeline-column {
     padding-left: 0;
+    margin-top: 32px;
   }
 }
 
@@ -1425,6 +1426,12 @@ html.js-loaded .scroll-reveal.reveal,
     width: 100%;
     text-align: center;
   }
+
+  .hero-container { padding: 0 16px; gap: 20px; }
+  .projects-list { gap: 14px; }
+  .card { padding: 18px; }
+  .split-layout { display: block; }
+  .timeline-column { padding-left: 0; margin-top: 28px; }
   
   .experience-item {
     grid-template-columns: 1fr;
