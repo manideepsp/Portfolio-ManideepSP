@@ -1,16 +1,32 @@
-# Portfolio Site
+<div align="center">
 
-A modern, dark-themed portfolio website built with Astro, featuring dynamic project showcases, interactive timelines, and a sophisticated contact system powered by GitHub Issues.
+# 🚀 Portfolio Site v1.0
 
-![Portfolio Site](https://img.shields.io/badge/Status-Production-success)
-![Astro](https://img.shields.io/badge/Astro-5.16.4-orange)
-![License](https://img.shields.io/badge/License-MIT-blue)
+### A Modern, Dark-Themed Developer Portfolio
+
+*Built with Astro • Powered by Cloudflare Workers • Deployed on GitHub Pages*
+
+[![Version](https://img.shields.io/badge/Version-1.0.0-brightgreen?style=for-the-badge)](https://github.com/manideepsp/Portfolio-ManideepSP/releases/tag/v1.0.0)
+[![Status](https://img.shields.io/badge/Status-Production-success?style=for-the-badge)](https://manideepsp.github.io/Portfolio-ManideepSP)
+[![Astro](https://img.shields.io/badge/Astro-5.16.4-FF5D01?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+
+[![GitHub Stars](https://img.shields.io/github/stars/manideepsp/Portfolio-ManideepSP?style=social)](https://github.com/manideepsp/Portfolio-ManideepSP)
+[![GitHub Forks](https://img.shields.io/github/forks/manideepsp/Portfolio-ManideepSP?style=social)](https://github.com/manideepsp/Portfolio-ManideepSP/fork)
+
+---
+
+**[🌐 Live Demo](https://manideepsp.github.io/Portfolio-ManideepSP)** • **[📖 Documentation](#-installation)** • **[🐛 Report Bug](https://github.com/manideepsp/Portfolio-ManideepSP/issues)** • **[✨ Request Feature](https://github.com/manideepsp/Portfolio-ManideepSP/issues)**
+
+</div>
 
 ---
 
 ## 📋 Table of Contents
 
 - [Project Overview](#-project-overview)
+- [Architecture](#-architecture)
+- [System Flowcharts](#-system-flowcharts)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
 - [Project Structure](#-project-structure)
@@ -20,8 +36,10 @@ A modern, dark-themed portfolio website built with Astro, featuring dynamic proj
 - [Deployment](#-deployment)
 - [Troubleshooting](#-troubleshooting)
 - [Future Enhancements](#-future-enhancements)
+- [Contributing](#-contributing)
 - [License](#-license)
 - [Author](#-author)
+- [Acknowledgments](#-acknowledgments)
 
 ---
 
@@ -33,37 +51,316 @@ This portfolio website serves as a comprehensive professional showcase, designed
 
 ### Core Purpose and Goals
 
-- **Recruiter-Friendly Navigation**: Streamlined UX designed for hiring managers and technical recruiters
-- **Data-Driven Content**: Projects, experience, and skills are managed through configuration files and markdown
-- **Modern, Professional Aesthetic**: Dark theme with neon cyan accents, glass-morphism effects, and scroll-reveal animations
-- **Zero-Cost Infrastructure**: Static site deployment with serverless contact form handling via Cloudflare Workers
-- **Automated Content Updates**: CI/CD pipeline rebuilds site automatically when content changes
+| Goal | Description |
+|------|-------------|
+| 🎯 **Recruiter-Friendly** | Streamlined UX designed for hiring managers and technical recruiters |
+| 📊 **Data-Driven Content** | Projects, experience, and skills managed through configuration files and markdown |
+| 🎨 **Modern Aesthetic** | Dark theme with neon cyan accents, glass-morphism effects, and scroll-reveal animations |
+| 💰 **Zero-Cost Infrastructure** | Static site deployment with serverless contact form via Cloudflare Workers |
+| 🔄 **Automated Updates** | CI/CD pipeline rebuilds site automatically when content changes |
+| 🔒 **Privacy-First Contact** | Contact form creates GitHub Issues - no database, no third-party services |
 
-### Architecture Summary
+### Key Highlights
 
-The site follows a **static-first architecture** using Astro's build-time rendering capabilities:
+- ✅ **100% Static** - No server-side runtime required
+- ✅ **Lighthouse Score 95+** - Optimized performance out of the box
+- ✅ **Mobile-First** - Fully responsive design
+- ✅ **SEO Optimized** - Proper meta tags, sitemap, and semantic HTML
+- ✅ **Accessible** - Keyboard navigation and screen reader support
+- ✅ **Customizable** - Single config file for all personalization
 
-1. **Build Time**: Fetches README files from GitHub repos, parses CSV/markdown content, generates static HTML
-2. **Runtime**: Minimal JavaScript for animations (ScrollReveal), cursor effects, and form handling
-3. **Contact Flow**: Form submissions → Cloudflare Worker → GitHub repository_dispatch → GitHub Actions → Creates Issue
-4. **Deployment**: GitHub Actions builds and deploys to GitHub Pages on push to main branch
+---
+
+## 🏗 Architecture
+
+### High-Level System Architecture
+
+The portfolio follows a **static-first architecture** using Astro's build-time rendering capabilities combined with serverless functions for dynamic features.
+
+```mermaid
+graph TB
+    subgraph "Content Sources"
+        A[📄 config.json] --> B[Astro Build]
+        C[📝 Markdown Files] --> B
+        D[📊 CSV Data] --> B
+        E[🐙 GitHub READMEs] --> B
+    end
+
+    subgraph "Build Process"
+        B --> F[Static HTML/CSS/JS]
+    end
+
+    subgraph "Hosting"
+        F --> G[GitHub Pages CDN]
+    end
+
+    subgraph "Runtime Services"
+        H[📧 Contact Form] --> I[Cloudflare Worker]
+        I --> J[GitHub API]
+        J --> K[GitHub Actions]
+        K --> L[GitHub Issues]
+    end
+
+    subgraph "User"
+        M[🌐 Browser] --> G
+        M --> H
+    end
+```
+
+### Component Architecture
+
+```mermaid
+graph LR
+    subgraph "Pages Layer"
+        P1[index.astro]
+        P2[projects.astro]
+        P3[resume.astro]
+        P4[about.astro]
+        P5[contact.astro]
+        P6[projects/slug.astro]
+    end
+
+    subgraph "Components Layer"
+        C1[Header]
+        C2[Footer]
+        C3[ProjectCard]
+        C4[ExperienceTimeline]
+        C5[ResumeViewer]
+        C6[ScrollRevealWrapper]
+        C7[CursorLight]
+        C8[MarkdownRenderer]
+    end
+
+    subgraph "Library Layer"
+        L1[config.json]
+        L2[readmeFetcher.js]
+        L3[markdown.js]
+        L4[csvParser.js]
+        L5[sr.js]
+        L6[githubForm.js]
+    end
+
+    subgraph "Layout Layer"
+        B1[BaseLayout.astro]
+    end
+
+    P1 --> B1
+    P2 --> B1
+    P3 --> B1
+    P4 --> B1
+    P5 --> B1
+    P6 --> B1
+
+    B1 --> C1
+    B1 --> C2
+    B1 --> C7
+
+    P1 --> C3
+    P1 --> C4
+    P2 --> C3
+    P6 --> C8
+
+    C3 --> L1
+    C3 --> L2
+    C8 --> L3
+    P4 --> L4
+```
+
+### Data Flow Architecture
+
+```mermaid
+flowchart LR
+    subgraph "Build Time"
+        direction TB
+        GH[GitHub API] -->|fetch README| RF[readmeFetcher.js]
+        RF --> MD[markdown.js]
+        MD -->|sanitize & transform| HTML[HTML Output]
+        
+        CSV[skills.csv] --> CP[csvParser.js]
+        CP --> SKILLS[Skills Data]
+        
+        EXP[experience.md] --> MD
+        ABOUT[about.md] --> MD
+    end
+
+    subgraph "Static Assets"
+        HTML --> DIST[dist/]
+        SKILLS --> DIST
+        IMG[images/] --> DIST
+        PDF[resumes/] --> DIST
+    end
+
+    subgraph "CDN"
+        DIST --> GHP[GitHub Pages]
+    end
+```
+
+### ASCII Architecture Diagram
+
+For environments that don't support Mermaid:
 
 ```
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│   Content   │────▶│ Astro Build  │────▶│ Static Site │
-│ (MD/CSV/API)│     │   (SSG)      │     │  (GitHub)   │
-└─────────────┘     └──────────────┘     └─────────────┘
-                                                │
-                                                │
-┌─────────────┐     ┌──────────────┐           │
-│ Contact Form│────▶│   Cloudflare │──────────▶│
-│             │     │    Worker    │           │
-└─────────────┘     └──────────────┘           │
-                           │                   │
-                           ▼                   ▼
-                    ┌──────────────┐    ┌─────────────┐
-                    │GitHub Actions│───▶│GitHub Issues│
-                    └──────────────┘    └─────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           PORTFOLIO SITE ARCHITECTURE                        │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────┐     ┌──────────────────┐     ┌─────────────────────┐  │
+│  │  CONTENT LAYER  │     │   BUILD LAYER    │     │   HOSTING LAYER     │  │
+│  ├─────────────────┤     ├──────────────────┤     ├─────────────────────┤  │
+│  │                 │     │                  │     │                     │  │
+│  │ • config.json   │────▶│  Astro SSG       │────▶│  GitHub Pages       │  │
+│  │ • about.md      │     │  ─────────────   │     │  ──────────────     │  │
+│  │ • experience.md │     │  • Parse MD      │     │  • Global CDN       │  │
+│  │ • skills.csv    │     │  • Fetch READMEs │     │  • HTTPS            │  │
+│  │ • GitHub APIs   │     │  • Process CSS   │     │  • Custom Domain    │  │
+│  │                 │     │  • Bundle JS     │     │                     │  │
+│  └─────────────────┘     └──────────────────┘     └─────────────────────┘  │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │                    CONTACT FORM FLOW                                 │   │
+│  ├─────────────────────────────────────────────────────────────────────┤   │
+│  │                                                                      │   │
+│  │   ┌────────┐      ┌────────────┐      ┌─────────┐      ┌─────────┐  │   │
+│  │   │ Form   │─────▶│ Cloudflare │─────▶│ GitHub  │─────▶│ GitHub  │  │   │
+│  │   │ Submit │      │ Worker     │      │ Actions │      │ Issue   │  │   │
+│  │   └────────┘      └────────────┘      └─────────┘      └─────────┘  │   │
+│  │                          │                                           │   │
+│  │                          ▼                                           │   │
+│  │                   ┌────────────┐                                     │   │
+│  │                   │ Fallback:  │                                     │   │
+│  │                   │ Direct GH  │                                     │   │
+│  │                   │ Issue Link │                                     │   │
+│  │                   └────────────┘                                     │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🔄 System Flowcharts
+
+### Build Process Flow
+
+This flowchart shows how content is processed during `npm run build`:
+
+```mermaid
+flowchart TD
+    START([npm run build]) --> A[Load config.json]
+    A --> B{For each project in config}
+    
+    B --> C[Fetch README from GitHub]
+    C --> D[Parse Markdown to AST]
+    D --> E[Transform image URLs to absolute paths]
+    E --> F[Sanitize HTML for security]
+    F --> G[Generate HTML output]
+    G --> B
+    
+    B --> H[Parse content/about.md]
+    H --> I[Parse content/experience.md]
+    I --> J[Parse content/skills.csv]
+    
+    J --> K[Generate Astro pages]
+    K --> L[Bundle CSS/JS assets]
+    L --> M[Optimize images]
+    M --> N[Generate sitemap.xml]
+    N --> O[Output to dist/ folder]
+    O --> END([Build Complete])
+```
+
+### Contact Form Submission Flow
+
+This flowchart shows the complete journey of a contact form submission:
+
+```mermaid
+flowchart TD
+    START([User fills form]) --> A{Form valid?}
+    
+    A -->|No| B[Show validation error]
+    B --> START
+    
+    A -->|Yes| C[Show loading spinner]
+    C --> D[POST to Cloudflare Worker]
+    
+    D --> E{Worker response?}
+    
+    E -->|Success| F[Worker validates payload]
+    F --> G[Worker calls GitHub API]
+    G --> H{GitHub API response?}
+    
+    H -->|Success| I[Trigger repository_dispatch]
+    I --> J[GitHub Actions workflow starts]
+    J --> K[Create GitHub Issue]
+    K --> L[Email notification sent]
+    L --> M[Show success message]
+    M --> N[Reset form]
+    N --> END([Complete])
+    
+    H -->|Error 401| O[Invalid GitHub token]
+    O --> P[Show error message]
+    
+    E -->|Error/Timeout| Q{Fallback enabled?}
+    Q -->|Yes| R[Show fallback message]
+    R --> S[Redirect to GitHub Issues]
+    S --> END
+    
+    Q -->|No| P
+    P --> END
+```
+
+### Page Navigation Flow
+
+```mermaid
+flowchart LR
+    subgraph "Navigation"
+        HOME[🏠 Home] --> PROJ[📁 Projects]
+        PROJ --> DETAIL[📄 Project Detail]
+        HOME --> ABOUT[👤 About]
+        HOME --> RESUME[📄 Resume]
+        HOME --> CONTACT[📧 Contact]
+    end
+    
+    subgraph "Project Detail"
+        DETAIL --> README[Rendered README]
+        DETAIL --> LINKS[GitHub/Demo Links]
+        DETAIL --> TECH[Tech Stack Tags]
+    end
+```
+
+### Data Transformation Pipeline
+
+```mermaid
+flowchart LR
+    A[Raw Markdown] --> B[remark-parse]
+    B --> C[AST Tree]
+    C --> D[remark-rehype]
+    D --> E[HTML AST]
+    E --> F[rehype-sanitize]
+    F --> G[Safe HTML AST]
+    G --> H[Image URL Transform]
+    H --> I[rehype-stringify]
+    I --> J[Final HTML]
+```
+
+### Runtime JavaScript Flow
+
+```mermaid
+flowchart TD
+    LOAD([Page Load]) --> A[Initialize CursorLight]
+    A --> B[Initialize ScrollReveal]
+    B --> C{Is touch device?}
+    
+    C -->|Yes| D[Disable cursor effects]
+    C -->|No| E[Enable cursor tracking]
+    
+    E --> F[Add mousemove listener]
+    F --> G[Update gradient position]
+    
+    B --> H[Register scroll observers]
+    H --> I{Element in viewport?}
+    I -->|Yes| J[Play reveal animation]
+    I -->|No| K[Wait for scroll]
+    K --> I
 ```
 
 ---
@@ -1017,8 +1314,68 @@ If you encounter issues not covered here:
 
 ---
 
+## 🤝 Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**!
+
+### How to Contribute
+
+1. **Fork the Project**
+   ```powershell
+   # Click the Fork button on GitHub, then clone your fork
+   git clone https://github.com/YOUR-USERNAME/Portfolio-ManideepSP.git
+   cd Portfolio-ManideepSP
+   ```
+
+2. **Create your Feature Branch**
+   ```powershell
+   git checkout -b feature/AmazingFeature
+   ```
+
+3. **Make your Changes**
+   - Follow existing code style and conventions
+   - Test your changes locally with `npm run dev`
+   - Ensure build passes with `npm run build`
+
+4. **Commit your Changes**
+   ```powershell
+   git commit -m 'Add some AmazingFeature'
+   ```
+
+5. **Push to the Branch**
+   ```powershell
+   git push origin feature/AmazingFeature
+   ```
+
+6. **Open a Pull Request**
+   - Go to the original repository
+   - Click "New Pull Request"
+   - Select your fork and branch
+   - Describe your changes in detail
+
+### Contribution Guidelines
+
+| Type | Description |
+|------|-------------|
+| 🐛 **Bug Reports** | Open an issue with detailed reproduction steps |
+| ✨ **Feature Requests** | Open an issue describing the feature and use case |
+| 📖 **Documentation** | Improvements to README, comments, or code docs |
+| 🎨 **Design** | UI/UX improvements, accessibility enhancements |
+| 🔧 **Code** | Bug fixes, new features, performance improvements |
+
+### Code of Conduct
+
+Please be respectful and constructive in all interactions. We follow the [Contributor Covenant](https://www.contributor-covenant.org/) code of conduct.
+
+---
+
 ## 📄 License
 
+This project is licensed under the **MIT License** - you are free to use, modify, and distribute this code for personal or commercial purposes.
+
+### License Terms
+
+```
 MIT License
 
 Copyright (c) 2025 Manideep SP
@@ -1040,23 +1397,77 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
+
+### Attribution Requirement
+
+When using this project as a template or base for your own portfolio:
+
+> **Please include attribution to the original project by:**
+> 1. Keeping a link to this repository in your README, OR
+> 2. Adding a comment in your source code referencing this project, OR
+> 3. Mentioning this project in your portfolio's footer or about section
+
+Example attribution:
+```html
+<!-- Based on Portfolio Site by Manideep SP -->
+<!-- https://github.com/manideepsp/Portfolio-ManideepSP -->
+```
+
+### What You Can Do
+
+✅ Use this as a template for your personal portfolio  
+✅ Modify and customize for your needs  
+✅ Use commercially (freelance, business, etc.)  
+✅ Distribute your modified version  
+✅ Use in private projects  
+
+### What We Ask
+
+🙏 Include attribution to the original project  
+🙏 Keep the MIT license notice in your copy  
+🙏 Star the repo if you find it useful ⭐  
+🙏 Consider contributing improvements back  
 
 ---
 
 ## 👤 Author
 
+<div align="center">
+
 **Manideep SP**
 
-- GitHub: [@manideepsp](https://github.com/manideepsp)
-- Portfolio: [https://manideepsp.github.io/Portfolio-ManideepSP](https://manideepsp.github.io/Portfolio-ManideepSP)
-- LinkedIn: [https://www.linkedin.com/in/manideepsp/](https://www.linkedin.com/in/manideepsp/)
+[![GitHub](https://img.shields.io/badge/GitHub-@manideepsp-181717?style=for-the-badge&logo=github)](https://github.com/manideepsp)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit_Site-00D9FF?style=for-the-badge&logo=astro)](https://manideepsp.github.io/Portfolio-ManideepSP)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/manideepsp/)
+
+</div>
+
+---
+
+## 🙏 Acknowledgments
+
+- [Astro](https://astro.build/) - The web framework for content-driven websites
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+- [ScrollReveal](https://scrollrevealjs.org/) - Easy scroll animations
+- [Cloudflare Workers](https://workers.cloudflare.com/) - Serverless functions at the edge
+- [GitHub Actions](https://github.com/features/actions) - Automation and CI/CD
+- [GitHub Pages](https://pages.github.com/) - Free static site hosting
+- [Remark](https://github.com/remarkjs/remark) & [Rehype](https://github.com/rehypejs/rehype) - Markdown processing
+- All the amazing open-source contributors who make projects like this possible! ❤️
 
 ---
 
 <div align="center">
 
+### 🚀 Portfolio Site v1.0
+
 **Built with ❤️ using Astro, Tailwind CSS, and Cloudflare Workers**
 
 If you found this project helpful, please consider giving it a ⭐️!
+
+---
+
+[Report Bug](https://github.com/manideepsp/Portfolio-ManideepSP/issues) • [Request Feature](https://github.com/manideepsp/Portfolio-ManideepSP/issues) • [Fork Project](https://github.com/manideepsp/Portfolio-ManideepSP/fork)
 
 </div>
