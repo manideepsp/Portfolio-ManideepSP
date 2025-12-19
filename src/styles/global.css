@@ -653,7 +653,7 @@ img, svg {
   border: 1px solid rgba(148, 163, 184, 0.14);
   border-radius: 12px;
   padding: clamp(22px, 4vw, 28px);
-  transition: all 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   box-shadow: var(--shadow);
   position: relative;
   z-index: 2;

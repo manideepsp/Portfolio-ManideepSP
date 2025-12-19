@@ -23,7 +23,7 @@ const detailUrl = slug ? `${basePath}/projects/${slug}` : repoUrl;
     <div class="project-card-row">
       {image && (
         <div class="project-card-media">
-          <img src={imageSrc} alt={title} class="project-card-image" loading="lazy" />
+          <img src={imageSrc} alt={title} class="project-card-image" loading="lazy" decoding="async" />
         </div>
       )}
       <div class="project-card-info">
