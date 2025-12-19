@@ -884,7 +884,7 @@ img, svg {
    SCROLL REVEAL (CSS-driven, observer-triggered)
    ============================================ */
 
-.scroll-reveal {
+html.js-loaded .scroll-reveal {
   opacity: 0;
   transform: translateY(18px) scale(0.985);
   filter: blur(6px);
@@ -892,14 +892,14 @@ img, svg {
   transition-delay: var(--reveal-delay, 0ms);
 }
 
-.js-loaded .scroll-reveal.reveal {
+html.js-loaded .scroll-reveal.reveal {
   opacity: 1;
   transform: translateY(0) scale(1);
   filter: blur(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scroll-reveal, .js-loaded .scroll-reveal.reveal {
+  .scroll-reveal, html.js-loaded .scroll-reveal.reveal {
     transition: none;
     transform: none;
     filter: none;

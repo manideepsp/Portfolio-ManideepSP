@@ -92,6 +92,15 @@ function initScrollReveal() {
   }, { threshold: 0.1 });
   
   elements.forEach(element => observer.observe(element));
+
+  // Fallback: if anything remains hidden after 1.2s (e.g., Observer not firing), reveal it
+  setTimeout(() => {
+    elements.forEach(el => {
+      if (!el.classList.contains('reveal')) {
+        el.classList.add('reveal');
+      }
+    });
+  }, 1200);
 }
 
 // Run on DOM ready
