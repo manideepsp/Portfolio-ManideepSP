@@ -54,6 +54,27 @@ export const sr = {
 // This handles elements with class="scroll-reveal" that use CSS transitions
 function initScrollReveal() {
   if (typeof window === 'undefined') return;
+
+  // Auto-attach scroll-reveal class to common UI blocks for progressive enhancement
+  const autoAttachSelectors = [
+    '.card',
+    '.project-card',
+    '.timeline-item',
+    '.email-card',
+    '.glass-section',
+    '.footer__col',
+    '.hero-section',
+    '.about-block',
+    '.markdown-render',
+  ];
+
+  autoAttachSelectors.forEach((sel) => {
+    document.querySelectorAll(sel).forEach((el) => {
+      if (!el.classList.contains('scroll-reveal')) {
+        el.classList.add('scroll-reveal');
+      }
+    });
+  });
   
   // Add js-loaded class to enable CSS animations (progressive enhancement)
   document.documentElement.classList.add('js-loaded');

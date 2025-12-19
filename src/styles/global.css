@@ -880,6 +880,33 @@ img, svg {
   .glass-section { padding: 20px; }
 }
 
+/* ============================================
+   SCROLL REVEAL (CSS-driven, observer-triggered)
+   ============================================ */
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  filter: blur(6px);
+  transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js-loaded .scroll-reveal.reveal {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal, .js-loaded .scroll-reveal.reveal {
+    transition: none;
+    transform: none;
+    filter: none;
+    opacity: 1;
+  }
+}
+
 
 .markdown-render code {
   background: rgba(99,102,241,0.10);
