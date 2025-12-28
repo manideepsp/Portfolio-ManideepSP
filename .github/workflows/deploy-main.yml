@@ -26,9 +26,25 @@ jobs:
           EOF
       - name: Build
         run: npm run build
-      - name: Deploy to gh-pages (prod)
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
+      - name: Deploy to gh-pages (prod, manual)
+        env:
+          REPO: ${{ github.repository }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -e
+          mkdir out
+          cd out
+          git init
+          git remote add origin https://x-access-token:${TOKEN}@github.com/${REPO}
+          if git ls-remote --exit-code --heads origin gh-pages; then
+            git fetch origin gh-pages
+            git checkout -b gh-pages origin/gh-pages
+          else
+            git checkout --orphan gh-pages
+          fi
+          git rm -rf . || true
+          cp -r ../dist/* .
+          git add -A
+          git commit -m "ci: deploy to gh-pages (prod) - ${SHA}" || echo "No changes to commit"
+          git push origin gh-pages --force
