@@ -1549,6 +1549,13 @@ html.js-loaded .scroll-reveal.reveal,
   position: relative;
 }
 
+/* Mobile: wider resume viewer */
+@media (max-width: 768px) {
+  .resume-viewer {
+    width: 95%;
+  }
+}
+
 .resume-viewer .controls {
   margin-bottom: 12px;
   text-align: center;
