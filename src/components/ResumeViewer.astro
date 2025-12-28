@@ -4,11 +4,415 @@ const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : 
 const resumeUrl = `${basePath}${config.resume.displayLink}`;
 ---
 
-<div class="resume-viewer card">
+<div class="resume-viewer card" data-resume-url={resumeUrl}>
   <div class="controls">
-    <a class="btn primary" href={resumeUrl} target="_blank" rel="noopener">Download Resume</a>
+    <div class="controls-left">
+      <div class="page-nav">
+        <button class="nav-btn" id="prev-page" type="button" disabled>&lsaquo;</button>
+        <span class="page-info"><span id="current-page">1</span> / <span id="total-pages">1</span></span>
+        <button class="nav-btn" id="next-page" type="button" disabled>&rsaquo;</button>
+      </div>
+
+      <div class="zoom-control">
+        <label for="zoom-select">Zoom:</label>
+        <select id="zoom-select" class="zoom-select">
+          <option value="fit-page" selected>Fit Page</option>
+          <option value="fit-width">Fit Width</option>
+          <option value="50">50%</option>
+          <option value="75">75%</option>
+          <option value="100">100%</option>
+          <option value="125">125%</option>
+          <option value="150">150%</option>
+          <option value="200">200%</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="controls-right">
+      <button class="btn secondary" id="print-btn" type="button">Print</button>
+      <a class="btn primary" href={resumeUrl} target="_blank" rel="noopener">Download</a>
+    </div>
   </div>
+
   <div class="pdf-container">
-    <iframe src={`${resumeUrl}#toolbar=0`} title="Resume viewer"></iframe>
+    <div class="pdf-viewport" id="pdf-viewport">
+      <canvas id="pdf-canvas"></canvas>
+      <div class="pdf-loading" id="pdf-loading">Loading resume...</div>
+    </div>
   </div>
 </div>
+
+<script>
+  (function() {
+    const viewer = document.querySelector('.resume-viewer');
+    if (!viewer) return;
+
+    const pdfUrl = viewer.dataset.resumeUrl || '';
+    const canvas = document.getElementById('pdf-canvas');
+    const loadingEl = document.getElementById('pdf-loading');
+    const zoomSelect = document.getElementById('zoom-select');
+    const prevBtn = document.getElementById('prev-page');
+    const nextBtn = document.getElementById('next-page');
+    const currentPageEl = document.getElementById('current-page');
+    const totalPagesEl = document.getElementById('total-pages');
+    const printBtn = document.getElementById('print-btn');
+    const viewportEl = document.getElementById('pdf-viewport');
+
+    // Toast helper
+    function showToast(type, msg) {
+      let c = document.getElementById('toastContainer');
+      if (!c) {
+        c = document.createElement('div');
+        c.id = 'toastContainer';
+        c.className = 'toast-container';
+        document.body.appendChild(c);
+      }
+      const toast = document.createElement('div');
+      toast.className = 'toast toast-' + type;
+      toast.setAttribute('role', 'status');
+      toast.innerHTML = '<div class="toast-body">' + msg + '<button class="toast-close" aria-label="Dismiss">&times;</button></div>';
+      c.appendChild(toast);
+      const closeBtn = toast.querySelector('.toast-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+          toast.classList.add('toast-hide');
+          setTimeout(function() { toast.remove(); }, 220);
+        });
+      }
+      setTimeout(function() {
+        toast.classList.add('toast-hide');
+        setTimeout(function() { try { toast.remove(); } catch(e){} }, 220);
+      }, 8000);
+    }
+
+    // State
+    let pdfDoc = null;
+    let currentPage = 1;
+    let totalPages = 1;
+    let currentZoomMode = 'fit-page';
+
+    function updatePageButtons() {
+      if (prevBtn) prevBtn.disabled = currentPage <= 1;
+      if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+      if (currentPageEl) currentPageEl.textContent = currentPage;
+      if (totalPagesEl) totalPagesEl.textContent = totalPages;
+    }
+
+    function updateViewportScroll(zoomMode) {
+      if (!viewportEl) return;
+      
+      if (zoomMode === 'fit-page') {
+        // Fit page: no scroll, centered
+        viewportEl.style.overflow = 'hidden';
+        viewportEl.classList.remove('scrollable');
+      } else {
+        // Fit width or zoomed: enable scroll
+        viewportEl.style.overflow = 'auto';
+        viewportEl.classList.add('scrollable');
+      }
+    }
+
+    async function renderPage(pageNum, zoomMode) {
+      if (!pdfDoc || !canvas || !viewportEl) return;
+
+      try {
+        const page = await pdfDoc.getPage(pageNum);
+        
+        // Get container dimensions (subtract padding)
+        const containerWidth = viewportEl.clientWidth - 32;
+        const containerHeight = viewportEl.clientHeight - 32;
+        
+        // Get page dimensions at scale 1
+        const unscaledViewport = page.getViewport({ scale: 1 });
+        const pageWidth = unscaledViewport.width;
+        const pageHeight = unscaledViewport.height;
+        
+        // Calculate scale based on zoom mode
+        let scale;
+        
+        if (zoomMode === 'fit-page') {
+          // Fit entire page in viewport
+          const scaleX = containerWidth / pageWidth;
+          const scaleY = containerHeight / pageHeight;
+          scale = Math.min(scaleX, scaleY);
+        } else if (zoomMode === 'fit-width') {
+          // Fit width, allow vertical scroll
+          scale = containerWidth / pageWidth;
+        } else {
+          // Percentage zoom (e.g., 50, 75, 100, 125, 150, 200)
+          // 100% = actual PDF size (72 DPI base)
+          scale = parseInt(zoomMode, 10) / 100;
+        }
+        
+        // Update scroll behavior
+        updateViewportScroll(zoomMode);
+        
+        // Get scaled viewport
+        const scaledViewport = page.getViewport({ scale: scale });
+        
+        // HiDPI support
+        const outputScale = window.devicePixelRatio || 1;
+        
+        // Set canvas dimensions for crisp rendering
+        const ctx = canvas.getContext('2d');
+        canvas.width = Math.floor(scaledViewport.width * outputScale);
+        canvas.height = Math.floor(scaledViewport.height * outputScale);
+        canvas.style.width = Math.floor(scaledViewport.width) + 'px';
+        canvas.style.height = Math.floor(scaledViewport.height) + 'px';
+
+        // Apply transform for HiDPI
+        const transform = outputScale !== 1 
+          ? [outputScale, 0, 0, outputScale, 0, 0] 
+          : null;
+
+        await page.render({ 
+          canvasContext: ctx, 
+          viewport: scaledViewport,
+          transform: transform
+        }).promise;
+        
+        updatePageButtons();
+      } catch (err) {
+        console.error('Render error', err);
+      }
+    }
+
+    async function loadPdf() {
+      if (!pdfUrl) {
+        if (loadingEl) loadingEl.textContent = 'No resume URL configured.';
+        return;
+      }
+
+      try {
+        // Load PDF.js
+        if (!window.pdfjsLib) {
+          const script = document.createElement('script');
+          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+          script.async = true;
+          await new Promise(function(resolve, reject) {
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+          });
+        }
+
+        const pdfjsLib = window.pdfjsLib;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
+        totalPages = pdfDoc.numPages;
+        currentPage = 1;
+
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (canvas) canvas.style.display = 'block';
+        
+        updatePageButtons();
+        await renderPage(currentPage, currentZoomMode);
+
+      } catch (err) {
+        console.error('PDF load error:', err);
+        if (loadingEl) loadingEl.style.display = 'none';
+        showToast('error', 'Unable to load resume in browser. Please use the Download button.');
+      }
+    }
+
+    // Event handlers
+    if (prevBtn) {
+      prevBtn.addEventListener('click', async function() {
+        if (currentPage > 1) {
+          currentPage--;
+          await renderPage(currentPage, currentZoomMode);
+          // Scroll to top when changing pages
+          if (viewportEl) viewportEl.scrollTop = 0;
+        }
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', async function() {
+        if (currentPage < totalPages) {
+          currentPage++;
+          await renderPage(currentPage, currentZoomMode);
+          // Scroll to top when changing pages
+          if (viewportEl) viewportEl.scrollTop = 0;
+        }
+      });
+    }
+
+    if (zoomSelect) {
+      zoomSelect.addEventListener('change', async function(e) {
+        currentZoomMode = e.target.value;
+        await renderPage(currentPage, currentZoomMode);
+      });
+    }
+
+    if (printBtn) {
+      printBtn.addEventListener('click', function() {
+        window.print();
+      });
+    }
+
+    // Handle window resize (re-render for fit modes)
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(function() {
+        if (pdfDoc && (currentZoomMode === 'fit-page' || currentZoomMode === 'fit-width')) {
+          renderPage(currentPage, currentZoomMode);
+        }
+      }, 150);
+    });
+
+    // Hide canvas initially until loaded
+    if (canvas) canvas.style.display = 'none';
+
+    loadPdf();
+  })();
+</script>
+
+<style>
+  .resume-viewer .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .resume-viewer .controls-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .resume-viewer .controls-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .resume-viewer .page-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(15, 23, 42, 0.5);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+  }
+  .resume-viewer .nav-btn {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: var(--text);
+    font-size: 1.25rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+  .resume-viewer .nav-btn:hover:not(:disabled) {
+    background: rgba(255,255,255,0.2);
+  }
+  .resume-viewer .nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .resume-viewer .page-info {
+    font-size: 0.875rem;
+    color: var(--muted);
+    min-width: 3rem;
+    text-align: center;
+  }
+  .resume-viewer .zoom-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .resume-viewer .zoom-control label {
+    font-weight: 500;
+  }
+  .resume-viewer .zoom-select {
+    background: rgba(15, 23, 42, 0.8);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+  .resume-viewer .zoom-select:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .resume-viewer .pdf-container {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .resume-viewer .pdf-viewport {
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .resume-viewer .pdf-viewport.scrollable {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .resume-viewer .pdf-viewport.scrollable #pdf-canvas {
+    margin: 0 auto;
+  }
+  .resume-viewer #pdf-canvas {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    border-radius: 4px;
+    background: #fff;
+  }
+  .resume-viewer .pdf-loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+  }
+
+  /* Custom scrollbar for zoomed view */
+  .resume-viewer .pdf-viewport.scrollable::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .resume-viewer .pdf-viewport.scrollable::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 5px;
+  }
+  .resume-viewer .pdf-viewport.scrollable::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 5px;
+  }
+  .resume-viewer .pdf-viewport.scrollable::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.3);
+  }
+
+  /* Print styles */
+  @media print {
+    .resume-viewer .controls {
+      display: none !important;
+    }
+    .resume-viewer .pdf-container {
+      background: none;
+      padding: 0;
+    }
+    .resume-viewer .pdf-viewport {
+      height: auto;
+      overflow: visible;
+    }
+    .resume-viewer #pdf-canvas {
+      box-shadow: none;
+      max-width: 100%;
+      height: auto;
+    }
+  }
+</style>
