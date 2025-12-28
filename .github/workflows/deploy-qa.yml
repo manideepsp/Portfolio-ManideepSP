@@ -36,18 +36,13 @@ jobs:
           set -e
           mkdir out
           cd out
-          git init
+          git init -b gh-pages-qa
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote add origin https://x-access-token:${TOKEN}@github.com/${REPO}
-          if git ls-remote --exit-code --heads origin gh-pages-qa; then
-            git fetch origin gh-pages-qa
-            git checkout -b gh-pages-qa origin/gh-pages-qa
-          else
-            git checkout --orphan gh-pages-qa
-          fi
-          git rm -rf . || true
           cp -r ../dist/* .
           git add -A
-          git commit -m "ci: deploy to gh-pages-qa - ${SHA}" || echo "No changes to commit"
+          git commit -m "ci: deploy to gh-pages-qa - ${SHA}"
           git push origin gh-pages-qa --force
       - name: Create PR qa -> main (if none exists)
         uses: actions/github-script@v6

@@ -34,21 +34,15 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           set -e
-          # prepare a fresh git repo for the gh-pages-dev branch
           mkdir out
           cd out
-          git init
+          git init -b gh-pages-dev
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote add origin https://x-access-token:${TOKEN}@github.com/${REPO}
-          if git ls-remote --exit-code --heads origin gh-pages-dev; then
-            git fetch origin gh-pages-dev
-            git checkout -b gh-pages-dev origin/gh-pages-dev
-          else
-            git checkout --orphan gh-pages-dev
-          fi
-          git rm -rf . || true
           cp -r ../dist/* .
           git add -A
-          git commit -m "ci: deploy to gh-pages-dev - ${SHA}" || echo "No changes to commit"
+          git commit -m "ci: deploy to gh-pages-dev - ${SHA}"
           git push origin gh-pages-dev --force
       - name: Create PR dev -> qa (if none exists)
         uses: actions/github-script@v6
