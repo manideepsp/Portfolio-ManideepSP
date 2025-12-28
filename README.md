@@ -381,7 +381,34 @@ flowchart TD
 - **Direct Download**: One-click download for any resume version
 - **Responsive Display**: Mobile-optimized PDF viewing experience
 
-**Implementation**: Resume PDFs are stored in `/public/resumes/` and managed through the `ResumeViewer.astro` component, which provides a native PDF embed with fallback options.
+**Implementation**: Resume PDFs are stored in `/public/resumes/` and managed through the `ResumeViewer.astro` component. The viewer is implemented using PDF.js and provides a robust in-browser experience with several user-friendly features and graceful fallbacks.
+
+#### Resume Viewer (controls & behavior)
+
+- Source: `public/resumes/` (add new PDF files here). The active resume link is configured in `src/lib/config.json` via the `resume.displayLink` property.
+- Rendering: Uses PDF.js (CDN) and a canvas-based renderer for crisp, cross-browser output with HiDPI (devicePixelRatio) support.
+- Navigation: Previous/Next page buttons with a current/total page indicator.
+- Zoom modes: `Fit Page` (default), `Fit Width`, and preset percentages (50%, 75%, 100%, 125%, 150%, 200%).
+- Scrolling: "Fit Page" shows a single full page without scrolling. Selecting a zoom > Fit Page or `Fit Width` enables scrolling so users can pan horizontally/vertically.
+- Mobile: On small screens the component simplifies the chrome (card background removed) and centers the PDF viewport to occupy ~90% width for better legibility.
+- Print: The Print button opens the raw PDF in a new tab and triggers the browser print dialog so only the PDF is printed (avoids printing the surrounding page chrome).
+- Download: The Download button opens the PDF in a new tab for direct downloading.
+- Errors: Load/render errors display an in-app toast notification instead of an inline error block.
+
+#### Developer notes
+
+- Component file: `src/components/ResumeViewer.astro` — contains the viewer logic, controls, and the small inline toast helper used for error messages.
+- Styling: `src/styles/global.css` contains the layout, responsive behavior, and toast styles. Mobile-specific rules hide the heavy card chrome and center the PDF viewport.
+- Adding a new resume: Place the PDF in `public/resumes/` and update `src/lib/config.json` → `resume.displayLink` to the new relative path (e.g. `/resumes/my-resume.pdf`).
+- CORS/Serving: Ensure the resume files are served as static assets (they live under `public/`) and are accessible at build/deploy time.
+
+#### Troubleshooting
+
+- If the viewer shows a toast like "Unable to load resume in browser", check that the file exists under `public/resumes/` and that `resume.displayLink` is set correctly in `src/lib/config.json`.
+- If the browser blocks popups, the Print button may not open a new tab automatically — the viewer will show an informational toast asking the user to print from the opened PDF tab.
+- For blurry rendering on Retina devices, PDF.js uses `devicePixelRatio` to render canvases at higher resolution; ensure `window.devicePixelRatio` isn't being overridden by browser extensions.
+
+The viewer is designed to be robust on both desktop and mobile; if you want the PDF to always render as a continuous scroll of pages (instead of single-page view by default), see `src/components/ResumeViewer.astro` and the `renderPage` logic for easy customization.
 
 ### 3. **GitHub Issues Contact Form**
 - **Serverless Backend**: Uses Cloudflare Workers to proxy form submissions

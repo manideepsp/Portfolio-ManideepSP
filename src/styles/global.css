@@ -1549,6 +1549,58 @@ html.js-loaded .scroll-reveal.reveal,
   position: relative;
 }
 
+/* Mobile: wider resume viewer and lightweight card chrome */
+@media (max-width: 768px) {
+  .resume-viewer {
+    width: 95%;
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Remove heavy card chrome on mobile and show the PDF frame prominently */
+  .resume-viewer.card {
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .resume-viewer .controls {
+    margin-bottom: 8px;
+    text-align: left;
+    padding: 6px 6px;
+    gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .resume-viewer .pdf-container {
+    padding: 0;
+    border-radius: 4px;
+    background: transparent;
+  }
+
+  /* Show only the PDF viewport prominently at ~90% width */
+  .resume-viewer .pdf-viewport {
+    width: 90%;
+    max-width: 90%;
+    height: calc(72vh);
+    margin: 0 auto;
+    border-radius: 6px;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .resume-viewer .pdf-viewport.scrollable {
+    align-items: flex-start;
+    justify-content: center;
+  }
+}
+
 .resume-viewer .controls {
   margin-bottom: 12px;
   text-align: center;
