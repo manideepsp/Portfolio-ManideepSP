@@ -1,0 +1,71 @@
+name: Build & Deploy (qa -> gh-pages-qa -> open PR to main)
+
+on:
+  push:
+    branches: [ qa ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-deploy-and-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm ci
+      - name: Write env.json (qa)
+        run: |
+          mkdir -p public
+          cat <<EOF > public/env.json
+          {"env":"qa","sha":"${{ github.sha }}"}
+          EOF
+      - name: Build
+        run: npm run build
+      - name: Deploy to gh-pages-qa (manual)
+        env:
+          REPO: ${{ github.repository }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -e
+          mkdir out
+          cd out
+          git init -b gh-pages-qa
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add origin https://x-access-token:${TOKEN}@github.com/${REPO}
+          cp -r ../dist/* .
+          git add -A
+          git commit -m "ci: deploy to gh-pages-qa - ${SHA}"
+          git push origin gh-pages-qa --force
+      - name: Create PR qa -> main (if none exists)
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const head = 'qa';
+            const base = 'main';
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${head}`,
+              base,
+              state: 'open'
+            });
+            if (prs.length === 0) {
+              await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head,
+                base,
+                title: `Promote: qa -> main (auto)` ,
+                body: `Automated promotion PR from qa to main (build: ${{ github.sha }})`
+              });
+            } else {
+              core.info('Promotion PR already open');
+            }
