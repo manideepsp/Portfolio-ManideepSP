@@ -1,0 +1,60 @@
+name: Build & Deploy (qa -> gh-pages-qa -> open PR to main)
+
+on:
+  push:
+    branches: [ qa ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-deploy-and-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm ci
+      - name: Write env.json (qa)
+        run: |
+          mkdir -p public
+          cat <<EOF > public/env.json
+          {"env":"qa","sha":"${{ github.sha }}"}
+          EOF
+      - name: Build
+        run: npm run build
+      - name: Deploy to gh-pages-qa
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages-qa
+      - name: Create PR qa -> main (if none exists)
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const head = 'qa';
+            const base = 'main';
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${head}`,
+              base,
+              state: 'open'
+            });
+            if (prs.length === 0) {
+              await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head,
+                base,
+                title: `Promote: qa -> main (auto)` ,
+                body: `Automated promotion PR from qa to main (build: ${{ github.sha }})`
+              });
+            } else {
+              core.info('Promotion PR already open');
+            }

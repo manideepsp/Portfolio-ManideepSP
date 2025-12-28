@@ -1,0 +1,27 @@
+---
+import fs from 'fs';
+import path from 'path';
+let env = 'prod';
+let sha = '';
+try {
+  const p = path.join(process.cwd(), 'public', 'env.json');
+  const txt = await fs.promises.readFile(p, 'utf-8');
+  const json = JSON.parse(txt);
+  env = json.env || env;
+  sha = json.sha || '';
+} catch (e) {
+  // no env.json present, default to prod
+}
+---
+{env && env !== 'prod' ? (
+  <div class="env-banner" data-env={env} title={`Deployed: ${sha}`}>
+    <div class="env-inner">{env.toUpperCase()} preview</div>
+  </div>
+) : null}
+
+<style>
+  .env-banner{background:linear-gradient(90deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));text-align:center;padding:6px 0;color:#fff;font-weight:700}
+  .env-banner[data-env="dev"]{background:#3b82f6}
+  .env-banner[data-env="qa"]{background:#f59e0b}
+  .env-banner .env-inner{max-width:1200px;margin:0 auto;padding:2px 12px}
+</style>
