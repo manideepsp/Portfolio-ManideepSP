@@ -20,7 +20,7 @@
       "demoUrl": "diabetes-risk-prediction-chatbot",
       "slug": "diabetes-risk-prediction-chatbot",
       "readmeUrl": "https://raw.githubusercontent.com/manideepsp/Diabeters-risk-score/main/README.md",
-      "tags": ["healthcare-ai", "medical-chatbot", "flask","langgraph", "ollama", "qdrant", "machine-learning", "risk-prediction", "vector-database", "postgresql", "python", 
+      "tags": ["healthcare-ai", "medical-chatbot", "flask","langgraph", "ollama", "qdrant", "machine-learning", "risk-prediction", "Logistic Regression","vector-database", "postgresql", "python", 
 "ai-screening", "Interventions"]
     },
     {
