@@ -1,5 +1,5 @@
 ---
-import config from '../lib/config.json';
+import config from '../lib/config.js';
 const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : '';
 const resumeUrl = `${basePath}${config.resume.displayLink}`;
 ---

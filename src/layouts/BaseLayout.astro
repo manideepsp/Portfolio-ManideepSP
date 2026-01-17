@@ -3,7 +3,7 @@ import Header from '../components/Header.astro';
 import EnvBanner from '../components/EnvBanner.astro';
 import Footer from '../components/Footer.astro';
 import CursorLight from '../components/CursorLight.astro';
-import config from '../lib/config.json';
+import config from '../lib/config.js';
 import '../styles/global.css';
 const { title } = Astro.props;
 const siteName = config.hero.name || 'Portfolio';

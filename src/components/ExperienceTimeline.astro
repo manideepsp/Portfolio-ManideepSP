@@ -1,5 +1,5 @@
 ---
-import config from '../lib/config.json';
+import { experience as expConfig } from '../lib/config.js';
 
 interface ExperienceEntry {
   title: string;
@@ -11,9 +11,10 @@ interface ExperienceEntry {
   skills: string[];
 }
 
-// Read experience from config JSON
-const rawExperience = config.experience || [];
-const settings = config.experienceSettings || { showMonth: true, dateFormat: 'short' };
+// Read experience from config
+const rawExperience = expConfig.entries || [];
+const settings = expConfig.settings || { showMonth: true, dateFormat: 'short', companyAccent: '#1fb6a0' };
+const companyAccent = settings.companyAccent || '#1fb6a0';
 
 const entries: ExperienceEntry[] = rawExperience.map((exp: any) => {
   let displayDate = exp.date;
@@ -72,11 +73,11 @@ const groups = Array.from(map.values());
     <section class="company-block" key={`company-${gidx}`}>
       <header class="company-header">
         {group.companyLink ? (
-          <a class="company-link" href={group.companyLink} target="_blank" rel="noopener noreferrer" style={`color: ${config.experienceSettings?.companyAccent || 'var(--accent, #4f8cff)'}; font-weight: 700;`}>
+          <a class="company-link" href={group.companyLink} target="_blank" rel="noopener noreferrer" style={`color: ${companyAccent}; font-weight: 700;`}>
             {group.company}
           </a>
         ) : (
-          <div class="company-name" style={`color: ${config.experienceSettings?.companyAccent || 'var(--accent, #4f8cff)'}; font-weight: 700;`}>
+          <div class="company-name" style={`color: ${companyAccent}; font-weight: 700;`}>
             {group.company}
           </div>
         )}

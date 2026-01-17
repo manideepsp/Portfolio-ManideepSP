@@ -1,0 +1,67 @@
+{
+  "settings": {
+    "showMonth": true,
+    "dateFormat": "short",
+    "companyAccent": "#4f8cff"
+  },
+  "entries": [
+    {
+      "title": "Data Quality Platform",
+      "company": "Acme Corp",
+      "companyLink": "https://cognine.com/",
+      "date": "2024-01",
+      "description": "Built ML-driven data quality scoring platform reducing incident noise by 35%",
+      "skills": ["Python", "TypeScript", "React", "AWS", "Airflow"]
+    },
+    {
+      "title": "Data Platform Migration",
+      "company": "Acme Corp",
+      "companyLink": "https://cognine.com/",
+      "date": "2023-06",
+      "description": "Led migration from monolith ETL to modular Spark jobs with CI/CD",
+      "skills": ["Spark", "Kafka", "Terraform", "AWS"]
+    },
+    {
+      "title": "Realtime Analytics",
+      "company": "Nimbus Labs",
+      "date": "2023-01",
+      "description": "Delivered realtime metrics pipeline (Kafka/Flink) for product analytics",
+      "skills": ["Java", "Kafka", "Flink", "ClickHouse", "Grafana"]
+    },
+    {
+      "title": "Observability Platform",
+      "company": "Nimbus Labs",
+      "date": "2022-04",
+      "description": "Implemented service-level metrics and alerting to reduce MTTI by 40%",
+      "skills": ["Prometheus", "Grafana", "OpenTelemetry", "Go"]
+    },
+    {
+      "title": "Growth Experiments",
+      "company": "Tech Startup",
+      "date": "2022-01",
+      "description": "Shipped experiment platform and feature flags, boosting activation by 12%",
+      "skills": ["JavaScript", "Node.js", "PostgreSQL", "Docker", "Redis"]
+    },
+    {
+      "title": "A/B Infrastructure",
+      "company": "Tech Startup",
+      "date": "2021-03",
+      "description": "Built lightweight A/B evaluation service and SDK for client apps",
+      "skills": ["Go", "Redis", "Postgres", "Kubernetes"]
+    },
+    {
+      "title": "Design System",
+      "company": "Digital Agency",
+      "date": "2020-01",
+      "description": "Rolled out design system and tooling across 6 client web properties",
+      "skills": ["React", "CSS", "Storybook", "Git"]
+    },
+    {
+      "title": "Web Revamp",
+      "company": "Web Studio",
+      "date": "2018-01",
+      "description": "Rebuilt marketing sites with performance and a11y focus",
+      "skills": ["HTML", "CSS", "JavaScript"]
+    }
+  ]
+}
