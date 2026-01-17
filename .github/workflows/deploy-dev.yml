@@ -40,7 +40,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote add origin https://x-access-token:${TOKEN}@github.com/${REPO}
-          cp -r ../dist/* .
+          cp -r ../dist/. .
           git add -A
           git commit -m "ci: deploy to gh-pages-dev - ${SHA}"
           git push origin gh-pages-dev --force
