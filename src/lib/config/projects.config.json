@@ -9,29 +9,30 @@
       "demoUrl": "https://www.google.com",
       "slug": "phq-9-dsm-5-based-mental-health-predictor",
       "readmeUrl": "https://raw.githubusercontent.com/manideepsp/PHQ-9/main/README.md",
-      "tags": ["ML", "Streaming", "Healthcare", "Python"]
+      "tags": ["mental-health","depression-screening","ml-pipeline","phq9","healthcare-ai","lstm-prediction","flask-api","rag-llm","vector db", "Medical Interventions"]
     },
     {
-      "title": "DataFlow Engine",
-      "description": "High-performance ETL framework built with Python and Apache Spark.",
-      "image": "/images/projects/dataflow-engine.svg",
-      "repoUrl": "https://github.com/manideepsp/dataflow-engine",
+      "title": "Diabetes Risk Prediction Chatbot",
+      "description": "An intelligent chatbot that predicts diabetes risk based on user inputs and provides health interventions.",
+      "image": "/images/projects/Diabetes-Risk-Predection-Architecture-Diagram.svg",
+      "repoUrl": "https://github.com/manideepsp/Diabeters-risk-score.git",
       "is_demo_available": false,
-      "demoUrl": "",
-      "slug": "dataflow-engine",
-      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/dataflow-engine/main/README.md",
-      "tags": ["ETL", "Spark", "Python", "Data Engineering"]
+      "demoUrl": "diabetes-risk-prediction-chatbot",
+      "slug": "diabetes-risk-prediction-chatbot",
+      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/Diabeters-risk-score/main/README.md",
+      "tags": ["healthcare-ai", "medical-chatbot", "flask","langgraph", "ollama", "qdrant", "machine-learning", "risk-prediction", "vector-database", "postgresql", "python", 
+"ai-screening", "Interventions"]
     },
     {
-      "title": "ML Dashboard",
-      "description": "Interactive dashboard for monitoring ML model performance and drift detection.",
-      "image": "/images/projects/ml-dashboard.svg",
-      "repoUrl": "https://github.com/manideepsp/ml-dashboard",
+      "title": "AIRES: AI Resume Screening System",
+      "description": "Aires is an intelligent resume screening application that leverages OpenAI's GPT models to automate candidate evaluation and shortlisting.",
+      "image": "/images/projects/AiRes-AiResumeScreener-Architecture-Diagram.svg",
+      "repoUrl": "https://github.com/manideepsp/Aires.git",
       "is_demo_available": false,
       "demoUrl": "",
-      "slug": "ml-dashboard",
-      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/ml-dashboard/main/README.md",
-      "tags": ["Dashboard", "ML Ops", "Visualization", "React"]
+      "slug": "aires-ai-resume-screening-system",
+      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/Aires/main/README.md",
+      "tags": ["AI Resume Screening","Python","OpenAI GPT-3.5","Chainlit","Document Processing","HR Automation"]
     }
   ]
 }
