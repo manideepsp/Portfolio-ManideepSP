@@ -1,6 +1,6 @@
 {
   "name": "portfolio-site",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "module",
   "description": "A dark modern portfolio website showcasing projects and skills.",
   "main": "index.js",

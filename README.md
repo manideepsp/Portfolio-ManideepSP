@@ -1,12 +1,12 @@
 <div align="center">
 
-# 🚀 Portfolio Site v1.0
+# 🚀 Portfolio Site v1.0.2
 
 ### A Modern, Dark-Themed Developer Portfolio
 
 *Built with Astro • Powered by Cloudflare Workers • Deployed on GitHub Pages*
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-brightgreen?style=for-the-badge)](https://github.com/manideepsp/Portfolio-ManideepSP/releases/tag/v1.0.0)
+[![Version](https://img.shields.io/badge/Version-1.0.2-brightgreen?style=for-the-badge)](https://github.com/manideepsp/Portfolio-ManideepSP/releases/tag/v1.0.2)
 [![Status](https://img.shields.io/badge/Status-Production-success?style=for-the-badge)](https://manideepsp.github.io/Portfolio-ManideepSP)
 [![Astro](https://img.shields.io/badge/Astro-5.16.4-FF5D01?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
@@ -429,18 +429,41 @@ Email notification sent to repository owner
 ```
 
 ### 4. **Interactive Experience Timeline**
-- **Chronological Display**: Work experience presented in vertical timeline format
-- **Date Flexibility**: Configurable month display (show/hide months)
-- **Markdown Support**: Rich formatting for role descriptions
+- **Dual View Variants**: `compact` mode for homepage (company + short summary + project highlights) and `detailed` mode for about page (full descriptions, tenure, location)
+- **Company-Project Hierarchy**: Experience organized by company with nested projects, supporting complex career histories
+- **Markdown Support in JSON**: Descriptions support **bold**, *italic*, and bullet lists rendered from JSON config
+- **Chronological Sorting**: Projects automatically sorted by date (most recent first)
+- **Configurable Accent Colors**: Company name accent color configurable in settings
 - **Scroll Animations**: Smooth reveal animations as user scrolls
 
-**Data Source**: Content pulled from `/content/experience.md` and parsed at build time.
+**Data Source**: Content managed in `src/lib/config/experience.config.json` with company-level and project-level details.
 
-### 5. **Skills Visualization**
-- **CSV-Driven**: Skills managed in `content/skills.csv` for easy updates
-- **Category Grouping**: Skills organized by technology stack (languages, frameworks, tools)
-- **Badge Display**: Modern badge-style UI for quick scanning
-- **Lightweight Parser**: Custom CSV parser (`csvParser.js`) with zero external dependencies
+**Component Usage**:
+```astro
+<!-- Homepage: Compact view -->
+<ExperienceTimeline variant="compact" />
+
+<!-- About page: Detailed view -->
+<ExperienceTimeline variant="detailed" />
+```
+
+### 5. **Interactive Skills Accordion** *(New in v2.0)*
+- **Accordion UI**: Left panel shows expanded category with icon and full skill list; right panel shows collapsed category buttons
+- **Click to Swap**: Click any collapsed category to expand it (previous collapses automatically)
+- **Category Icons**: Each skill category has a unique SVG icon (GenAI, ML, Backend, Data Engineering)
+- **JSON-Driven**: Skills managed in `src/lib/config/about.config.json` for easy updates
+- **Category Ordering**: Skills ordered by complexity (GenAI first, Data Engineering last)
+- **Responsive Design**: Stacks on mobile, 2-column collapsed grid on tablet
+- **Dynamic Styling**: Uses `:global()` CSS for JavaScript-inserted content
+
+**Skill Categories**:
+- GenAI / LLM Systems
+- NLP, Embeddings & Retrieval
+- Neural Networks & Deep Learning
+- Machine Learning
+- Backend, Architecture & Performance
+- Data Engineering & Analytics
+- Programming & Core Languages
 
 ### 6. **Scroll-Reveal Animations**
 - **Progressive Disclosure**: Content fades in as user scrolls
@@ -469,11 +492,47 @@ Email notification sent to repository owner
 - **Lighthouse Score**: 95+ performance on all pages
 - **Semantic HTML**: Proper heading hierarchy and ARIA labels
 
-### 10. **Content Management**
-- **Markdown-First**: All long-form content written in markdown
-- **Config-Driven**: Site metadata managed in JSON
-- **Version Controlled**: All content tracked in Git
-- **Hot Reload**: Development server updates instantly on content changes
+### 10. **Modular Configuration Architecture** *(New in v2.0)*
+- **Split Config Files**: Monolithic `config.json` replaced with modular files:
+  - `site.config.json`: Hero content, social links, navigation, resume settings
+  - `about.config.json`: Profile, skills, competencies, projects, education, certifications
+  - `experience.config.json`: Company/project hierarchy with settings
+  - `projects.config.json`: Portfolio project definitions
+- **Re-export Layer**: `config.js` provides backward compatibility and flattened exports
+- **Type-Safe Imports**: Clean imports from `../lib/config.js`
+- **Hot Reload**: Development server updates instantly on config changes
+
+**Import Example**:
+```javascript
+import { site, about, experience, projects } from '../lib/config.js';
+```
+
+### 11. **Certifications Cards** *(New in v2.0)*
+- **Glassmorphism Cards**: Certifications displayed as modern glass-effect cards with hover animations
+- **Certification Icon**: Each card displays a medal/ribbon icon in teal accent
+- **Golden Star**: Recognition star with glow effect for visual appeal
+- **Conditional Link Button**: "View Credential" button only appears when `linkPresent: true`
+- **Responsive Grid**: Auto-fit grid that stacks on mobile
+
+**JSON Structure**:
+```json
+{
+  "title": "Certification Name",
+  "organisation": "Issuing Organization",
+  "date": "Month Year",
+  "linkPresent": true,
+  "link": "https://credential-url.com"
+}
+```
+
+### 12. **About Page Redesign** *(New in v2.0)*
+- **Centered Hero Section**: Name, title, contact icons, and tag badges
+- **Full-Width Summary**: Justified text without left accent bar
+- **Interactive Skills Accordion**: See Feature #5
+- **Core Competencies Grid**: Card-based layout for key competencies
+- **Featured Projects Section**: Domain tags and highlight bullets
+- **Education & Certifications**: Clean typography with card layouts
+- **Green Accent Theme**: All headings use `#1fb6a0` accent color
 
 ---
 
@@ -522,9 +581,9 @@ Email notification sent to repository owner
 
 ### Data Sources
 - **GitHub API** - Project metadata and README fetching
-- **Markdown Files** - About, experience content
-- **CSV** - Skills data
-- **JSON** - Site configuration
+- **Modular JSON Configs** - Site, about, experience, projects configuration (v2.0)
+- **Markdown Files** - About page content
+- **JSON** - Skills, certifications, competencies
 
 ### Libraries & Dependencies
 ```json
@@ -580,7 +639,12 @@ portfolio-site/
 │   │   └── BaseLayout.astro            # Base HTML structure, meta tags, global styles
 │   │
 │   ├── 📂 lib/                         # Utility functions and configuration
-│   │   ├── config.json                 # Site configuration (name, GitHub username, projects)
+│   │   ├── config.js                   # Re-export layer for modular configs
+│   │   ├── 📂 config/                  # Modular configuration files (v2.0)
+│   │   │   ├── site.config.json        # Hero, social links, nav, resume settings
+│   │   │   ├── about.config.json       # Profile, skills, competencies, education, certs
+│   │   │   ├── experience.config.json  # Company/project hierarchy with settings
+│   │   │   └── projects.config.json    # Portfolio project definitions
 │   │   ├── readmeFetcher.js            # Fetches README from GitHub (public repos)
 │   │   ├── csvParser.js                # Parses CSV files (skills data)
 │   │   ├── markdown.js                 # Markdown-to-HTML processing pipeline
@@ -616,10 +680,14 @@ portfolio-site/
 
 | File | Purpose |
 |------|---------|
-| `src/lib/config.json` | Central configuration for site metadata, GitHub username, project list, resume filenames |
+| `src/lib/config.js` | Re-export layer for modular configs, provides backward compatibility |
+| `src/lib/config/site.config.json` | Hero content, social links, navigation, resume settings |
+| `src/lib/config/about.config.json` | Profile, skills (accordion), competencies, education, certifications |
+| `src/lib/config/experience.config.json` | Company/project hierarchy with shortSummary and detailed descriptions |
+| `src/lib/config/projects.config.json` | Portfolio project definitions |
 | `src/lib/readmeFetcher.js` | Fetches README.md from GitHub repos at build time using raw.githubusercontent.com |
 | `src/lib/markdown.js` | Processes markdown content using remark/rehype pipeline with sanitization |
-| `src/lib/csvParser.js` | Zero-dependency CSV parser for skills.csv |
+| `src/components/ExperienceTimeline.astro` | Work experience with `compact` and `detailed` variants |
 | `src/components/ScrollRevealWrapper.astro` | Wraps components with scroll-reveal animations |
 | `cloudflare-worker/contact-proxy.js` | Serverless function that proxies contact form to GitHub API |
 | `.github/workflows/build_and_deploy.yml` | Builds Astro site and deploys to GitHub Pages |
