@@ -4,7 +4,7 @@ import config from '../lib/config.json';
 interface ExperienceEntry {
   title: string;
   company: string;
-  companyLink?: string; // Added companyLink to the interface
+  companyLink?: string;
   date: string;
   displayDate: string;
   description: string;
@@ -20,7 +20,6 @@ const entries: ExperienceEntry[] = rawExperience.map((exp: any) => {
   
   // Parse date and format for display
   if (exp.date) {
-    // Handle YYYY-MM format
     if (/^\d{4}-\d{2}$/.test(exp.date)) {
       const d = new Date(exp.date + '-01');
       if (!isNaN(d.getTime())) {
@@ -28,9 +27,7 @@ const entries: ExperienceEntry[] = rawExperience.map((exp: any) => {
           ? d.toLocaleString('en', { month: 'short', year: 'numeric' })
           : d.getFullYear().toString();
       }
-    } 
-    // Handle YYYY format
-    else if (/^\d{4}$/.test(exp.date)) {
+    } else if (/^\d{4}$/.test(exp.date)) {
       displayDate = settings.showMonth ? `Jan ${exp.date}` : exp.date;
     }
   }
@@ -38,7 +35,7 @@ const entries: ExperienceEntry[] = rawExperience.map((exp: any) => {
   return {
     title: exp.title,
     company: exp.company,
-    companyLink: exp.companyLink, // Added companyLink to the return object
+    companyLink: exp.companyLink,
     date: exp.date,
     displayDate,
     description: exp.description,
@@ -55,44 +52,51 @@ entries.sort((a, b) => {
   };
   return parseDate(b.date) - parseDate(a.date);
 });
+
+// Group entries by company to allow multiple projects under one company
+const map = new Map<string, { company: string; companyLink?: string; projects: ExperienceEntry[] }>();
+for (const e of entries) {
+  const key = e.company || 'Independent';
+  if (!map.has(key)) {
+    map.set(key, { company: e.company, companyLink: e.companyLink, projects: [] });
+  }
+  map.get(key)!.projects.push(e);
+}
+
+const groups = Array.from(map.values());
+
 ---
 
 <div class="timeline experience-timeline">
-  {entries.map((entry, idx) => (
-    <div class="experience-item" data-sr style={`--delay: ${idx * 100}ms`}>
-      <div class="experience-content">
-        <div class="experience-header">
-          <h3 class="text-lg font-semibold">
-            {entry.title}
-            {entry.companyLink ? (
-              <a
-                class="company"
-                href={entry.companyLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={`color: ${config.experienceSettings?.companyAccent || 'var(--accent, #4f8cff)'}; font-weight: 600; text-decoration: underline;`}
-              >
-                @ {entry.company}
-              </a>
-            ) : (
-              <span
-                class="company"
-                style={`color: ${config.experienceSettings?.companyAccent || 'var(--accent, #4f8cff)'}; font-weight: 600;`}
-              >
-                @ {entry.company}
-              </span>
-            )}
-          </h3>
-          <div class="experience-date">{entry.displayDate}</div>
-        </div>
-        {entry.description && <p class="text-sm" style="color: var(--muted);">{entry.description}</p>}
-        <div class="experience-meta">
-          {entry.skills.map(t => (
-            <span class="tech-tag">{t}</span>
-          ))}
-        </div>
+  {groups.map((group, gidx) => (
+    <section class="company-block" key={`company-${gidx}`}>
+      <header class="company-header">
+        {group.companyLink ? (
+          <a class="company-link" href={group.companyLink} target="_blank" rel="noopener noreferrer" style={`color: ${config.experienceSettings?.companyAccent || 'var(--accent, #4f8cff)'}; font-weight: 700;`}>
+            {group.company}
+          </a>
+        ) : (
+          <div class="company-name" style={`color: ${config.experienceSettings?.companyAccent || 'var(--accent, #4f8cff)'}; font-weight: 700;`}>
+            {group.company}
+          </div>
+        )}
+      </header>
+
+      <div class="company-projects">
+        {group.projects.map((entry, idx) => (
+          <article class="project-item" data-sr style={`--delay: ${idx * 80}ms`}>
+            <div class="project-header">
+              <h4 class="project-title">{entry.title}</h4>
+              <div class="project-date">{entry.displayDate}</div>
+            </div>
+            {entry.description && <p class="project-desc">{entry.description}</p>}
+            <div class="project-meta">
+              {entry.skills.map(s => (<span class="tech-tag">{s}</span>))}
+            </div>
+          </article>
+        ))}
       </div>
-    </div>
+    </section>
   ))}
 </div>
 
@@ -113,9 +117,8 @@ entries.sort((a, b) => {
     animation-delay: var(--delay, 0ms);
     opacity: 0;
     display: block;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
   }
-
 
   .experience-header {
     display: flex;
@@ -144,5 +147,60 @@ entries.sort((a, b) => {
       opacity: 1;
       transform: translateX(0);
     }
+  }
+
+  /* Company grouping and project styling */
+  .company-block {
+    margin-bottom: 28px;
+  }
+  .company-header {
+    margin-bottom: 10px;
+  }
+  .company-link, .company-name {
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+  }
+
+  .company-projects {
+    margin-left: 14px; /* slight indent for projects */
+    border-left: 2px solid rgba(255,255,255,0.03);
+    padding-left: 16px;
+  }
+
+  .project-item {
+    margin-bottom: 14px;
+    padding-left: 6px;
+  }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .project-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .project-date {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .project-desc {
+    color: var(--muted);
+    margin-top: 6px;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+  }
+
+  .project-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 </style>
