@@ -1012,17 +1012,6 @@ html.js-loaded .scroll-reveal.reveal {
   padding: 40px 0;
 }
 
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 20px;
-  top: 0;
-  bottom: 0;
-  width: 1.5px;
-  background: linear-gradient(180deg, rgba(45, 212, 191, 0.8), rgba(45, 212, 191, 0.3), rgba(45, 212, 191, 0));
-  filter: drop-shadow(0 0 8px rgba(45, 212, 191, 0.2));
-}
-
 .timeline-item {
   display: grid;
   grid-template-columns: 60px 1fr;

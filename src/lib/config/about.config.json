@@ -1,0 +1,172 @@
+{
+  "profile": {
+    "name": "Manideep Sriperambudhuru",
+    "title": "Applied AI / ML Engineer",
+    "location": "Hyderabad, India",
+    "email": "manideepsp.16@gmail.com",
+    "phone": "+91 6300-519-475",
+    "linkedin": "https://www.linkedin.com/in/manideepsp",
+    "github": "https://github.com/manideepsp",
+    "portfolio": "https://manideepsp.github.io/Portfolio-ManideepSP"
+  },
+  "summary": "Applied AI / ML Engineer with nearly three years of experience spanning data engineering, applied machine learning, and GenAI systems. Strong background in building reliable data pipelines and analytics foundations, followed by hands-on ownership of ML- and LLM-driven systems including RAG pipelines, agentic chatbots, and hyper-personalized learning workflows.\n\nExperienced in taking internal proof-of-concepts from data ingestion and modeling through experimentation, optimization, deployment, and platform integration. My work focuses on building AI systems that are measurable, scalable, and grounded in real product constraints such as latency, cost, and reliability.",
+  "skills": {
+    "GenAI / LLM Systems": [
+      "LoRA and PEFT (Parameter-Efficient Fine-Tuning)",
+      "Agentic AI systems with stateful, multi-step reasoning",
+      "LangChain, LangGraph, and LangSmith",
+      "RAGAS evaluation framework",
+      "Relevance, groundedness, and faithfulness checks",
+      "LLM latency and cost optimization",
+      "Prompt design, refinement, and token reduction",
+      "Prompt evaluation using cosine similarity and BLEU score",
+      "Retrieval-Augmented Generation (RAG)"
+    ],
+    "NLP, Embeddings & Retrieval": [
+      "Reranking strategies for improved relevance",
+      "ColBERT-style late interaction models",
+      "Dense retrieval pipelines",
+      "Cosine similarity–based retrieval",
+      "Text embeddings and vectorization techniques",
+      "BERT-family transformer models"
+    ],
+    "Neural Networks & Deep Learning": [
+      "Reinforcement learning concepts (A3C)",
+      "Temporal sequence modeling",
+      "Recurrent Neural Networks (RNN, LSTM)",
+      "Convolutional Neural Networks (CNN)",
+      "Feedforward neural networks"
+    ],
+    "Machine Learning": [
+      "Model checkpointing and best-model selection",
+      "Clustering evaluation (Elbow method, Kneedle algorithm, Silhouette analysis)",
+      "Handling noisy real-world data and class imbalance",
+      "Cross-validation, metric selection, and tradeoff analysis",
+      "Model training, evaluation, and experimentation",
+      "Feature engineering from structured and unstructured data",
+      "Classical ML algorithms (linear regression, logistic regression, clustering)"
+    ],
+    "Backend, Architecture & Performance": [
+      "Latency bottleneck identification and optimization",
+      "Concurrent execution for LLM workloads",
+      "Multi-threading and parallel processing",
+      "Docker-based containerization",
+      "API-based integration of ML and LLM systems",
+      "Two-tier application architecture",
+      "Flask-based backend services and REST APIs"
+    ],
+    "Data Engineering & Analytics": [
+      "Power BI dashboards and internal analytics",
+      "Data quality checks, validation, and logging",
+      "AWS S3",
+      "Azure Storage (Blob Storage, Data Lake Gen2)",
+      "SQL Server and Snowflake",
+      "Databricks and PySpark",
+      "Azure Data Factory (ADF)",
+      "Data modeling for analytics and ML workloads",
+      "Medallion Architecture (Bronze / Silver / Gold layers)",
+      "ETL pipeline design and orchestration"
+    ],
+    "Programming & Core Languages": [
+      "Python (ML pipelines, data processing, LLM workflows)",
+      "SQL (complex queries, joins, aggregations, stored procedures)",
+      "Basic JavaScript (frontend integration for internal tools)"
+    ]
+  },
+  "coreCompetencies": {
+    "GenAI / LLM Systems": [
+      "LoRA and PEFT fine-tuning techniques",
+      "Agentic conversational systems (LangGraph)",
+      "RAGAS evaluation framework",
+      "Relevance and faithfulness evaluation",
+      "BLEU and similarity-based evaluation techniques",
+      "LLM latency and cost optimization",
+      "Prompt design, optimization, and token reduction",
+      "Retrieval-Augmented Generation (RAG)"
+    ],
+    "Machine Learning": [
+      "Handling temporal and sequential data patterns",
+      "Cross-validation, metric selection, and tradeoff analysis",
+      "Model evaluation and experimentation",
+      "Feature engineering from structured and unstructured data",
+      "Classical ML (regression, clustering)"
+    ],
+    "Engineering & Platform": [
+      "Internal CI/CD exposure and deployment workflows",
+      "Docker-based containerization",
+      "Azure ecosystem (ADF, Databricks, Storage, Managed Identities)",
+      "REST-based service integration",
+      "Python and SQL"
+    ],
+    "Data Engineering & Analytics Foundations": [
+      "BI reporting and stakeholder-facing analytics",
+      "Data quality checks, logging, and error handling",
+      "SQL query optimization and stored procedures",
+      "Data modeling for analytics and ML workloads",
+      "Medallion Architecture (Bronze / Silver / Gold layers)",
+      "ETL pipeline design and orchestration"
+    ]
+  },
+  "featuredProjects": [
+    {
+      "title": "Mental Health Relapse Prediction System",
+      "domain": "Healthcare / Mental Health",
+      "goal": "Estimate relapse risk and surface contextual clinical guidance",
+      "highlights": [
+        "Built an ML pipeline using PHQ-9, DSM-5, patient journals, and clinician notes",
+        "Performed sentiment, frequency, and contextual feature extraction",
+        "Modeled relapse risk as a continuous score",
+        "Evaluated multiple approaches using cross-validated metrics",
+        "Selected LSTM-based models for temporal pattern learning",
+        "Added a RAG-based intervention layer aligned with medical best practices",
+        "Deployed using Flask + React with Docker and real-time DB sync"
+      ]
+    },
+    {
+      "title": "Diabetes Risk Prediction & Monitoring System",
+      "domain": "Preventive Healthcare",
+      "goal": "Predict diabetes risk and provide contextual interventions",
+      "highlights": [
+        "Developed a questionnaire-driven chatbot to collect KPIs",
+        "Triggered ML-based risk prediction models",
+        "Implemented scheduled retraining with checkpointing and best-model selection",
+        "Built a two-tier Flask architecture with containerized deployment",
+        "Integrated RAG-based health interventions",
+        "Deployed as an internal application"
+      ]
+    },
+    {
+      "title": "LLM-Based Resume Screening System",
+      "domain": "HR / Talent Screening",
+      "goal": "Automate resume shortlisting",
+      "highlights": [
+        "Built a resume screening system using vector databases and RAG",
+        "Indexed resumes and job descriptions for semantic retrieval",
+        "Designed similarity-based scoring for candidate ranking",
+        "Reduced manual screening effort and improved consistency"
+      ]
+    }
+  ],
+  "education": {
+    "institution": "CMR Institute of Technology — Hyderabad, India",
+    "degree": "Bachelor of Technology (Mechanical Engineering)",
+    "years": "2019 – 2023",
+    "gpa": "8.46 / 10.0"
+  },
+  "certifications": [
+    {
+      "title": "Databricks Generative AI Fundamentals",
+      "organisation": "Databricks",
+      "date": "August 2024",
+      "linkPresent": true,
+      "link": "https://credentials.databricks.com/7b9dfa6f-3ee5-4eef-9d6a-a1633ac7d902#acc.R9Tf1YCV"
+    },
+    {
+      "title": "Star of the Quarter",
+      "organisation": "Cognine Technologies",
+      "date": "March 2025",
+      "linkPresent": false,
+      "link": ""
+    }
+  ]
+}

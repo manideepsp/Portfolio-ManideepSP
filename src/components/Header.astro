@@ -1,5 +1,5 @@
 ---
-import config from '../lib/config.json';
+import config from '../lib/config.js';
 // Compute base path from Astro.site so links work when site is hosted under a repo path
 const basePath = Astro.site ? new URL(Astro.site).pathname.replace(/\/$/, '') : '';
 ---

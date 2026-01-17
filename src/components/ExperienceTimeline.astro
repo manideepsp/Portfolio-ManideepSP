@@ -1,148 +1,413 @@
 ---
-import config from '../lib/config.json';
+import { experience as expConfig } from '../lib/config.js';
 
-interface ExperienceEntry {
-  title: string;
-  company: string;
-  companyLink?: string; // Added companyLink to the interface
-  date: string;
-  displayDate: string;
-  description: string;
-  skills: string[];
+interface Props {
+  variant?: 'compact' | 'detailed';
 }
 
-// Read experience from config JSON
-const rawExperience = config.experience || [];
-const settings = config.experienceSettings || { showMonth: true, dateFormat: 'short' };
+const { variant = 'compact' } = Astro.props;
 
-const entries: ExperienceEntry[] = rawExperience.map((exp: any) => {
-  let displayDate = exp.date;
+// Read experience from config (new company-based structure)
+const companies = expConfig.companies || [];
+const settings = expConfig.settings || { showMonth: true, dateFormat: 'short', companyAccent: '#1fb6a0' };
+const companyAccent = settings.companyAccent || '#1fb6a0';
+
+// Helper to format date
+function formatDate(dateStr: string): string {
+  if (!dateStr) return '';
+  if (/^\d{4}-\d{2}$/.test(dateStr)) {
+    const d = new Date(dateStr + '-01');
+    if (!isNaN(d.getTime())) {
+      return settings.showMonth 
+        ? d.toLocaleString('en', { month: 'short', year: 'numeric' })
+        : d.getFullYear().toString();
+    }
+  } else if (/^\d{4}$/.test(dateStr)) {
+    return settings.showMonth ? `Jan ${dateStr}` : dateStr;
+  }
+  return dateStr;
+}
+
+// Simple markdown parser: only bold, italic, bullets, and newlines
+function parseSimpleMarkdown(text: string): string {
+  if (!text) return '';
   
-  // Parse date and format for display
-  if (exp.date) {
-    // Handle YYYY-MM format
-    if (/^\d{4}-\d{2}$/.test(exp.date)) {
-      const d = new Date(exp.date + '-01');
-      if (!isNaN(d.getTime())) {
-        displayDate = settings.showMonth 
-          ? d.toLocaleString('en', { month: 'short', year: 'numeric' })
-          : d.getFullYear().toString();
+  // Escape HTML to prevent XSS
+  let html = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  
+  // Split into lines for processing
+  const lines = html.split('\n');
+  const result: string[] = [];
+  let inList = false;
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    
+    // Check if line is a bullet point
+    if (trimmed.startsWith('- ')) {
+      if (!inList) {
+        result.push('<ul class="md-list">');
+        inList = true;
       }
-    } 
-    // Handle YYYY format
-    else if (/^\d{4}$/.test(exp.date)) {
-      displayDate = settings.showMonth ? `Jan ${exp.date}` : exp.date;
+      const content = trimmed.slice(2);
+      result.push(`<li>${formatInline(content)}</li>`);
+    } else {
+      if (inList) {
+        result.push('</ul>');
+        inList = false;
+      }
+      // Skip empty lines instead of adding <br/>
+      if (trimmed !== '') {
+        result.push(`<p class="md-para">${formatInline(trimmed)}</p>`);
+      }
     }
   }
+  
+  if (inList) {
+    result.push('</ul>');
+  }
+  
+  return result.join('');
+}
 
-  return {
-    title: exp.title,
-    company: exp.company,
-    companyLink: exp.companyLink, // Added companyLink to the return object
-    date: exp.date,
-    displayDate,
-    description: exp.description,
-    skills: exp.skills || []
-  };
-});
+// Format inline markdown: bold and italic
+function formatInline(text: string): string {
+  // Bold: **text** or __text__
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
+  // Italic: *text* or _text_ (but not inside words)
+  text = text.replace(/(?<!\w)\*([^*]+)\*(?!\w)/g, '<em>$1</em>');
+  text = text.replace(/(?<!\w)_([^_]+)_(?!\w)/g, '<em>$1</em>');
+  return text;
+}
 
-// Sort by date descending (most recent first)
-entries.sort((a, b) => {
-  const parseDate = (d: string) => {
-    if (/^\d{4}-\d{2}$/.test(d)) return new Date(d + '-01').getTime();
-    if (/^\d{4}$/.test(d)) return new Date(`${d}-01-01`).getTime();
-    return 0;
+// Sort companies by most recent project date
+const sortedCompanies = [...companies].sort((a, b) => {
+  const getLatestDate = (company: any) => {
+    const dates = company.projects?.map((p: any) => {
+      if (/^\d{4}-\d{2}$/.test(p.date)) return new Date(p.date + '-01').getTime();
+      if (/^\d{4}$/.test(p.date)) return new Date(`${p.date}-01-01`).getTime();
+      return 0;
+    }) || [0];
+    return Math.max(...dates);
   };
-  return parseDate(b.date) - parseDate(a.date);
+  return getLatestDate(b) - getLatestDate(a);
 });
 ---
 
-<div class="timeline experience-timeline">
-  {entries.map((entry, idx) => (
-    <div class="experience-item" data-sr style={`--delay: ${idx * 100}ms`}>
-      <div class="experience-content">
-        <div class="experience-header">
-          <h3 class="text-lg font-semibold">
-            {entry.title}
-            {entry.companyLink ? (
-              <a
-                class="company"
-                href={entry.companyLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={`color: ${config.experienceSettings?.companyAccent || 'var(--accent, #4f8cff)'}; font-weight: 600; text-decoration: underline;`}
-              >
-                @ {entry.company}
-              </a>
-            ) : (
-              <span
-                class="company"
-                style={`color: ${config.experienceSettings?.companyAccent || 'var(--accent, #4f8cff)'}; font-weight: 600;`}
-              >
-                @ {entry.company}
-              </span>
-            )}
-          </h3>
-          <div class="experience-date">{entry.displayDate}</div>
-        </div>
-        {entry.description && <p class="text-sm" style="color: var(--muted);">{entry.description}</p>}
-        <div class="experience-meta">
-          {entry.skills.map(t => (
-            <span class="tech-tag">{t}</span>
+{variant === 'compact' ? (
+  <!-- COMPACT VIEW: For Homepage -->
+  <div class="timeline experience-timeline compact">
+    {sortedCompanies.map((company, cidx) => (
+      <section class="company-block" key={`company-${cidx}`}>
+        <header class="company-header">
+          {company.link ? (
+            <a class="company-link" href={company.link} target="_blank" rel="noopener noreferrer" style={`color: ${companyAccent};`}>
+              {company.name}
+            </a>
+          ) : (
+            <span class="company-name" style={`color: ${companyAccent};`}>{company.name}</span>
+          )}
+        </header>
+        
+        {company.shortSummary && (
+          <div class="company-summary" set:html={parseSimpleMarkdown(company.shortSummary)} />
+        )}
+
+        <div class="company-projects">
+          {company.projects?.slice(0, 3).map((project: any, pidx: number) => (
+            <article class="project-item" data-sr style={`--delay: ${pidx * 60}ms`}>
+              <div class="project-header">
+                <h4 class="project-title">{project.title}</h4>
+              </div>
+              <div class="project-desc" set:html={parseSimpleMarkdown(project.shortDescription)} />
+              <div class="project-meta">
+                {project.skills?.slice(0, 4).map((s: string) => (<span class="tech-tag">{s}</span>))}
+              </div>
+            </article>
           ))}
         </div>
-      </div>
-    </div>
-  ))}
-</div>
+      </section>
+    ))}
+  </div>
+) : (
+  <!-- DETAILED VIEW: For About Page -->
+  <div class="timeline experience-timeline detailed">
+    {sortedCompanies.map((company, cidx) => (
+      <section class="company-block" key={`company-${cidx}`}>
+        <header class="company-header-detailed">
+          <div class="company-main">
+            {company.link ? (
+              <a class="company-link" href={company.link} target="_blank" rel="noopener noreferrer" style={`color: ${companyAccent};`}>
+                {company.name}
+              </a>
+            ) : (
+              <span class="company-name" style={`color: ${companyAccent};`}>{company.name}</span>
+            )}
+            {company.role && <span class="company-role">{company.role}</span>}
+          </div>
+          <div class="company-meta">
+            <span class="company-tenure">{company.tenure}</span>
+            {company.location && <span class="company-location">{company.location}</span>}
+          </div>
+        </header>
+        
+        {company.description && (
+          <div class="company-description" set:html={parseSimpleMarkdown(company.description)} />
+        )}
+
+        <div class="company-projects-detailed">
+          {company.projects?.map((project: any, pidx: number) => (
+            <article class="project-item-detailed" data-sr style={`--delay: ${pidx * 80}ms`}>
+              <div class="project-header-detailed">
+                <h4 class="project-title">{project.title}</h4>
+                <span class="project-date">{formatDate(project.date)}</span>
+              </div>
+              <div class="project-desc-detailed" set:html={parseSimpleMarkdown(project.description)} />
+              <div class="project-meta">
+                {project.skills?.map((s: string) => (<span class="tech-tag">{s}</span>))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+)}
 
 <style>
+  /* ===== SHARED STYLES ===== */
   .experience-timeline {
     position: relative;
-    padding: 20px 16px 20px 16px;
+    padding: 0;
   }
-
-  /* Remove the central connecting line and the per-item bullets */
-  .experience-timeline::before,
-  .experience-item::before {
-    display: none;
+  
+  /* Simple Markdown Styles */
+  .experience-timeline :global(.md-para) {
+    margin: 0 0 0.5em;
   }
-
-  .experience-item {
-    animation: slideIn 0.6s ease-out forwards;
-    animation-delay: var(--delay, 0ms);
-    opacity: 0;
-    display: block;
-    margin-bottom: 32px;
+  
+  .experience-timeline :global(.md-para:last-child) {
+    margin-bottom: 0;
   }
-
-
-  .experience-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
+  
+  .experience-timeline :global(.md-list) {
+    margin: 0.5em 0;
+    padding-left: 1.25em;
   }
-
-  .company {
-    margin-left: 8px;
-    /* color and font-weight set inline for config-driven accent */
+  
+  .experience-timeline :global(.md-list li) {
+    margin-bottom: 0.25em;
+    line-height: 1.5;
   }
-
-  .experience-date {
+  
+  .experience-timeline :global(strong) {
+    color: var(--text);
+    font-weight: 600;
+  }
+  
+  .experience-timeline :global(em) {
+    font-style: italic;
     color: var(--muted);
-    font-size: 13px;
+  }
+
+  .company-block {
+    margin-bottom: 2rem;
+  }
+
+  .company-link, .company-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  
+  .company-link:hover {
+    text-decoration: underline;
+  }
+
+  .tech-tag {
+    display: inline-flex;
+    padding: 0.25rem 0.5rem;
+    background: rgba(148, 163, 184, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 4px;
+    font-size: 0.7rem;
+    color: var(--muted);
     font-family: var(--font-mono);
   }
 
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
+  .project-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  /* ===== COMPACT VIEW (Homepage) ===== */
+  .experience-timeline.compact .company-header {
+    margin-bottom: 0.5rem;
+  }
+
+  .experience-timeline.compact .company-summary {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin: 0 0 0.75rem;
+    line-height: 1.5;
+  }
+
+  .experience-timeline.compact .company-projects {
+    margin-left: 0.75rem;
+    border-left: 2px solid rgba(31, 182, 160, 0.15);
+    padding-left: 1rem;
+  }
+
+  .experience-timeline.compact .project-item {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.05);
+  }
+  
+  .experience-timeline.compact .project-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .experience-timeline.compact .project-header {
+    margin-bottom: 0.25rem;
+  }
+
+  .experience-timeline.compact .project-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text);
+  }
+
+  .experience-timeline.compact .project-desc {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* ===== DETAILED VIEW (About Page) ===== */
+  .experience-timeline.detailed .company-block {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+  }
+  
+  .experience-timeline.detailed .company-block:last-child {
+    border-bottom: none;
+  }
+
+  .experience-timeline.detailed .company-header-detailed {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .experience-timeline.detailed .company-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .experience-timeline.detailed .company-role {
+    font-size: 0.9rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .experience-timeline.detailed .company-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+    text-align: right;
+  }
+
+  .experience-timeline.detailed .company-tenure {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+  }
+
+  .experience-timeline.detailed .company-location {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .experience-timeline.detailed .company-description {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+  }
+
+  .experience-timeline.detailed .company-projects-detailed {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .experience-timeline.detailed .project-item-detailed {
+    background: rgba(15, 23, 42, 0.3);
+    border-left: 3px solid rgba(31, 182, 160, 0.3);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+  }
+
+  .experience-timeline.detailed .project-header-detailed {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .experience-timeline.detailed .project-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text);
+  }
+
+  .experience-timeline.detailed .project-date {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    flex-shrink: 0;
+  }
+
+  .experience-timeline.detailed .project-desc-detailed {
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    .experience-timeline.detailed .company-header-detailed {
+      flex-direction: column;
     }
-    to {
-      opacity: 1;
-      transform: translateX(0);
+    
+    .experience-timeline.detailed .company-meta {
+      align-items: flex-start;
+      text-align: left;
+    }
+    
+    .experience-timeline.detailed .project-header-detailed {
+      flex-direction: column;
+      gap: 0.25rem;
     }
   }
 </style>
