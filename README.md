@@ -1,12 +1,12 @@
 <div align="center">
 
-# 🚀 Portfolio Site v1.0.2
+# 🚀 Portfolio Site v1.1.0
 
 ### A Modern, Dark-Themed Developer Portfolio
 
 *Built with Astro • Powered by Cloudflare Workers • Deployed on GitHub Pages*
 
-[![Version](https://img.shields.io/badge/Version-1.0.2-brightgreen?style=for-the-badge)](https://github.com/manideepsp/Portfolio-ManideepSP/releases/tag/v1.0.2)
+[![Version](https://img.shields.io/badge/Version-1.1.0-brightgreen?style=for-the-badge)](https://github.com/manideepsp/Portfolio-ManideepSP/releases/tag/v1.1.0)
 [![Status](https://img.shields.io/badge/Status-Production-success?style=for-the-badge)](https://manideepsp.github.io/Portfolio-ManideepSP)
 [![Astro](https://img.shields.io/badge/Astro-5.16.4-FF5D01?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
