@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const configPath = path.join(__dirname, '../src/lib/config.json');
+const configPath = path.join(__dirname, '../src/lib/config/projects.config.json');
 const publicDir = path.join(__dirname, '../public');
 
 async function validateImages(projects) {
@@ -129,7 +129,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`\nFound ${projects.length} project(s) in config.json\n`);
+  console.log(`\nFound ${projects.length} project(s) in projects.config.json\n`);
 
   // Run validations
   const imageResults = await validateImages(projects);

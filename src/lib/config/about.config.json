@@ -155,18 +155,18 @@
   },
   "certifications": [
     {
-      "title": "Databricks Generative AI Fundamentals",
-      "organisation": "Databricks",
-      "date": "August 2024",
-      "linkPresent": true,
-      "link": "https://credentials.databricks.com/7b9dfa6f-3ee5-4eef-9d6a-a1633ac7d902#acc.R9Tf1YCV"
-    },
-    {
       "title": "Star of the Quarter",
       "organisation": "Cognine Technologies",
       "date": "March 2025",
       "linkPresent": false,
       "link": ""
-    }
+    },
+    {
+      "title": "Databricks Generative AI Fundamentals",
+      "organisation": "Databricks",
+      "date": "August 2024",
+      "linkPresent": true,
+      "link": "https://credentials.databricks.com/7b9dfa6f-3ee5-4eef-9d6a-a1633ac7d902#acc.R9Tf1YCV"
+    }    
   ]
 }
