@@ -1,0 +1,41 @@
+{
+  "settings": {
+    "showMonth": true,
+    "dateFormat": "short",
+    "companyAccent": "#1fb6a0"
+  },
+  "companies": [
+    {
+        "name": "Cognine Technologies",
+        "link": "https://cognine.com/",
+        "location": "Hyderabad, India",
+        "role": "Applied AI / ML Engineer",
+        "tenure": "April 2023 – December 2025",
+        "shortSummary": "Experienced in building **GenAI systems**, *agentic chatbots*, **RAG pipelines**, high-performance LLM workflows, and scalable **data engineering** platforms.",
+        "description": "**Role Overview**\nMy role at Cognine Technologies evolved from a strong **data engineering foundation** into **applied ML and GenAI engineering**, delivering multiple production-grade systems.\n\n**Primary Goals**\n- Design and deliver **AI/ML and GenAI systems** with measurable impact\n- Build **scalable data foundations** for analytics and AI\n- Optimize **latency, cost, safety**, and reliability of LLM workflows\n- Collaborate with cross-functional teams for production readiness\n\n**Core Responsibilities**\n- **Client Projects:** Delivered assigned development components across *data engineering*, *ML*, and *GenAI* as part of multi-disciplinary teams.\n- **Internal AI Projects:** Owned the full lifecycle — **requirements**, **architecture**, **backend/frontend development**, **CI/CD**, **DevOps**, and **production deployment**.\n- System architecture, performance tuning, and production hardening\n- *Evaluation, monitoring,* and safety of AI systems\n- Integration of AI/ML systems with backend services and apps\n\n**Overall Experience Summary**\nAcross all projects, I contributed to **data engineering**, **applied ML**, and **GenAI**, with increasing emphasis on **AI-first problem solving** and **end-to-end delivery**.",
+        "projects": [
+            {
+            "title": "AI Tutoring Platform — LLM Reports, RAG & Agentic Chatbot",
+            "date": "2025-11",
+            "shortDescription": "Built a **personalized AI tutoring platform** using *LLMs*, **RAG**, and an **agentic chatbot** with major latency and cost optimizations.",
+            "description": "**Focus Area:** GenAI → ML → Data\n\n**Objective**\nBuild a *safe*, *scalable*, and *personalized* AI tutoring platform using **LLMs**, **RAG**, and **agentic architectures** for under-18 students.\n\n**LLM-Based Report Generation**\n- Developed AI-generated **Basic** and **Premium** study reports\n- Broke monolithic prompts into **section-wise generation**\n- Executed parallel LLM calls using **multithreading**\n- Applied **prompt** and **token optimization** techniques\n\n**Results**\n- Reduced report generation from **~4.5 minutes → ~45 seconds**\n- Significantly lowered **token consumption** and operating cost\n\n**Agentic Conversational AI (Chatbot)**\n- Built an agentic chatbot using **LangGraph** with multi-agent collaboration\n- Added **persona profiling** and **mood tracking**\n- Adapted explanations dynamically to match student style\n- Used generated study plans to drive structured tutoring\n\n**RAG, Evaluation & Safety**\n- Integrated **RAG pipelines** with vector DB retrieval\n- Applied **Ragas** for groundedness and faithfulness\n- Implemented strict **acceptance policies** and **content moderation**\n- Ensured safety for **under-18** users\n\n**Outcome**\n- Delivered a highly **personalized** and **safe** tutoring experience\n- Achieved major **latency** and **cost** improvements in production LLM workflows",
+            "skills": ["Python", "LangGraph", "LLMs", "RAG", "Ragas", "Prompt Engineering", "Multithreading"]
+            },
+            {
+            "title": "Enterprise Data Modeling & Data Mart Architecture",
+            "date": "2023-06",
+            "shortDescription": "Designed **enterprise data models** and **data marts** enabling reliable analytics and scalable foundations for ML and GenAI workloads.",
+            "description": "**Focus Area:** Data Engineering (Foundational)\n\n**Objective**\nDesign scalable **data models** and **data marts** to support analytics, reporting, and ML workloads.\n\n**Responsibilities & Contributions**\n- Designed complete **dimensional data models** aligned with KPIs\n- Built **data marts** using enterprise modeling standards\n- Translated raw data into structured analytical schemas\n- Ensured consistency, scalability, and maintainability\n- Coordinated with analytics teams to standardize metrics\n\n**Outcome**\n- Delivered a robust analytical foundation for reporting\n- Improved metric consistency and trust in outputs",
+            "skills": ["Data Modeling", "Dimensional Modeling", "Data Marts", "SQL", "Business KPIs"]
+            },
+            {
+            "title": "Incremental Data Pipelines, ADF Orchestration & SQL Optimization",
+            "date": "2023-11",
+            "shortDescription": "Built **incremental ADF pipelines** and optimized **SQL logic**, improving performance and reducing compute cost for enterprise reporting.",
+            "description": "**Focus Area:** Data Engineering & Analytics (Production Systems)\n\n**Objective**\nBuild and optimize **production-grade ETL pipelines** with reliable incremental loads and predictable performance.\n\n**Responsibilities & Contributions**\n- Designed **ADF pipelines** for full and incremental data loads\n- Ensured stable ingestion for large datasets\n- Built complex **SQL stored procedures** for reporting logic\n- Performed deep **SQL performance engineering**:\n  - Replaced heavy CTE logic with optimized temp tables\n  - Reduced redundant temp tables via join re-engineering\n  - Improved execution plans for high-volume workloads\n- Enabled **Power BI paginated reports** with robust backend SQL\n\n**Measurable Impact**\n- Reduced execution time from **~40 min → ~21 min** for 1M-record workloads\n- Improved data freshness and lowered compute cost\n- Delivered stable SLAs for reporting pipelines",
+            "skills": ["Azure Data Factory", "SQL Optimization", "Incremental Loads", "Performance Tuning", "Power BI", "Databricks", "PySpark"]
+            }
+        ]
+    }
+  ]
+}

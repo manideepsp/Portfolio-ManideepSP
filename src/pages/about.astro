@@ -2,34 +2,1103 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ScrollRevealWrapper from '../components/ScrollRevealWrapper.astro';
 import ExperienceTimeline from '../components/ExperienceTimeline.astro';
-import config from '../lib/config.json';
-import { renderMarkdown } from '../lib/markdown.js';
-import fs from 'fs';
+import { about as aboutConfig } from '../lib/config.js';
 
-let aboutHtml = '';
+const profile = aboutConfig.profile || {};
+const skills = aboutConfig.skills || {};
+const coreCompetencies = aboutConfig.coreCompetencies || {};
+const projects = aboutConfig.featuredProjects || [];
+const education = aboutConfig.education || {};
+const certifications = aboutConfig.certifications || [];
+const summary = aboutConfig.summary || '';
 
-try {
-  // Read markdown file path from config
-  const mdPath = config.about?.markdownFile || '/content/about.md';
-  const md = fs.readFileSync(new URL(`../..${mdPath}`, import.meta.url), 'utf8');
-  aboutHtml = await renderMarkdown(md);
-} catch (e) {
-  aboutHtml = '<p>No about content yet.</p>';
+// Extract first 2-3 sentences for concise summary
+const summaryShort = summary.split(/(?<=[.!?])\s+/).slice(0, 3).join(' ');
+
+// Skill category icons (SVG paths for Lucide-style icons)
+const categoryIcons: Record<string, string> = {
+  'Data Engineering & Analytics': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>',
+  'Machine Learning': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.56-3.24 3.92L12 16h6"/><path d="m6 16 6-6"/><circle cx="12" cy="19" r="3"/></svg>',
+  'GenAI / LLM Systems': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>',
+  'Backend, Architecture & Performance': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>',
+  // Fallback for other categories
+  'default': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>'
+};
+
+// Tags for hero
+const heroTags = ['GenAI Engineer', 'LLM Systems', 'ML Pipelines', 'Data Engineering'];
+
+// Select 4 main skill categories for the card grid (ordered: latest/complex to oldest/fundamental)
+const mainCategories = [
+  'GenAI / LLM Systems',
+  'Machine Learning',
+  'Backend, Architecture & Performance',
+  'Data Engineering & Analytics'
+];
+
+// Return full skill names without truncation
+function extractSkillPills(items: string[]): string[] {
+  return items;
 }
 ---
 <BaseLayout title="About">
-  <section>
+  <!-- Hero Section -->
+  <section class="about-hero">
+    <div class="hero-glow"></div>
     <ScrollRevealWrapper>
-      <h1>About</h1>
-    </ScrollRevealWrapper>
-    <ScrollRevealWrapper delay={100}>
-      <div class="markdown-render" set:html={aboutHtml}></div>
+      <div class="hero-content">
+        <h1 class="hero-name">{profile.name}</h1>
+        <p class="hero-title">{profile.title}</p>
+        
+        <!-- Contact Icons Row -->
+        <div class="hero-contact">
+          <span class="contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>{profile.location}</span>
+          </span>
+          <span class="contact-divider"></span>
+          <a href={`mailto:${profile.email}`} class="contact-item contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span>{profile.email}</span>
+          </a>
+          <span class="contact-divider"></span>
+          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" class="contact-item contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+            <span>LinkedIn</span>
+          </a>
+        </div>
+
+        <!-- Tag Badges -->
+        <div class="hero-tags">
+          {heroTags.map((tag, idx) => (
+            <span class="hero-tag" style={`animation-delay: ${idx * 0.1}s`}>{tag}</span>
+          ))}
+        </div>
+      </div>
     </ScrollRevealWrapper>
   </section>
 
-  <section>
-    <h2>Experience</h2>
-    <ExperienceTimeline />
+  <!-- Summary Section -->
+  <section class="summary-section">
+    <ScrollRevealWrapper delay={50}>
+      <div class="summary-wrapper">
+        <p class="summary-text">{summaryShort}</p>
+      </div>
+    </ScrollRevealWrapper>
+  </section>
+
+  <!-- Skills Accordion Section -->
+  <section class="skills-section">
+    <ScrollRevealWrapper delay={100}>
+      <h2 class="section-title">Skills & Expertise</h2>
+    </ScrollRevealWrapper>
+    
+    <div class="skills-accordion-container">
+      <!-- Left Panel: Active/Expanded Category -->
+      <div class="skills-active-panel" id="skillsActivePanel">
+        <div class="skill-expanded" data-category="GenAI / LLM Systems">
+          <div class="skill-expanded-header">
+            <span class="skill-exp-icon" set:html={categoryIcons['GenAI / LLM Systems']}></span>
+            <div class="skill-exp-info">
+              <h3 class="skill-exp-title">GenAI / LLM Systems</h3>
+              <span class="skill-exp-count">{(skills['GenAI / LLM Systems'] as string[] || []).length} skills</span>
+            </div>
+          </div>
+          <div class="skill-expanded-list">
+            {(skills['GenAI / LLM Systems'] as string[] || []).map(item => (
+              <div class="skill-list-item">{item}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Panel: Collapsed Categories -->
+      <div class="skills-collapsed-panel" id="skillsCollapsedPanel">
+        {mainCategories.slice(1).map((category, idx) => {
+          const icon = categoryIcons[category] || categoryIcons['default'];
+          const items = skills[category] as string[] || [];
+          return (
+            <button 
+              class="skill-collapsed-item" 
+              data-category={category}
+              data-icon={icon}
+              data-skills={JSON.stringify(items)}
+            >
+              <span class="skill-col-icon" set:html={icon}></span>
+              <div class="skill-col-info">
+                <h4 class="skill-col-title">{category}</h4>
+                <span class="skill-col-count">{items.length} skills</span>
+              </div>
+              <svg class="skill-col-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          );
+        })}
+        
+        <!-- Hidden template for first category when it gets collapsed -->
+        <button 
+          class="skill-collapsed-item" 
+          data-category="GenAI / LLM Systems"
+          data-icon={categoryIcons['GenAI / LLM Systems']}
+          data-skills={JSON.stringify(skills['GenAI / LLM Systems'] as string[] || [])}
+          style="display: none;"
+        >
+          <span class="skill-col-icon" set:html={categoryIcons['GenAI / LLM Systems']}></span>
+          <div class="skill-col-info">
+            <h4 class="skill-col-title">GenAI / LLM Systems</h4>
+            <span class="skill-col-count">{(skills['GenAI / LLM Systems'] as string[] || []).length} skills</span>
+          </div>
+          <svg class="skill-col-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Skills accordion interaction
+    document.addEventListener('DOMContentLoaded', () => {
+      const activePanel = document.getElementById('skillsActivePanel');
+      const collapsedPanel = document.getElementById('skillsCollapsedPanel');
+      
+      if (!activePanel || !collapsedPanel) return;
+      
+      collapsedPanel.addEventListener('click', (e) => {
+        const clickedItem = (e.target as HTMLElement).closest('.skill-collapsed-item') as HTMLButtonElement;
+        if (!clickedItem) return;
+        
+        const category = clickedItem.dataset.category;
+        const iconHtml = clickedItem.dataset.icon;
+        const skillsData = JSON.parse(clickedItem.dataset.skills || '[]');
+        
+        // Get current expanded category info
+        const currentExpanded = activePanel.querySelector('.skill-expanded') as HTMLElement;
+        const currentCategory = currentExpanded?.dataset.category;
+        const currentIcon = currentExpanded?.querySelector('.skill-exp-icon')?.innerHTML;
+        const currentSkills = Array.from(currentExpanded?.querySelectorAll('.skill-list-item') || [])
+          .map(el => el.textContent);
+        
+        // Update active panel with clicked category
+        activePanel.innerHTML = `
+          <div class="skill-expanded" data-category="${category}">
+            <div class="skill-expanded-header">
+              <span class="skill-exp-icon">${iconHtml}</span>
+              <div class="skill-exp-info">
+                <h3 class="skill-exp-title">${category}</h3>
+                <span class="skill-exp-count">${skillsData.length} skills</span>
+              </div>
+            </div>
+            <div class="skill-expanded-list">
+              ${skillsData.map((item: string) => `<div class="skill-list-item">${item}</div>`).join('')}
+            </div>
+          </div>
+        `;
+        
+        // Hide clicked item and show the previously active one
+        clickedItem.style.display = 'none';
+        
+        // Find and show the collapsed button for the previously expanded category
+        const prevCollapsed = collapsedPanel.querySelector(`[data-category="${currentCategory}"]`) as HTMLElement;
+        if (prevCollapsed) {
+          prevCollapsed.style.display = 'flex';
+        }
+      });
+    });
+  </script>
+
+  <!-- Core Competencies (merged into skills section as secondary) -->
+  <section class="competencies-section">
+    <ScrollRevealWrapper delay={200}>
+      <h2 class="section-title">Core Competencies</h2>
+    </ScrollRevealWrapper>
+    <div class="competencies-grid">
+      {Object.entries(coreCompetencies).map(([category, items], idx) => (
+        <ScrollRevealWrapper delay={220 + idx * 40}>
+          <div class="competency-card">
+            <h3 class="competency-title">{category}</h3>
+            <div class="competency-pills">
+              {(items as string[]).slice(0, 6).map((item: string) => (
+                <span class="competency-pill">{item}</span>
+              ))}
+            </div>
+          </div>
+        </ScrollRevealWrapper>
+      ))}
+    </div>
+  </section>
+
+  <!-- Experience Timeline -->
+  <section class="about-section">
+    <ScrollRevealWrapper delay={200}>
+      <h2 class="section-title">Experience</h2>
+    </ScrollRevealWrapper>
+    <ExperienceTimeline variant="detailed" />
+  </section>
+
+  <!-- Projects Section -->
+  <section class="about-section">
+    <ScrollRevealWrapper delay={250}>
+      <h2 class="section-title">Projects</h2>
+    </ScrollRevealWrapper>
+    <div class="projects-container">
+      {projects.map((project: any, idx: number) => (
+        <ScrollRevealWrapper delay={270 + idx * 40}>
+          <article class="project-entry">
+            <div class="project-header">
+              <h3 class="project-title">{project.title}</h3>
+              <span class="project-domain">{project.domain}</span>
+            </div>
+            <p class="project-goal">{project.goal}</p>
+            <div class="project-highlights">
+              {project.highlights.map((h: string, i: number) => (
+                <div class="highlight-item">
+                  <span class="highlight-marker">—</span>
+                  <span>{h}</span>
+                </div>
+              ))}
+            </div>
+          </article>
+        </ScrollRevealWrapper>
+      ))}
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section class="about-section">
+    <ScrollRevealWrapper delay={300}>
+      <h2 class="section-title">Education</h2>
+      <div class="education-entry">
+        <div class="edu-main">
+          <h3 class="edu-institution">{education.institution}</h3>
+          <p class="edu-degree">{education.degree}</p>
+        </div>
+        <div class="edu-meta">
+          <span class="edu-years">{education.years}</span>
+          <span class="edu-gpa">{education.gpa}</span>
+        </div>
+      </div>
+    </ScrollRevealWrapper>
+  </section>
+
+  <!-- Certifications -->
+  <section class="about-section">
+    <ScrollRevealWrapper delay={350}>
+      <h2 class="section-title">Certifications & Recognition</h2>
+      <div class="certs-grid">
+        {certifications.map((cert: any, idx: number) => (
+          <div class="cert-card">
+            <div class="cert-card-header">
+              <div class="cert-icons">
+                <!-- Certification Icon -->
+                <span class="cert-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="6"/>
+                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+                  </svg>
+                </span>
+                <!-- Golden Star Icon -->
+                <span class="cert-star">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div class="cert-card-body">
+              <h3 class="cert-card-title">{cert.title}</h3>
+              <p class="cert-card-org">{cert.organisation}</p>
+              <p class="cert-card-date">{cert.date}</p>
+            </div>
+            {cert.linkPresent && cert.link && (
+              <div class="cert-card-footer">
+                <a class="cert-btn" href={cert.link} target="_blank" rel="noopener noreferrer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  <span>View Credential</span>
+                </a>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </ScrollRevealWrapper>
   </section>
 </BaseLayout>
+
+<style>
+  /* ===== Modern About Page - Premium Design ===== */
+  
+  /* Hero Section - Center Aligned */
+  .about-hero {
+    position: relative;
+    padding: 5rem 0 4rem;
+    overflow: hidden;
+    text-align: center;
+  }
+  
+  .hero-glow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 100%;
+    background: radial-gradient(ellipse at 50% 50%, rgba(31, 182, 160, 0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+  
+  .hero-name {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin: 0 0 0.5rem;
+    line-height: 1.1;
+  }
+  
+  .hero-title {
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    color: #1fb6a0;
+    font-weight: 500;
+    margin: 0 0 1.75rem;
+    letter-spacing: 0.01em;
+  }
+  
+  /* Contact Icons Row - Centered */
+  .hero-contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  
+  .contact-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+  
+  .contact-item svg {
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+  
+  .contact-link:hover {
+    color: #1fb6a0;
+    transform: translateY(-1px);
+  }
+  
+  .contact-link:hover svg {
+    opacity: 1;
+  }
+  
+  .contact-divider {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(148, 163, 184, 0.3);
+  }
+  
+  /* Tag Badges - Centered */
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+  
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: rgba(31, 182, 160, 0.08);
+    border: 1px solid rgba(31, 182, 160, 0.2);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #1fb6a0;
+    letter-spacing: 0.02em;
+    transition: all 0.25s ease;
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+  }
+  
+  .hero-tag:hover {
+    background: rgba(31, 182, 160, 0.15);
+    border-color: rgba(31, 182, 160, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(31, 182, 160, 0.15);
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Summary Section - Full Width, Left Justified */
+  .summary-section {
+    padding: 0 0 5rem;
+  }
+  
+  .summary-wrapper {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .summary-text {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.85;
+    color: var(--muted);
+    letter-spacing: 0.01em;
+    text-align: justify;
+  }
+  
+  /* Section Title - Green Accent */
+  .section-title {
+    font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: #1fb6a0;
+    margin: 0 0 2rem;
+    letter-spacing: -0.02em;
+  }
+  
+  /* Skills Section - Accordion Layout */
+  .skills-section {
+    padding-bottom: 5rem;
+  }
+  
+  .skills-accordion-container {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+    min-height: 400px;
+  }
+  
+  /* Left Panel - Expanded Category */
+  .skills-active-panel {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+  
+  .skill-expanded {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* These styles need :global() because they're dynamically inserted via JS */
+  .skills-active-panel :global(.skill-expanded) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .skill-expanded-header,
+  .skills-active-panel :global(.skill-expanded-header) {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    margin-bottom: 1.25rem;
+  }
+  
+  .skill-exp-icon,
+  .skills-active-panel :global(.skill-exp-icon) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: rgba(31, 182, 160, 0.12);
+    border: 1px solid rgba(31, 182, 160, 0.25);
+    border-radius: 14px;
+    color: #1fb6a0;
+    flex-shrink: 0;
+  }
+  
+  .skill-exp-icon :global(svg),
+  .skills-active-panel :global(.skill-exp-icon svg) {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .skill-exp-info,
+  .skills-active-panel :global(.skill-exp-info) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .skill-exp-title,
+  .skills-active-panel :global(.skill-exp-title) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1fb6a0;
+    margin: 0;
+  }
+  
+  .skill-exp-count,
+  .skills-active-panel :global(.skill-exp-count) {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  
+  .skill-expanded-list,
+  .skills-active-panel :global(.skill-expanded-list) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+  
+  .skill-list-item,
+  .skills-active-panel :global(.skill-list-item) {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 0.5rem 0.75rem;
+    border-left: 2px solid rgba(31, 182, 160, 0.2);
+    transition: all 0.2s ease;
+  }
+  
+  .skill-list-item:hover,
+  .skills-active-panel :global(.skill-list-item:hover) {
+    color: var(--text);
+    border-left-color: #1fb6a0;
+    background: rgba(31, 182, 160, 0.05);
+  }
+  
+  /* Right Panel - Collapsed Categories */
+  .skills-collapsed-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .skill-collapsed-item {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 1rem 1.25rem;
+    background: rgba(15, 23, 42, 0.3);
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .skill-collapsed-item:hover {
+    background: rgba(15, 23, 42, 0.5);
+    border-color: rgba(31, 182, 160, 0.2);
+    transform: translateX(-4px);
+  }
+  
+  .skill-col-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(31, 182, 160, 0.08);
+    border: 1px solid rgba(31, 182, 160, 0.15);
+    border-radius: 10px;
+    color: #1fb6a0;
+    flex-shrink: 0;
+  }
+  
+  .skill-col-icon :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .skill-col-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  
+  .skill-col-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+  }
+  
+  .skill-col-count {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  
+  .skill-col-arrow {
+    color: var(--muted);
+    opacity: 0.5;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  
+  .skill-collapsed-item:hover .skill-col-arrow {
+    opacity: 1;
+    color: #1fb6a0;
+    transform: translateX(2px);
+  }
+  
+  /* Responsive - Skills Accordion */
+  @media (max-width: 900px) {
+    .skills-accordion-container {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .skills-active-panel {
+      order: 1;
+    }
+    
+    .skills-collapsed-panel {
+      order: 2;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    
+    .skill-collapsed-item {
+      padding: 0.875rem 1rem;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .skills-collapsed-panel {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Core Competencies Section */
+  .competencies-section {
+    padding-bottom: 5rem;
+  }
+  
+  .competencies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .competency-card {
+    background: rgba(15, 23, 42, 0.3);
+    border-left: 3px solid #1fb6a0;
+    border-radius: 0 12px 12px 0;
+    padding: 1.5rem;
+    transition: all 0.25s ease;
+  }
+  
+  .competency-card:hover {
+    background: rgba(15, 23, 42, 0.5);
+    transform: translateX(4px);
+  }
+  
+  .competency-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1fb6a0;
+    margin: 0 0 1rem;
+  }
+  
+  .competency-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .competency-pill {
+    display: inline-flex;
+    padding: 0.35rem 0.7rem;
+    background: rgba(148, 163, 184, 0.05);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    color: var(--muted);
+    transition: all 0.2s ease;
+  }
+  
+  .competency-pill:hover {
+    background: rgba(31, 182, 160, 0.08);
+    border-color: rgba(31, 182, 160, 0.2);
+    color: var(--text);
+  }
+  
+  /* About Section (for Experience, Projects, Education, Certs) */
+  .about-section {
+    margin-bottom: 4rem;
+    padding-top: 1rem;
+  }
+  
+  .about-section .section-title {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #1fb6a0;
+    letter-spacing: -0.01em;
+  }
+
+  /* Projects */
+  .projects-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .project-entry {
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    padding-top: 1.25rem;
+  }
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .project-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text);
+  }
+  .project-domain {
+    color: #1fb6a0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .project-goal {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    font-style: italic;
+  }
+  .project-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .highlight-item {
+    display: flex;
+    gap: 0.75rem;
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .highlight-marker {
+    color: rgba(31, 182, 160, 0.6);
+    flex-shrink: 0;
+  }
+
+  /* Education */
+  .education-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    padding-top: 1.25rem;
+  }
+  .edu-main {
+    flex: 1;
+    min-width: 250px;
+  }
+  .edu-institution {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+    color: var(--text);
+  }
+  .edu-degree {
+    color: var(--muted);
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .edu-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    text-align: right;
+  }
+  .edu-years {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .edu-gpa {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #1fb6a0;
+  }
+
+  /* Certifications Cards */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  
+  .cert-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(31,182,160,0.04) 0%, rgba(99,102,241,0.03) 50%, rgba(31,182,160,0.02) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 
+      0 4px 24px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .cert-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(31,182,160,0.2);
+    box-shadow: 
+      0 12px 40px rgba(31,182,160,0.12),
+      0 4px 12px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  
+  .cert-card-header {
+    margin-bottom: 1rem;
+  }
+  
+  .cert-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .cert-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: rgba(31,182,160,0.1);
+    border: 1px solid rgba(31,182,160,0.2);
+    border-radius: 12px;
+    color: var(--accent);
+  }
+  
+  .cert-star {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fbbf24;
+    filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.4));
+  }
+  
+  .cert-card-body {
+    flex: 1;
+  }
+  
+  .cert-card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
+  }
+  
+  .cert-card-org {
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin: 0 0 0.25rem;
+    font-weight: 500;
+  }
+  
+  .cert-card-date {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin: 0;
+  }
+  
+  .cert-card-footer {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  
+  .cert-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: rgba(31,182,160,0.08);
+    border: 1px solid rgba(31,182,160,0.2);
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+  }
+  
+  .cert-btn:hover,
+  .cert-btn:focus {
+    background: rgba(31,182,160,0.15);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(31,182,160,0.2);
+  }
+  
+  .cert-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Responsive Design ===== */
+  
+  /* Tablet - 2 column skills grid */
+  @media (max-width: 1024px) {
+    .skills-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  /* Mobile - Stack everything */
+  @media (max-width: 768px) {
+    .about-hero {
+      padding: 3.5rem 0 3rem;
+    }
+    
+    .hero-name {
+      font-size: 2.25rem;
+    }
+    
+    .hero-contact {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    
+    .contact-divider {
+      display: none;
+    }
+    
+    .skills-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    
+    .skill-category-header {
+      gap: 0.75rem;
+    }
+    
+    .skill-icon {
+      width: 52px;
+      height: 52px;
+    }
+    
+    .skill-icon :global(svg) {
+      width: 26px;
+      height: 26px;
+    }
+    
+    .skill-category-title {
+      font-size: 1.1rem;
+    }
+    
+    .competencies-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .summary-section,
+    .skills-section,
+    .competencies-section {
+      padding-bottom: 3rem;
+    }
+    
+    .education-entry {
+      flex-direction: column;
+    }
+    
+    .edu-meta {
+      align-items: flex-start;
+      text-align: left;
+    }
+    
+    .certs-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .about-hero {
+      padding: 2.5rem 0 2rem;
+    }
+    
+    .hero-name {
+      font-size: 1.875rem;
+    }
+    
+    .hero-title {
+      font-size: 1rem;
+    }
+    
+    .hero-tags {
+      gap: 0.5rem;
+    }
+    
+    .hero-tag {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.7rem;
+    }
+    
+    .section-title {
+      font-size: 1.25rem;
+    }
+    
+    .summary-text {
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+    
+    .about-section {
+      margin-bottom: 2.5rem;
+    }
+  }
+</style>
  

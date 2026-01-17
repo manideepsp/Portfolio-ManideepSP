@@ -1,0 +1,33 @@
+{
+  "hero": {
+    "name": "Manideep Sriperambudhuru",
+    "firstName": "Manideep",
+    "lastName": "Sriperambudhuru",
+    "role": "AI Fullstack Engineer",
+    "title": "AI • Data • ML",
+    "tagline": "I build data & ML systems that scale. Currently shipping backend services and production ML pipelines at scale."
+  },
+  "social": {
+    "github": "manideepsp",
+    "linkedin": "manideepsp",
+    "email": "manideepsp.16@gmail.com"
+  },
+  "resume": {
+    "displayLink": "/resumes/Default Applied ML-AI Engineer Resume.pdf",
+    "downloadFilename": "Default Applied ML-AI Engineer Resume.pdf"
+  },
+  "navLinks": [
+    { "label": "Home", "href": "/" },
+    { "label": "Projects", "href": "/projects" },
+    { "label": "Resume", "href": "/resume" },
+    { "label": "About", "href": "/about" },
+    { "label": "Contact", "href": "/contact" }
+  ],
+  "contactWorkerUrl": "https://portfolio-manideepsp.manideepsp-16.workers.dev/",
+  "contactFallback": {
+    "repo": "Portfolio-ManideepSP",
+    "autoRedirect": true,
+    "delayMs": 5000,
+    "showFallbackButton": true
+  }
+}
