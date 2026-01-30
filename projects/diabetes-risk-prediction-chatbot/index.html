@@ -1,0 +1,390 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Manideep Sriperambudhuru – Portfolio. I build data &#38; ML systems that scale. Currently shipping backend services and production ML pipelines at scale."><title>Diabetes Risk Prediction Chatbot | Projects • Manideep Sriperambudhuru</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"></noscript><link rel="stylesheet" href="/Portfolio-ManideepSP/_astro/about.CCTWTH4r.css">
+<link rel="stylesheet" href="/Portfolio-ManideepSP/_astro/_slug_.BZKQjNvF.css"></head> <body> <div class="bg-spotlight"> <div class="cursor-glow" aria-hidden="true"></div> <script type="module" client:load>
+  const glow = document.querySelector('.cursor-glow');
+  if (glow) {
+    document.addEventListener('mousemove', (event) => {
+      const x = event.clientX - 250;
+      const y = event.clientY - 250;
+      glow.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      glow.style.transform = 'translate3d(-9999px, -9999px, 0)';
+    });
+  }
+</script> </div> <div class="page-wrap">  <header class="site-header" role="banner"> <div class="inner"> <a class="logo text-2xl font-bold" href="/Portfolio-ManideepSP/">Manideep Sriperambudhuru</a> <nav class="nav nav-animated" id="main-nav" aria-label="Main navigation"> <a class="text-sm nav-link" href="/Portfolio-ManideepSP/">Home</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/projects">Projects</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/resume">Resume</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/about">About</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/contact">Contact</a> <span class="nav-underline" id="nav-underline"></span> </nav> </div> <script type="module" client:load>
+    // Animated underline for nav
+    const nav = document.getElementById('main-nav');
+    const underline = document.getElementById('nav-underline');
+    if (nav && underline) {
+      const links = nav.querySelectorAll('.nav-link');
+      function moveUnderline(target) {
+        const rect = target.getBoundingClientRect();
+        const navRect = nav.getBoundingClientRect();
+        underline.style.width = rect.width + 'px';
+        underline.style.left = (rect.left - navRect.left) + 'px';
+        underline.style.opacity = 1;
+      }
+      links.forEach(link => {
+        link.addEventListener('mouseenter', e => moveUnderline(e.target));
+        link.addEventListener('focus', e => moveUnderline(e.target));
+      });
+      nav.addEventListener('mouseleave', () => {
+        underline.style.opacity = 0;
+      });
+      // Optionally, highlight current page
+      const current = Array.from(links).find(link => link.href === window.location.href);
+      if (current) moveUnderline(current);
+    }
+  </script> </header> <main id="main-content" class="container" tabindex="-1">  <section class="project-detail-page single-page" data-astro-cid-ovxcmftc> <!-- Back navigation --> <a href="/Portfolio-ManideepSP/projects" class="back-link" data-astro-cid-ovxcmftc> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-ovxcmftc> <path d="M19 12H5M12 19l-7-7 7-7" data-astro-cid-ovxcmftc></path> </svg> <span data-astro-cid-ovxcmftc>Back to Projects</span> </a> <div class="project-detail-header" data-astro-cid-ovxcmftc> <div class="project-detail-title-area" data-astro-cid-ovxcmftc> <p class="eyebrow" data-astro-cid-ovxcmftc>Project</p> <h1 class="project-title" data-astro-cid-ovxcmftc>Diabetes Risk Prediction Chatbot</h1> <p class="project-subtitle" data-astro-cid-ovxcmftc>An intelligent chatbot that predicts diabetes risk based on user inputs and provides health interventions.</p> </div> </div>  <div class="project-tech-stack" data-astro-cid-ovxcmftc> <span class="tech-tag" data-astro-cid-ovxcmftc>healthcare-ai</span><span class="tech-tag" data-astro-cid-ovxcmftc>medical-chatbot</span><span class="tech-tag" data-astro-cid-ovxcmftc>flask</span><span class="tech-tag" data-astro-cid-ovxcmftc>langgraph</span><span class="tech-tag" data-astro-cid-ovxcmftc>ollama</span><span class="tech-tag" data-astro-cid-ovxcmftc>qdrant</span><span class="tech-tag" data-astro-cid-ovxcmftc>machine-learning</span><span class="tech-tag" data-astro-cid-ovxcmftc>risk-prediction</span><span class="tech-tag" data-astro-cid-ovxcmftc>Logistic Regression</span><span class="tech-tag" data-astro-cid-ovxcmftc>vector-database</span><span class="tech-tag" data-astro-cid-ovxcmftc>postgresql</span><span class="tech-tag" data-astro-cid-ovxcmftc>python</span><span class="tech-tag" data-astro-cid-ovxcmftc>ai-screening</span><span class="tech-tag" data-astro-cid-ovxcmftc>Interventions</span> </div>  <div class="project-actions" data-astro-cid-ovxcmftc> <a class="btn primary" href="https://github.com/manideepsp/Diabeters-risk-score.git" target="_blank" rel="noopener" data-astro-cid-ovxcmftc> <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-ovxcmftc> <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.66-.22.66-.48v-1.69c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.16.58.67.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z" data-astro-cid-ovxcmftc></path> </svg> <span data-astro-cid-ovxcmftc>View on GitHub</span> </a>  </div> <div class="project-detail-image" data-astro-cid-ovxcmftc> <img src="/Portfolio-ManideepSP/images/projects/Diabetes-Risk-Predection-Architecture-Diagram.svg" alt="Diabetes Risk Prediction Chatbot preview" loading="lazy" data-astro-cid-ovxcmftc> </div> <div class="project-readme" data-astro-cid-ovxcmftc><h1>Diabetes Chatbot POC</h1>
+<p>This project is a Proof-of-Concept (POC) for a diabetes detection chatbot web application built using Flask REST API, LangGraph, and Ollama. The application assists users in understanding diabetes risk factors and provides relevant information through an interactive chatbot interface. The conversation flow is orchestrated entirely via LangGraph nodes.</p>
+<h2>Diabetes Questionnaire Sources</h2>
+<p>Curation of questions from <code>diabetes-risk frameworks (FINDRISC, ADA, IDRS)</code></p>
+<p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5592265/">IDRS</a>
+<a href="https://findrisc.com/#findrisc">FINDRISC</a></p>
+<h2>Project Structure</h2>
+<pre><code>diabetes-chatbot-poc
+├── CODE
+│   ├── app.py                  # Entry point for the Flask REST API
+│   ├── chatbot
+│   │   ├── __init__.py         # Marks the chatbot directory as a package
+│   │   ├── graph_builder.py    # LangGraph graph construction
+│   │   ├── graph_nodes.py      # Graph node implementations
+│   │   ├── graph_state.py      # State definitions
+│   │   ├── chat_session.py     # Chat session management
+│   │   ├── llm.py              # LLM integration (Ollama)
+│   │   ├── qdrant.py           # Qdrant vector database integration
+│   │   ├── static_variables.py # Question definitions
+│   │   ├── db_helpers.py       # Database helper functions
+│   │   └── scoring.py          # Risk scoring functions
+│   └── chatbot.ipynb           # Jupyter notebook for testing
+├── requirements.txt             # List of dependencies
+└── README.md                    # Project documentation
+</code></pre>
+<h2>Requirements</h2>
+<p>To run this project, you need to install the following dependencies:</p>
+<ul>
+<li>Flask</li>
+<li>Flask-CORS</li>
+<li>LangGraph</li>
+<li>Ollama</li>
+<li>PostgreSQL</li>
+<li>Qdrant</li>
+<li>Sentence-Transformers</li>
+</ul>
+<p>You can install the required packages by running:</p>
+<pre><code>pip install -r requirements.txt
+</code></pre>
+<h2>Running the Flask REST API</h2>
+<p>To start the Flask REST API server, navigate to the <code>CODE</code> directory and run:</p>
+<pre><code>cd CODE
+python app.py
+</code></pre>
+<p>The API will be available at <code>http://localhost:5000</code></p>
+<h2>API Endpoints</h2>
+<h3>Health Check</h3>
+<ul>
+<li><strong>GET</strong> <code>/api/health</code>
+<ul>
+<li>Returns API health status</li>
+</ul>
+</li>
+</ul>
+<h3>Session Management</h3>
+<ul>
+<li>
+<p><strong>POST</strong> <code>/api/sessions</code></p>
+<ul>
+<li>Create a new chat session</li>
+<li>Returns: <code>session_id</code> and first question</li>
+</ul>
+</li>
+<li>
+<p><strong>GET</strong> <code>/api/sessions</code></p>
+<ul>
+<li>List all active sessions</li>
+</ul>
+</li>
+<li>
+<p><strong>GET</strong> <code>/api/sessions/&#x3C;session_id>/question</code></p>
+<ul>
+<li>Get the current question for a session</li>
+</ul>
+</li>
+<li>
+<p><strong>GET</strong> <code>/api/sessions/&#x3C;session_id>/history</code></p>
+<ul>
+<li>Get chat history for a session</li>
+</ul>
+</li>
+<li>
+<p><strong>GET</strong> <code>/api/sessions/&#x3C;session_id>/state</code></p>
+<ul>
+<li>Get the current state of a session</li>
+</ul>
+</li>
+<li>
+<p><strong>GET</strong> <code>/api/sessions/&#x3C;session_id>/assessment</code></p>
+<ul>
+<li>Get risk assessment results for a session</li>
+</ul>
+</li>
+<li>
+<p><strong>DELETE</strong> <code>/api/sessions/&#x3C;session_id></code></p>
+<ul>
+<li>Delete a chat session</li>
+</ul>
+</li>
+</ul>
+<h3>Chat Interaction</h3>
+<ul>
+<li><strong>POST</strong> <code>/api/sessions/&#x3C;session_id>/message</code>
+<ul>
+<li>Send a message/answer to the chatbot</li>
+<li>Body: <code>{"message": "your answer"}</code></li>
+<li>Returns: Next question or risk assessment if completed</li>
+</ul>
+</li>
+</ul>
+<h2>API Usage Examples</h2>
+<h3>Create a Session</h3>
+<pre><code>curl -X POST http://localhost:5000/api/sessions
+</code></pre>
+<p>Response:</p>
+<pre><code>{
+  "session_id": "uuid-here",
+  "message": "Session created successfully",
+  "current_question": {
+    "question": "What is your name?",
+    "question_key": "name",
+    "question_type": "text",
+    "question_id": 0
+  }
+}
+</code></pre>
+<h3>Send a Message</h3>
+<pre><code>curl -X POST http://localhost:5000/api/sessions/&#x3C;session_id>/message \
+  -H "Content-Type: application/json" \
+  -d '{"message": "John Doe"}'
+</code></pre>
+<p>Response:</p>
+<pre><code>{
+  "message": "Answer processed successfully",
+  "next_question": {
+    "question": "How old are you? Options: ...",
+    "question_key": "age",
+    "question_type": "number",
+    "question_id": 1
+  },
+  "history": [...],
+  "completed": false
+}
+</code></pre>
+<h3>Get Risk Assessment</h3>
+<pre><code>curl http://localhost:5000/api/sessions/&#x3C;session_id>/assessment
+</code></pre>
+<p>Response:</p>
+<pre><code>{
+  "risk_level": "Medium",
+  "risk_score": 45,
+  "interventions": "Detailed intervention recommendations...",
+  "completed": true
+}
+</code></pre>
+<h2>Usage</h2>
+<p>Once the Flask API is running, you can interact with the chatbot by:</p>
+<ol>
+<li>Creating a session</li>
+<li>Sending answers to questions sequentially</li>
+<li>Receiving risk assessment after completing all questions</li>
+</ol>
+<p>The chatbot uses LangGraph nodes for conversation flow management (router → prepare_question → process_answer → build_risk_assessment_prompt). Ollama powers LLM parsing/answers, and Qdrant provides medical knowledge retrieval.</p>
+<h2>Contributing</h2>
+<p>Contributions are welcome! Please feel free to submit a pull request or open an issue for any enhancements or bug fixes.</p>
+<hr>
+<h2>Features</h2>
+<ul>
+<li><strong>Chatbot UI</strong> with question bubbles, progress bar, fixed layout, and scrollable history</li>
+<li><strong>Questionnaire → Assessment</strong> flow with interventions and justification</li>
+<li><strong>User auth</strong>: signup/login with password hashing (no JWT)</li>
+<li><strong>Persistence</strong>: PostgreSQL via SQLAlchemy for users, questionnaire responses, and assessments</li>
+<li><strong>Vector search</strong>: Qdrant for knowledge retrieval; <strong>LLM</strong> via Ollama</li>
+<li><strong>Config via .env</strong>; can run on localhost or expose to LAN</li>
+<li><strong>Full LangGraph orchestration</strong>: all steps run via nodes (no procedural helpers in the request path)</li>
+<li><strong>ML training improvements</strong>: epoch progress and ETA printed during training</li>
+<li><strong>Config flag</strong>: <code>TRAIN_MODEL_ENABLED</code> to enable/disable background model training</li>
+</ul>
+<h2>Quick Start</h2>
+<ol>
+<li>Create a virtual environment and install deps</li>
+</ol>
+<pre><code>python -m venv .venv
+.venv\\Scripts\\activate   # Windows
+pip install -r requirements.txt
+</code></pre>
+<ol start="2">
+<li>Configure <code>.env</code> in project root</li>
+</ol>
+<pre><code># App
+DEBUG=False
+LOG_LEVEL=INFO
+TRAIN_MODEL_ENABLED=true
+
+# PostgreSQL
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_password
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=diabetes-poc
+
+# Qdrant
+QDRANT_API_KEY=your_qdrant_key
+QDRANT_URL=https://your-qdrant-url
+
+# Ollama
+OLLAMA_MODEL=qwen2.5:3b
+OLLAMA_HOST=http://localhost:11434
+</code></pre>
+<ol start="3">
+<li>Ensure the database exists and schema is applied</li>
+</ol>
+<ul>
+<li>Create the database <code>diabetes-poc</code> (or adjust POSTGRES_DB accordingly)</li>
+<li>Optional: apply SQL in <code>CODE/sql/schema.sql</code> if desired; models also create tables automatically on first run</li>
+</ul>
+<ol start="4">
+<li>Run the server</li>
+</ol>
+<pre><code>cd CODE
+python app.py
+</code></pre>
+<p>By default, it runs on port 5000. It is configured with <code>host='0.0.0.0'</code> so it can be reachable on the LAN (see below).</p>
+<h2>Access from other devices on your LAN</h2>
+<ol>
+<li>Allow inbound TCP 5000 in Windows Defender Firewall (Private profile)</li>
+<li>Find your LAN IP via <code>ipconfig</code> (e.g., 192.168.1.42)</li>
+<li>Open from another device: <code>http://&#x3C;YOUR_LAN_IP>:5000/</code></li>
+</ol>
+<p>Keep <code>debug=False</code> for safety. Do not expose to the public internet without hardening and a production WSGI server.</p>
+<h2>Frontend Pages</h2>
+<ul>
+<li><code>/</code> Chatbot home (requires login)</li>
+<li><code>/login.html</code> Login page</li>
+<li><code>/signup.html</code> Signup page</li>
+</ul>
+<h2>Authentication</h2>
+<ul>
+<li>Passwords are stored as hashes using Werkzeug</li>
+<li>Local session only (no JWT). The frontend stores <code>user_id</code> in <code>localStorage</code> to gate access</li>
+<li>Login/logout UI toggling is in the navbar and a Logout button on home</li>
+</ul>
+<h3>Auth API</h3>
+<ul>
+<li>
+<p><code>POST /api/auth/signup</code></p>
+<ul>
+<li>Body: <code>{ username, password, name?, dob?, gender?, place?, industry? }</code></li>
+<li>201 on success, 409 if username exists</li>
+</ul>
+</li>
+<li>
+<p><code>POST /api/auth/login</code></p>
+<ul>
+<li>Body: <code>{ username, password }</code></li>
+<li>200 on success returns <code>{ user_id }</code></li>
+</ul>
+</li>
+</ul>
+<h3>Debug API</h3>
+<ul>
+<li><code>GET /api/debug/users</code> returns a short list of users in the connected database</li>
+</ul>
+<h2>Core Chatbot API</h2>
+<ul>
+<li><code>GET /api/health</code></li>
+<li><code>POST /api/sessions</code> → creates session; accepts optional <code>{ user_id }</code></li>
+<li><code>POST /api/sessions/&#x3C;session_id>/message</code> → send an answer</li>
+<li><code>GET /api/sessions/&#x3C;session_id>/question</code> → current/next question</li>
+<li><code>GET /api/sessions/&#x3C;session_id>/history</code></li>
+<li><code>GET /api/sessions/&#x3C;session_id>/state</code></li>
+<li><code>GET /api/sessions/&#x3C;session_id>/assessment</code></li>
+<li><code>DELETE /api/sessions/&#x3C;session_id></code></li>
+</ul>
+<h2>Database Schema</h2>
+<ul>
+<li>ORM models: <code>CODE/chatbot/models.py</code>
+<ul>
+<li><code>users</code>: id, username (unique), password_hash, name, dob, gender, place, industry, created_at</li>
+<li><code>questionnaire_responses</code>: id, user_id?, session_id, responses (JSONB), created_at</li>
+<li><code>assessments</code>: id, user_id?, session_id, risk_level, risk_score, interventions, justification, created_at</li>
+</ul>
+</li>
+<li>SQL reference: <code>CODE/sql/schema.sql</code></li>
+</ul>
+<h2>Test Script</h2>
+<ul>
+<li><code>CODE/test.py</code> performs a basic end-to-end flow: health → signup/login → create session → fetch question → answer → assessment</li>
+</ul>
+<p>Run:</p>
+<pre><code>cd CODE
+python test.py
+</code></pre>
+<p>Notes:</p>
+<ul>
+<li>Run while the server is up on port 5000</li>
+<li>The script generates a unique username; on 409 it attempts login</li>
+</ul>
+<h2>Troubleshooting</h2>
+<ul>
+<li>
+<p>500 on signup: <code>"'occupation' is an invalid keyword argument for User"</code></p>
+<ul>
+<li>Ensure the signup route doesn’t pass <code>occupation</code> (model no longer has that column)</li>
+</ul>
+</li>
+<li>
+<p>Users not appearing in DB</p>
+<ul>
+<li>Confirm <code>.env</code> has <code>POSTGRES_DB=diabetes-poc</code> (or your intended DB)</li>
+<li>Ensure no conflicting system env overrides; restart server after changes</li>
+<li>Hit <code>GET /api/debug/users</code> to verify which DB the app is using</li>
+</ul>
+</li>
+<li>
+<p>“Could not find platform independent libraries ” on Windows</p>
+<ul>
+<li>Benign when invoking Python in a venv; safe to ignore</li>
+</ul>
+</li>
+<li>
+<p>“Session not found” after questionnaire</p>
+<ul>
+<li>Ensure <code>use_reloader=False</code> so in-memory sessions aren’t cleared by the reloader</li>
+</ul>
+</li>
+<li>
+<p>Frontend not showing or stuck</p>
+<ul>
+<li>Hard refresh, clear cache/localStorage</li>
+<li>Ensure only one definition of <code>API_BASE_URL</code> (we use a single <code>window.API_BASE_URL</code> approach)</li>
+</ul>
+</li>
+</ul>
+<h2>Deployment Notes</h2>
+<ul>
+<li>The built-in Flask server is for development. For production, use a WSGI server (e.g., gunicorn/uvicorn+ASGI wrappers) behind a reverse proxy</li>
+<li>Keep secrets in environment variables and never commit real API keys</li>
+</ul>
+<hr>
+<h2>📜 License</h2>
+<p><strong>MIT License</strong> — Copyright © 2025
+<strong>Developers:</strong> Manideep &#x26; Rajeev</p>
+<hr>
+<h2>🙌 Contributors</h2>
+<ul>
+<li><strong>Manideep</strong></li>
+</ul>
+<hr>
+<p><strong>Disclaimer:</strong>
+This project is an educational prototype diabetes assessment with AI-assisted analysis.
+It is <strong>not intended for medical diagnosis or treatment</strong>.</p></div> </section>  </main> <footer class="site-footer" id="site-footer" role="contentinfo"> <div class="inner footer-grid"> <div class="footer__col footer__brand"> <div class="footer__brand-grid"> <div class="brand-monogram"> <div class="monogram-wrapper" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:999px;overflow:hidden;flex:0 0 36px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071024;font-weight:800;font-size:12px" aria-hidden="false"> <a class="monogram-link" href="https://github.com/manideepsp" target="_blank" rel="noopener" aria-label="View manideepsp on GitHub" style="display:inline-block;width:36px;height:36px;flex:0 0 36px;"> <img src="https://github.com/manideepsp.png?s=36" alt="manideepsp avatar" width="36" height="36" class style="display:block;width:100%;height:100%;object-fit:contain;border-radius:999px;" loading="lazy"> </a> </div> </div> <div class="brand-name"> <a class="footer__name logo text-2xl font-bold" href="/Portfolio-ManideepSP/">Manideep Sriperambudhuru</a> </div> <div class="brand-tag text-sm">AI • Data • ML</div> <div class="brand-email text-sm"><a href="mailto:manideepsp.16@gmail.com">manideepsp.16@gmail.com</a></div> </div> </div> <div class="footer__col footer__links"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Explore</h4> <ul class="footer-nav" style="margin:0;padding:0;list-style:none;"> <li><a href="/Portfolio-ManideepSP/">Home</a></li> <li><a href="/Portfolio-ManideepSP/projects">Projects</a></li> <li><a href="/Portfolio-ManideepSP/resume">Resume</a></li> <li><a href="/Portfolio-ManideepSP/about">About</a></li> <li><a href="/Portfolio-ManideepSP/contact">Contact</a></li> </ul> </div> <div class="footer__col footer__contact"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Connect</h4> <div class="socials" style="display:flex;gap:10px;align-items:center;"> <a class="social-link" href="https://github.com/manideepsp" target="_blank" rel="noopener" aria-label="GitHub"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#github"></use></svg> </a> <a class="social-link" href="mailto:manideepsp.16@gmail.com" aria-label="Email"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#mail"></use></svg> </a> <a class="social-link" href="https://www.linkedin.com/in/manideepsp" target="_blank" rel="noopener" aria-label="LinkedIn"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#linkedin"></use></svg> </a> </div> <a class="back-to-top text-sm" href="#top" style="display:inline-block;margin-top:10px;color:var(--muted);">Back to top ↑</a> </div> </div> <div class="inner footer__credits" style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.03);padding-top:18px;"> <p class="text-sm" style="color:var(--muted);margin:0;">&copy; 2026 Manideep Sriperambudhuru. Built with ❤.</p> </div> </footer> </div> <script type="module" src="/Portfolio-ManideepSP/lib/sr.js" defer></script> </body> </html> 
