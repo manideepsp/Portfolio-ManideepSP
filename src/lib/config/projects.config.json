@@ -1,15 +1,15 @@
 {
   "projects": [
     {
-      "title": "PHQ-9 DSM-5 Based Mental Health Predictor",
-      "description": "A machine learning pipeline for real-time data processing and anomaly detection.",
-      "image": "/images/projects/PHQ-9-Predictor-Architecture-Diagram.svg",
-      "repoUrl": "https://github.com/manideepsp/PHQ-9",
+      "title": "QLoRA Fine-Tuning with EQ-bench 3",
+      "description": "Fine-tune an open-weights LLM into an empathetic best-friend assistant and show measurable gains on EQ-Bench 3. Train with multi-objective SFT using auxiliary emotion and support-strategy heads, then optionally run DPO for alignment. Provide quantitative improvements and brief qualitative insights",
+      "image": "/images/projects/EQ-Bench.png",
+      "repoUrl": "https://github.com/manideepsp/QLoRA-Fine-Tuning-with-EQ-bench-3",
       "is_demo_available": false,
-      "demoUrl": "https://www.google.com",
-      "slug": "phq-9-dsm-5-based-mental-health-predictor",
-      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/PHQ-9/main/README.md",
-      "tags": ["mental-health","depression-screening","ml-pipeline","phq9","healthcare-ai","lstm-prediction","flask-api","rag-llm","vector db", "Medical Interventions"]
+      "demoUrl": "",
+      "slug": "qlora-fine-tuning-with-eq-bench-3",
+      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/QLoRA-Fine-Tuning-with-EQ-bench-3/main/README.md",
+      "tags": ["QLoRA","fine-tuning","LLM","EQ-bench","instruction-tuning","Python"]
     },
     {
       "title": "Diabetes Risk Prediction Chatbot",
@@ -24,6 +24,17 @@
 "ai-screening", "Interventions"]
     },
     {
+      "title": "PHQ-9 DSM-5 Based Mental Health Predictor",
+      "description": "A machine learning pipeline for real-time data processing and anomaly detection.",
+      "image": "/images/projects/PHQ-9-Predictor-Architecture-Diagram.svg",
+      "repoUrl": "https://github.com/manideepsp/PHQ-9",
+      "is_demo_available": false,
+      "demoUrl": "https://www.google.com",
+      "slug": "phq-9-dsm-5-based-mental-health-predictor",
+      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/PHQ-9/main/README.md",
+      "tags": ["mental-health","depression-screening","ml-pipeline","phq9","healthcare-ai","lstm-prediction","flask-api","rag-llm","vector db", "Medical Interventions"]
+    },
+    {
       "title": "AIRES: AI Resume Screening System",
       "description": "Aires is an intelligent resume screening application that leverages OpenAI's GPT models to automate candidate evaluation and shortlisting.",
       "image": "/images/projects/AiRes-AiResumeScreener-Architecture-Diagram.svg",
@@ -33,6 +44,17 @@
       "slug": "aires-ai-resume-screening-system",
       "readmeUrl": "https://raw.githubusercontent.com/manideepsp/Aires/main/README.md",
       "tags": ["AI Resume Screening","Python","OpenAI GPT-3.5","Chainlit","Document Processing","HR Automation"]
+    },
+    {
+      "title": "TensorflowJS ReactivAI",
+      "description": "Neural network–powered face detection, emotion classification, voice analysis, and engagement scoring — running 100% client-side via WebGL-accelerated TensorFlow.js.",
+      "image": "/images/projects/cnn_neural_net.png",
+      "repoUrl": "https://github.com/manideepsp/TensorflowJS-ReactivAI.git",
+      "is_demo_available": true,
+      "demoUrl": "https://manideepsp.github.io/TensorflowJS-ReactivAI/",
+      "slug": "tensorflowjs-reactivai",
+      "readmeUrl": "https://raw.githubusercontent.com/manideepsp/TensorflowJS-ReactivAI/main/README.md",
+      "tags": ["CNN","TensorFlow.js","web-ml", "client-side","javascript","interactive-demo","reactivai"]
     }
   ]
 }

@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Manideep Sriperambudhuru – Portfolio. I build data &#38; ML systems that scale. Currently shipping backend services and production ML pipelines at scale."><title>TensorflowJS ReactivAI | Projects • Manideep Sriperambudhuru</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"></noscript><link rel="stylesheet" href="/Portfolio-ManideepSP/_astro/about.CCTWTH4r.css">
+<link rel="stylesheet" href="/Portfolio-ManideepSP/_astro/_slug_.BZKQjNvF.css"></head> <body> <div class="bg-spotlight"> <div class="cursor-glow" aria-hidden="true"></div> <script type="module" client:load>
+  const glow = document.querySelector('.cursor-glow');
+  if (glow) {
+    document.addEventListener('mousemove', (event) => {
+      const x = event.clientX - 250;
+      const y = event.clientY - 250;
+      glow.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      glow.style.transform = 'translate3d(-9999px, -9999px, 0)';
+    });
+  }
+</script> </div> <div class="page-wrap">  <header class="site-header" role="banner"> <div class="inner"> <a class="logo text-2xl font-bold" href="/Portfolio-ManideepSP/">Manideep Sriperambudhuru</a> <nav class="nav nav-animated" id="main-nav" aria-label="Main navigation"> <a class="text-sm nav-link" href="/Portfolio-ManideepSP/">Home</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/projects">Projects</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/resume">Resume</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/about">About</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/contact">Contact</a> <span class="nav-underline" id="nav-underline"></span> </nav> </div> <script type="module" client:load>
+    // Animated underline for nav
+    const nav = document.getElementById('main-nav');
+    const underline = document.getElementById('nav-underline');
+    if (nav && underline) {
+      const links = nav.querySelectorAll('.nav-link');
+      function moveUnderline(target) {
+        const rect = target.getBoundingClientRect();
+        const navRect = nav.getBoundingClientRect();
+        underline.style.width = rect.width + 'px';
+        underline.style.left = (rect.left - navRect.left) + 'px';
+        underline.style.opacity = 1;
+      }
+      links.forEach(link => {
+        link.addEventListener('mouseenter', e => moveUnderline(e.target));
+        link.addEventListener('focus', e => moveUnderline(e.target));
+      });
+      nav.addEventListener('mouseleave', () => {
+        underline.style.opacity = 0;
+      });
+      // Optionally, highlight current page
+      const current = Array.from(links).find(link => link.href === window.location.href);
+      if (current) moveUnderline(current);
+    }
+  </script> </header> <main id="main-content" class="container" tabindex="-1">  <section class="project-detail-page single-page" data-astro-cid-ovxcmftc> <!-- Back navigation --> <a href="/Portfolio-ManideepSP/projects" class="back-link" data-astro-cid-ovxcmftc> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-ovxcmftc> <path d="M19 12H5M12 19l-7-7 7-7" data-astro-cid-ovxcmftc></path> </svg> <span data-astro-cid-ovxcmftc>Back to Projects</span> </a> <div class="project-detail-header" data-astro-cid-ovxcmftc> <div class="project-detail-title-area" data-astro-cid-ovxcmftc> <p class="eyebrow" data-astro-cid-ovxcmftc>Project</p> <h1 class="project-title" data-astro-cid-ovxcmftc>TensorflowJS ReactivAI</h1> <p class="project-subtitle" data-astro-cid-ovxcmftc>Neural network–powered face detection, emotion classification, voice analysis, and engagement scoring — running 100% client-side via WebGL-accelerated TensorFlow.js.</p> </div> </div>  <div class="project-tech-stack" data-astro-cid-ovxcmftc> <span class="tech-tag" data-astro-cid-ovxcmftc>CNN</span><span class="tech-tag" data-astro-cid-ovxcmftc>TensorFlow.js</span><span class="tech-tag" data-astro-cid-ovxcmftc>web-ml</span><span class="tech-tag" data-astro-cid-ovxcmftc>client-side</span><span class="tech-tag" data-astro-cid-ovxcmftc>javascript</span><span class="tech-tag" data-astro-cid-ovxcmftc>interactive-demo</span><span class="tech-tag" data-astro-cid-ovxcmftc>reactivai</span> </div>  <div class="project-actions" data-astro-cid-ovxcmftc> <a class="btn primary" href="https://github.com/manideepsp/TensorflowJS-ReactivAI.git" target="_blank" rel="noopener" data-astro-cid-ovxcmftc> <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-ovxcmftc> <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.66-.22.66-.48v-1.69c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.16.58.67.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z" data-astro-cid-ovxcmftc></path> </svg> <span data-astro-cid-ovxcmftc>View on GitHub</span> </a> <a class="btn secondary" href="https://manideepsp.github.io/TensorflowJS-ReactivAI/" target="_blank" rel="noopener" data-astro-cid-ovxcmftc> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-ovxcmftc> <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" data-astro-cid-ovxcmftc></path> <polyline points="15 3 21 3 21 9" data-astro-cid-ovxcmftc></polyline> <line x1="10" y1="14" x2="21" y2="3" data-astro-cid-ovxcmftc></line> </svg> <span data-astro-cid-ovxcmftc>Live Demo</span> </a> </div> <div class="project-detail-image" data-astro-cid-ovxcmftc> <img src="/Portfolio-ManideepSP/images/projects/cnn_neural_net.png" alt="TensorflowJS ReactivAI preview" loading="lazy" data-astro-cid-ovxcmftc> </div> <div class="project-readme" data-astro-cid-ovxcmftc><h1>🧠 Reactiv-AI</h1>
+<h3>Real-Time Emotion, Voice &#x26; Engagement Analysis — Entirely in the Browser</h3>
+<p><a href="https://www.tensorflow.org/js"><img src="https://img.shields.io/badge/TensorFlow.js-4.22-FF6F00?logo=tensorflow&#x26;logoColor=white" alt="TensorFlow.js"></a>
+<a href="https://astro.build"><img src="https://img.shields.io/badge/Astro-5.17-BC52EE?logo=astro&#x26;logoColor=white" alt="Astro"></a>
+<a href="https://react.dev"><img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&#x26;logoColor=black" alt="React"></a>
+<a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&#x26;logoColor=white" alt="TypeScript"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a></p>
+<p><strong>No backend. No API calls. No data leaves your device.</strong><br>
+Neural network–powered face detection, emotion classification, voice analysis, and engagement scoring — running 100% client-side via WebGL-accelerated TensorFlow.js.</p>
+<hr>
+<p><a href="#-features">Features</a> · <a href="#-architecture">Architecture</a> · <a href="#-quick-start">Quick Start</a> · <a href="#-how-it-works">How It Works</a> · <a href="#-model-training">Model Training</a> · <a href="#-project-structure">Project Structure</a> · <a href="#-tech-stack">Tech Stack</a></p>
+<hr>
+<h2>✨ Features</h2>
+<p>| Capability | How It Works | Runs On |
+|:---|:---|:---|
+| 🎭 <strong>Face Detection</strong> | MediaPipe FaceMesh (468 landmarks) via TensorFlow.js | WebGL 2 |
+| 😊 <strong>Emotion Classification</strong> | Custom CNN trained on FER-2013 (7 emotions) | WebGL 2 |
+| 🎙️ <strong>Voice Analysis</strong> | Web Audio API — RMS energy + speech detection | AudioContext |
+| 📊 <strong>Engagement Scoring</strong> | Weighted fusion: emotion 40% + voice 30% + speech 30% | CPU |
+| 🔒 <strong>100% Client-Side</strong> | Zero backend, zero network calls — your data never leaves the browser | — |
+| ⚡ <strong>Real-Time</strong> | <code>requestAnimationFrame</code> loop with temporal smoothing for stable output | — |
+| 📈 <strong>Live Performance Metrics</strong> | FPS, inference latency, tensor count, memory usage | — |</p>
+<h3>Detected Emotions</h3>
+<blockquote>
+<p><strong>Angry</strong> · <strong>Disgust</strong> · <strong>Fear</strong> · <strong>Happy</strong> · <strong>Sad</strong> · <strong>Surprise</strong> · <strong>Neutral</strong></p>
+</blockquote>
+<hr>
+<h2>🏛️ Architecture</h2>
+<pre><code>flowchart LR
+  subgraph B[Browser / Client-Side Only]
+    subgraph V[Video Pipeline]
+      Cam[Camera] --> FD[Face Detector]
+      FD --> Crop[Face Crop and Preprocess]
+      Crop --> EC[Emotion Classifier]
+      EC --> TS[Temporal Smoother]
+    end
+
+    subgraph A[Audio Pipeline]
+      Mic[Microphone] --> AE[Audio Engine]
+      AE --> EE[Engagement Engine]
+    end
+
+    PM[Performance Monitor]
+    UI[React UI]
+
+    TS --> UI
+    EE --> UI
+    PM --> UI
+  end
+</code></pre>
+<hr>
+<h2>🚀 Quick Start</h2>
+<pre><code># 1. Clone the repository
+git clone https://github.com/your-username/TensorflowJS-ReactivAI.git
+cd TensorflowJS-ReactivAI
+
+# 2. Install dependencies
+npm install
+
+# 3. Start the dev server
+npm run dev
+</code></pre>
+<p>Open <strong>http://localhost:4321/</strong> — grant camera and microphone access, and you're live.</p>
+<p>If you’ve configured <code>base: '/TensorflowJS-ReactivAI/'</code> for GitHub Pages and the dev server shows a blank page, try: <strong>http://localhost:4321/TensorflowJS-ReactivAI/</strong></p>
+<h3>Commands</h3>
+<p>| Command | Action |
+|:---|:---|
+| <code>npm install</code> | Install dependencies |
+| <code>npm run dev</code> | Start dev server at <code>localhost:4321</code> |
+| <code>npm run build</code> | Production build → <code>./dist/</code> |
+| <code>npm run preview</code> | Preview production build locally |
+| <code>npm run test</code> | Run unit tests (Vitest) |</p>
+<hr>
+<h2>🔬 How It Works</h2>
+<h3>1. Face Detection — MediaPipe FaceMesh</h3>
+<p>The app uses <strong>MediaPipe FaceMesh</strong> through TensorFlow.js to detect faces and extract 468 facial landmarks in real time. Each video frame is snapshot to an off-screen canvas and passed to the model, avoiding WebGL texture conflicts with React's DOM management.</p>
+<pre><code>Camera → HTMLVideoElement → Off-screen Canvas snapshot → FaceMesh model → 468 keypoints + bounding box
+</code></pre>
+<ul>
+<li>Bounding box computed from keypoint extremes with 10% padding</li>
+<li>Single-face mode for performance</li>
+<li>~20–40ms per detection on modern GPUs</li>
+</ul>
+<h3>2. Emotion Classification — Custom CNN</h3>
+<p>A dedicated convolutional neural network classifies the detected face region into one of <strong>7 emotions</strong>. The face is extracted, resized to <strong>48×48 grayscale</strong>, normalized to <code>[0, 1]</code>, and passed through the model.</p>
+<p><strong>Model Architecture:</strong></p>
+<pre><code>Input (48×48×1)
+    ├─ Conv2D(32, 3×3) → BatchNorm → Conv2D(32, 3×3) → BatchNorm → MaxPool → Dropout(0.25)
+    ├─ Conv2D(64, 3×3) → BatchNorm → Conv2D(64, 3×3) → BatchNorm → MaxPool → Dropout(0.25)
+    ├─ Conv2D(128, 3×3) → BatchNorm → Conv2D(128, 3×3) → BatchNorm → MaxPool → Dropout(0.25)
+    ├─ Flatten → Dense(256) → BatchNorm → Dropout(0.5)
+    ├─ Dense(128) → BatchNorm → Dropout(0.3)
+    └─ Dense(7, softmax) → Probability distribution over 7 emotions
+</code></pre>
+<ul>
+<li><strong>1.5M parameters</strong> / ~5.7 MB in browser</li>
+<li>Trained on <strong>FER-2013</strong> (35,887 facial expression images)</li>
+<li>Augmented with flips, rotation, zoom, and translation</li>
+<li>Class-weighted loss to handle imbalanced classes (e.g., disgust has only 436 training samples)</li>
+<li><strong>Temporal smoothing</strong> via exponential moving average eliminates jitter between frames</li>
+</ul>
+<h3>3. Voice Analysis — Web Audio API</h3>
+<p>Real-time audio analysis runs entirely in-browser using the <strong>Web Audio API</strong>:</p>
+<pre><code>Microphone → MediaStream → AudioContext → AnalyserNode → Float32 time-domain data → RMS Energy
+</code></pre>
+<ul>
+<li><strong>RMS Energy</strong>: root mean square of the waveform — measures volume/intensity</li>
+<li><strong>Speech Detection</strong>: threshold-based binary classification (speaking vs. silent)</li>
+<li><strong>Speech Continuity</strong>: rolling 30-frame window tracking ratio of speaking frames</li>
+<li>Echo cancellation, noise suppression, and auto-gain enabled at capture</li>
+</ul>
+<h3>4. Engagement Scoring — Multi-Signal Fusion</h3>
+<p>The engagement engine fuses all three signals into a <strong>0–100 composite score</strong>:</p>
+<p>$$\text{Score} = \bigl(\underbrace{E_{\text{confidence}}}<em>{\text{Emotion}} \times 0.4\bigr) + \bigl(\underbrace{V</em>{\text{energy}}}<em>{\text{Voice}} \times 0.3\bigr) + \bigl(\underbrace{S</em>{\text{continuity}}}_{\text{Speech}} \times 0.3\bigr) \times 100$$</p>
+<p>| Component | Weight | Signal Source |
+|:---|:---|:---|
+| Emotion Confidence | 40% | Softmax confidence from CNN |
+| Voice Energy | 30% | Normalized RMS from microphone |
+| Speech Continuity | 30% | Rolling speaking ratio (30-frame window) |</p>
+<h3>5. Performance Monitoring</h3>
+<p>A built-in performance monitor tracks:</p>
+<ul>
+<li><strong>FPS</strong> — frames processed per second</li>
+<li><strong>Face Detection Latency</strong> — ms per face detection call</li>
+<li><strong>Emotion Inference Latency</strong> — ms per CNN forward pass</li>
+<li><strong>Tensor Count &#x26; Memory</strong> — active WebGL tensors and allocated bytes (leak detection)</li>
+</ul>
+<hr>
+<h2>🏋️ Model Training</h2>
+<p>The emotion CNN is trained offline in Python and exported to TensorFlow.js format using a <strong>custom pure-Python converter</strong> (no <code>tensorflowjs</code> pip package required).</p>
+<h3>Prerequisites</h3>
+<pre><code>pip install -r scripts/requirements-python-training.txt
+# → tensorflow==2.15.0, numpy==1.26.4, Pillow
+</code></pre>
+<h3>Train on FER-2013</h3>
+<pre><code># From image directory (recommended — Kaggle's pre-split format)
+python scripts/train-emotion-model.py \
+  --data-dir /path/to/fer2013 \
+  --epochs 50 \
+  --batch-size 64
+
+# From CSV file
+python scripts/train-emotion-model.py \
+  --data /path/to/fer2013.csv \
+  --epochs 50
+
+# Quick pipeline test with synthetic data
+python scripts/train-emotion-model.py --synthetic
+</code></pre>
+<p>The script automatically:</p>
+<ol>
+<li>Loads and normalizes images (48×48 grayscale, <code>[0, 1]</code>)</li>
+<li>Computes per-class weights (capped at 3×) for imbalanced classes</li>
+<li>Trains with augmentation (flips, rotation, zoom, shift)</li>
+<li>Saves Keras model to <code>artifacts/emotion_model.keras</code></li>
+<li>Converts to TensorFlow.js at <code>public/models/emotion_model/</code></li>
+</ol>
+<h3>Custom Keras → TFJS Converter</h3>
+<p>The standard <code>tensorflowjs</code> Python package is notoriously difficult to install. We built a <strong>pure-Python converter</strong> that produces identical output:</p>
+<pre><code>python scripts/convert_keras_to_tfjs.py \
+  --keras artifacts/emotion_model.keras \
+  --out public/models/emotion_model
+</code></pre>
+<p>It handles:</p>
+<ul>
+<li>Keras 3 → TFJS-compatible topology stripping (<code>module</code>, <code>registered_name</code>, <code>build_config</code>)</li>
+<li>Weight name sanitization (removes <code>:0</code> suffixes)</li>
+<li>Single-shard binary packing (<code>group1-shard1of1.bin</code>)</li>
+</ul>
+<h3>A/B Testing Models</h3>
+<p>Switch models at runtime via URL parameter:</p>
+<pre><code>http://localhost:4321/?model=emotion_model_py
+</code></pre>
+<hr>
+<h2>📁 Project Structure</h2>
+<pre><code>TensorflowJS-ReactivAI/
+├── public/
+│   └── models/
+│       └── emotion_model/          # TFJS model files served as static assets
+│           ├── model.json          #   Model topology + weights manifest
+│           └── group1-shard1of1.bin #   Binary weight data (~5.7 MB)
+│
+├── src/
+│   ├── pages/
+│   │   ├── index.astro             # Main app page
+│   │   └── debug.astro             # Face detection debugger
+│   │
+│   ├── components/
+│   │   └── EmotionAnalyzer.tsx      # Main React component (camera, loop, UI)
+│   │
+│   ├── ml/                          # Machine learning modules
+│   │   ├── tfSetup.ts              #   WebGL 2 backend initialization
+│   │   ├── faceDetector.ts         #   MediaPipe FaceMesh wrapper
+│   │   ├── emotionClassifier.ts    #   CNN model loading + inference
+│   │   └── temporalSmoother.ts     #   EMA filter for stable predictions
+│   │
+│   ├── audio/
+│   │   └── audioEngine.ts          # Web Audio API: RMS energy + speech detect
+│   │
+│   ├── scoring/
+│   │   └── engagementEngine.ts     # Multi-signal engagement scoring
+│   │
+│   ├── monitoring/
+│   │   └── performanceMonitor.ts   # FPS, latency, memory tracking
+│   │
+│   ├── utils/
+│   │   ├── math.ts                 # Clamp, lerp, mean, std deviation
+│   │   └── normalization.ts        # Pixel normalization, z-score, min-max
+│   │
+│   └── shims/                       # Browser shims for Node-only packages
+│       ├── node-fetch.ts
+│       └── whatwg-url.ts
+│
+├── scripts/                         # Offline training pipeline (Python)
+│   ├── train-emotion-model.py      #   Full training script (FER-2013 / synthetic)
+│   ├── convert_keras_to_tfjs.py    #   Pure-Python Keras → TFJS converter
+│   ├── train-emotion-model.mjs     #   Legacy JS training pipeline
+│   ├── test_model.py               #   Model diagnostic tests
+│   ├── verify_conversion.py        #   Bit-level weight verification
+│   └── requirements-python-training.txt
+│
+├── types/                           # TypeScript declarations
+├── astro.config.mjs                # Astro config (static output, GitHub Pages)
+├── tsconfig.json
+├── vitest.config.ts
+└── package.json
+</code></pre>
+<hr>
+<h2>🛠️ Tech Stack</h2>
+<h3>Runtime (Browser)</h3>
+<p>| Technology | Role |
+|:---|:---|
+| <strong>TensorFlow.js 4.22</strong> | Neural network inference (WebGL 2 GPU-accelerated) |
+| <strong>MediaPipe FaceMesh</strong> | 468-point facial landmark detection |
+| <strong>Web Audio API</strong> | Real-time microphone RMS energy &#x26; speech detection |
+| <strong>WebRTC</strong> | Camera access via <code>getUserMedia</code> |
+| <strong>React 19</strong> | Reactive UI with real-time metric dashboards |
+| <strong>Astro 5.17</strong> | Static site framework (zero JS overhead for shell) |
+| <strong>TypeScript 5.9</strong> | Type safety across all modules |</p>
+<h3>Training (Offline, Python)</h3>
+<p>| Technology | Role |
+|:---|:---|
+| <strong>TensorFlow / Keras 2.15</strong> | CNN architecture, training, and augmentation |
+| <strong>FER-2013 Dataset</strong> | 35,887 labeled facial expression images |
+| <strong>Pillow</strong> | Fast image I/O (grayscale conversion, resizing) |
+| <strong>Custom TFJS Converter</strong> | Pure-Python Keras → TFJS export (no <code>tensorflowjs</code> dep) |
+| <strong>NumPy 1.26</strong> | Numerical operations and data manipulation |</p>
+<h3>Testing</h3>
+<p>| Technology | Role |
+|:---|:---|
+| <strong>Vitest 4</strong> | Unit tests for math, normalization, scoring, smoothing |</p>
+<hr>
+<h2>🔑 Key Design Decisions</h2>
+<h3>Why No Backend?</h3>
+<p>Privacy and portability. All neural network inference runs on the user's GPU via WebGL. Camera frames and microphone audio are processed locally — nothing is transmitted over the network. The entire app deploys as static files to GitHub Pages.</p>
+<h3>Why a Custom TFJS Converter?</h3>
+<p>The official <code>tensorflowjs</code> Python package has heavy native dependencies and frequent installation failures. Our pure-Python converter (<code>convert_keras_to_tfjs.py</code>) produces <strong>bit-identical</strong> output using only <code>tensorflow</code> + <code>numpy</code> — verified by comparing all 22 weight tensors against the original Keras model.</p>
+<h3>Why Temporal Smoothing?</h3>
+<p>Raw per-frame emotion predictions are noisy — a face might flicker between "Happy" and "Neutral" across consecutive frames. An <strong>exponential moving average</strong> (α = 0.3) stabilizes output while remaining responsive to genuine expression changes.</p>
+<h3>Why Canvas Snapshot for Face Detection?</h3>
+<p>Passing <code>HTMLVideoElement</code> directly to <code>estimateFaces()</code> fails when the video is rendered inside React's component tree — WebGL's <code>texImage2D</code> cannot reliably read pixels from a video whose layout is managed by CSS transforms and positioned containers. Snapshotting to an off-screen canvas solves this reliably.</p>
+<hr>
+<h2>📄 License</h2>
+<p>This project is licensed under the <strong>Apache License 2.0</strong>. See <a href="LICENSE">LICENSE</a>.</p>
+<hr>
+<p><strong>Built with neural networks, Web APIs, and zero backend dependencies.</strong></p>
+<p><em>All AI inference happens on your device. Your data stays yours.</em></p></div> </section>  </main> <footer class="site-footer" id="site-footer" role="contentinfo"> <div class="inner footer-grid"> <div class="footer__col footer__brand"> <div class="footer__brand-grid"> <div class="brand-monogram"> <div class="monogram-wrapper" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:999px;overflow:hidden;flex:0 0 36px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071024;font-weight:800;font-size:12px" aria-hidden="false"> <a class="monogram-link" href="https://github.com/manideepsp" target="_blank" rel="noopener" aria-label="View manideepsp on GitHub" style="display:inline-block;width:36px;height:36px;flex:0 0 36px;"> <img src="https://github.com/manideepsp.png?s=36" alt="manideepsp avatar" width="36" height="36" class style="display:block;width:100%;height:100%;object-fit:contain;border-radius:999px;" loading="lazy"> </a> </div> </div> <div class="brand-name"> <a class="footer__name logo text-2xl font-bold" href="/Portfolio-ManideepSP/">Manideep Sriperambudhuru</a> </div> <div class="brand-tag text-sm">AI • Data • ML</div> <div class="brand-email text-sm"><a href="mailto:manideepsp.16@gmail.com">manideepsp.16@gmail.com</a></div> </div> </div> <div class="footer__col footer__links"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Explore</h4> <ul class="footer-nav" style="margin:0;padding:0;list-style:none;"> <li><a href="/Portfolio-ManideepSP/">Home</a></li> <li><a href="/Portfolio-ManideepSP/projects">Projects</a></li> <li><a href="/Portfolio-ManideepSP/resume">Resume</a></li> <li><a href="/Portfolio-ManideepSP/about">About</a></li> <li><a href="/Portfolio-ManideepSP/contact">Contact</a></li> </ul> </div> <div class="footer__col footer__contact"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Connect</h4> <div class="socials" style="display:flex;gap:10px;align-items:center;"> <a class="social-link" href="https://github.com/manideepsp" target="_blank" rel="noopener" aria-label="GitHub"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#github"></use></svg> </a> <a class="social-link" href="mailto:manideepsp.16@gmail.com" aria-label="Email"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#mail"></use></svg> </a> <a class="social-link" href="https://www.linkedin.com/in/manideepsp" target="_blank" rel="noopener" aria-label="LinkedIn"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#linkedin"></use></svg> </a> </div> <a class="back-to-top text-sm" href="#top" style="display:inline-block;margin-top:10px;color:var(--muted);">Back to top ↑</a> </div> </div> <div class="inner footer__credits" style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.03);padding-top:18px;"> <p class="text-sm" style="color:var(--muted);margin:0;">&copy; 2026 Manideep Sriperambudhuru. Built with ❤.</p> </div> </footer> </div> <script type="module" src="/Portfolio-ManideepSP/lib/sr.js" defer></script> </body> </html> 
