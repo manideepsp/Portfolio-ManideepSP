@@ -13,8 +13,10 @@
     "email": "manideepsp.16@gmail.com"
   },
   "resume": {
-    "displayLink": "/resumes/Default Applied ML-AI Engineer Resume.pdf",
-    "downloadFilename": "Default Applied ML-AI Engineer Resume.pdf"
+    "displayLink_standard": "/resumes/Default Applied ML-AI Engineer Resume.pdf",
+    "displayLink": "/resumes/Manideep_Sriperambudhuru_09_03_2026.pdf",
+    "downloadFilename_standard": "Default Applied ML-AI Engineer Resume.pdf",
+    "downloadFilename": "Manideep_Sriperambudhuru_AI_ML_Engineer.pdf"
   },
   "navLinks": [
     { "label": "Home", "href": "/" },
