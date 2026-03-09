@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Manideep Sriperambudhuru – Portfolio. I build data &#38; ML systems that scale. Currently shipping backend services and production ML pipelines at scale."><title>QLoRA Fine-Tuning with EQ-bench 3 | Projects • Manideep Sriperambudhuru</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"></noscript><link rel="stylesheet" href="/Portfolio-ManideepSP/_astro/about.CCTWTH4r.css">
+<link rel="stylesheet" href="/Portfolio-ManideepSP/_astro/_slug_.BZKQjNvF.css"></head> <body> <div class="bg-spotlight"> <div class="cursor-glow" aria-hidden="true"></div> <script type="module" client:load>
+  const glow = document.querySelector('.cursor-glow');
+  if (glow) {
+    document.addEventListener('mousemove', (event) => {
+      const x = event.clientX - 250;
+      const y = event.clientY - 250;
+      glow.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      glow.style.transform = 'translate3d(-9999px, -9999px, 0)';
+    });
+  }
+</script> </div> <div class="page-wrap">  <header class="site-header" role="banner"> <div class="inner"> <a class="logo text-2xl font-bold" href="/Portfolio-ManideepSP/">Manideep Sriperambudhuru</a> <nav class="nav nav-animated" id="main-nav" aria-label="Main navigation"> <a class="text-sm nav-link" href="/Portfolio-ManideepSP/">Home</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/projects">Projects</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/resume">Resume</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/about">About</a><a class="text-sm nav-link" href="/Portfolio-ManideepSP/contact">Contact</a> <span class="nav-underline" id="nav-underline"></span> </nav> </div> <script type="module" client:load>
+    // Animated underline for nav
+    const nav = document.getElementById('main-nav');
+    const underline = document.getElementById('nav-underline');
+    if (nav && underline) {
+      const links = nav.querySelectorAll('.nav-link');
+      function moveUnderline(target) {
+        const rect = target.getBoundingClientRect();
+        const navRect = nav.getBoundingClientRect();
+        underline.style.width = rect.width + 'px';
+        underline.style.left = (rect.left - navRect.left) + 'px';
+        underline.style.opacity = 1;
+      }
+      links.forEach(link => {
+        link.addEventListener('mouseenter', e => moveUnderline(e.target));
+        link.addEventListener('focus', e => moveUnderline(e.target));
+      });
+      nav.addEventListener('mouseleave', () => {
+        underline.style.opacity = 0;
+      });
+      // Optionally, highlight current page
+      const current = Array.from(links).find(link => link.href === window.location.href);
+      if (current) moveUnderline(current);
+    }
+  </script> </header> <main id="main-content" class="container" tabindex="-1">  <section class="project-detail-page single-page" data-astro-cid-ovxcmftc> <!-- Back navigation --> <a href="/Portfolio-ManideepSP/projects" class="back-link" data-astro-cid-ovxcmftc> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-ovxcmftc> <path d="M19 12H5M12 19l-7-7 7-7" data-astro-cid-ovxcmftc></path> </svg> <span data-astro-cid-ovxcmftc>Back to Projects</span> </a> <div class="project-detail-header" data-astro-cid-ovxcmftc> <div class="project-detail-title-area" data-astro-cid-ovxcmftc> <p class="eyebrow" data-astro-cid-ovxcmftc>Project</p> <h1 class="project-title" data-astro-cid-ovxcmftc>QLoRA Fine-Tuning with EQ-bench 3</h1> <p class="project-subtitle" data-astro-cid-ovxcmftc>Fine-tune an open-weights LLM into an empathetic best-friend assistant and show measurable gains on EQ-Bench 3. Train with multi-objective SFT using auxiliary emotion and support-strategy heads, then optionally run DPO for alignment. Provide quantitative improvements and brief qualitative insights</p> </div> </div>  <div class="project-tech-stack" data-astro-cid-ovxcmftc> <span class="tech-tag" data-astro-cid-ovxcmftc>QLoRA</span><span class="tech-tag" data-astro-cid-ovxcmftc>fine-tuning</span><span class="tech-tag" data-astro-cid-ovxcmftc>LLM</span><span class="tech-tag" data-astro-cid-ovxcmftc>EQ-bench</span><span class="tech-tag" data-astro-cid-ovxcmftc>instruction-tuning</span><span class="tech-tag" data-astro-cid-ovxcmftc>Python</span> </div>  <div class="project-actions" data-astro-cid-ovxcmftc> <a class="btn primary" href="https://github.com/manideepsp/QLoRA-Fine-Tuning-with-EQ-bench-3" target="_blank" rel="noopener" data-astro-cid-ovxcmftc> <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-ovxcmftc> <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.66-.22.66-.48v-1.69c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.16.58.67.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z" data-astro-cid-ovxcmftc></path> </svg> <span data-astro-cid-ovxcmftc>View on GitHub</span> </a>  </div> <div class="project-detail-image" data-astro-cid-ovxcmftc> <img src="/Portfolio-ManideepSP/images/projects/EQ-Bench.png" alt="QLoRA Fine-Tuning with EQ-bench 3 preview" loading="lazy" data-astro-cid-ovxcmftc> </div> <div class="project-readme" data-astro-cid-ovxcmftc><h1>Empathetic Chatbot: QLoRA Fine-Tuning Pipeline</h1>
+<blockquote>
+<p><strong>Hardware</strong>: GTX 1650 (4GB VRAM) | <strong>Model</strong>: Qwen/Qwen2.5-3B-Instruct | <strong>Framework</strong>: PyTorch + HuggingFace + PEFT</p>
+</blockquote>
+<hr>
+<h2>1. Overview</h2>
+<p>This repo implements a <strong>QLoRA fine-tuned empathetic chatbot</strong> with:</p>
+<ul>
+<li><strong>Multi-objective loss</strong>: Language modeling + emotion classification + strategy prediction</li>
+<li><strong>Auxiliary heads</strong>: EmotionHead (32 classes) + StrategyHead (8 classes)</li>
+<li><strong>Safety KL regularization</strong>: Implemented (optional, hardware-dependent)</li>
+<li><strong>EQ-Bench evaluation</strong>: Emotional intelligence scoring (+8.3 improvement over base)</li>
+<li><strong>Two-step decoding</strong>: Style tokens + internal reflection controller</li>
+</ul>
+<p>| Metric | Base | SFT | Δ |
+|--------|------|-----|---|
+| EQ-Bench Score | 76.4 | <strong>84.7</strong> | +8.3 |</p>
+<hr>
+<h2>2. Quick Start</h2>
+<h3>Single Entry Point</h3>
+<p>All operations run through <code>main.py</code>:</p>
+<pre><code># Run everything (train + eval + eq-bench + pipeline)
+python main.py all --config config/example_config.json
+
+# Individual commands
+python main.py train --config config/example_config.json     # Training only
+python main.py eval --config config/example_config.json      # Evaluation export
+python main.py eq-bench --config config/example_config.json  # EQ-Bench evaluation
+python main.py pipeline --config config/example_config.json  # Full pipeline
+</code></pre>
+<h3>Installation</h3>
+<pre><code>git clone &#x3C;repo>
+cd &#x3C;repo>
+pip install -r requirements.txt
+</code></pre>
+<blockquote>
+<p><strong>Note</strong>: Install PyTorch separately for your CUDA version. For 4-bit QLoRA, CUDA is required.</p>
+</blockquote>
+<hr>
+<h2>3. Architecture</h2>
+<h3>Multi-Objective Loss</h3>
+<p>$$\mathcal{L}<em>{\text{SFT}} = \lambda</em>{\text{LM}} \cdot \mathcal{L}<em>{\text{NLL}} + \lambda</em>{\text{emo}} \cdot \mathcal{L}<em>{\text{emo}} + \lambda</em>{\text{strat}} \cdot \mathcal{L}<em>{\text{strat}} + \lambda</em>{\text{safe}} \cdot \mathcal{L}_{\text{safe}}$$</p>
+<p>| Loss Term | Weight (λ) | Description |
+|-----------|------------|-------------|
+| LM (NLL) | 1.0 | Causal language modeling |
+| Emotion | 0.2 | Emotion classification (32 classes) |
+| Strategy | 0.2 | Support strategy prediction (8 classes) |
+| Safety KL | 0.0 | Regularization toward base model (disabled by default) |</p>
+<h3>QLoRA Configuration</h3>
+<p>| Parameter | Value |
+|-----------|-------|
+| Quantization | NF4 4-bit, double quant |
+| LoRA Rank (r) | 16 |
+| LoRA Alpha | 32 |
+| LoRA Dropout | 0.05 |
+| Compute Dtype | FP16 |</p>
+<hr>
+<h2>4. Configuration</h2>
+<h3>Config Files</h3>
+<p>| File | Purpose |
+|------|---------|
+| <code>config/example_config.json</code> | Main training config |
+| <code>config/ablation_no_emotion.json</code> | Ablation: no emotion head |
+| <code>config/ablation_no_strategy.json</code> | Ablation: no strategy head |
+| <code>config/safety_enabled.json</code> | With Safety KL enabled |
+| <code>config/cpu_smoke.json</code> | CPU-only smoke test |</p>
+<h3>Safety KL Configuration</h3>
+<p>| Config Setting | Effect |
+|----------------|--------|
+| <code>"safety": { "enabled": false }</code> | <strong>Skip</strong> Safety KL (default) |
+| <code>"safety": { "enabled": true }</code> | <strong>Enable</strong> Safety KL |
+| <code>"losses": { "lambda_safe": 0.1 }</code> | Weight for safety loss |</p>
+<hr>
+<h2>5. Repo Structure</h2>
+<pre><code>.
+├── main.py                      # Single entry point (train/eval/eq-bench/pipeline/all)
+├── training.py                  # Training loop with multi-objective loss
+├── evaluation.py                # Export-based evaluation helpers
+├── heads.py                     # Auxiliary heads (EmotionHead, StrategyHead)
+├── safety_teacher.py            # Safety KL regularization module
+├── decoding_policy.py           # Style tokens + two-step controller
+├── eq_bench.py                  # EQ-Bench emotional intelligence evaluation
+├── dataset.py                   # Dataset loading + formatting
+├── model.py                     # Model + PEFT loading
+├── config.py                    # Configuration dataclasses
+├── config/                      # JSON configs
+├── prompts/                     # Qualitative + red-team prompts
+├── scripts/
+│   ├── run_train.py             # Training entrypoint (legacy)
+│   ├── run_eval.py              # Export responses (legacy)
+│   ├── run_eq_bench.py          # EQ-Bench script
+│   ├── run_pipeline.py          # Full pipeline
+│   ├── validate_exports.py      # JSONL validation
+│   ├── plot_loss_curves.py      # Loss curve plotting
+│   ├── plot_eval_comparisons.py # Eval comparison plots
+│   ├── summarize_eval_stats.py  # Stats builder
+│   ├── build_run_report.py      # Report builder
+│   ├── common.py                # Shared utilities
+│   └── bootstrap.py             # Environment setup
+├── artifacts/                   # Outputs (logs, checkpoints, plots, reports)
+├── FINAL_SUBMISSION.md          # Complete technical documentation
+└── README.md                    # This file
+</code></pre>
+<hr>
+<h2>6. Ablation Studies</h2>
+<p>Run ablations to test component contributions:</p>
+<pre><code># Remove emotion head (λ_emo = 0)
+python main.py train --config config/ablation_no_emotion.json
+
+# Remove strategy head (λ_strat = 0)
+python main.py train --config config/ablation_no_strategy.json
+
+# Enable Safety KL (λ_safe = 0.1)
+python main.py train --config config/safety_enabled.json
+</code></pre>
+<p>| Ablation | λ_emo | λ_strat | λ_safe |
+|----------|-------|---------|--------|
+| Full Model | 0.2 | 0.2 | 0.0 |
+| No Emotion | 0.0 | 0.2 | 0.0 |
+| No Strategy | 0.2 | 0.0 | 0.0 |
+| With Safety | 0.2 | 0.2 | 0.1 |</p>
+<hr>
+<h2>7. Evaluation</h2>
+<h3>EQ-Bench Evaluation</h3>
+<pre><code>python main.py eq-bench --config config/example_config.json
+</code></pre>
+<p>Results saved to:</p>
+<ul>
+<li><code>artifacts/eval/eq_bench_base.json</code></li>
+<li><code>artifacts/eval/eq_bench_sft.json</code></li>
+<li><code>artifacts/eval/eq_bench_report.txt</code></li>
+</ul>
+<h3>Metrics</h3>
+<p>| Metric | Description |
+|--------|-------------|
+| EQ-Score | Composite emotional intelligence score (0-100) |
+| MAE | Mean Absolute Error of emotion intensity predictions |
+| Correlation | Pearson correlation with ground truth |</p>
+<hr>
+<h2>8. Artifacts</h2>
+<p>| Artifact | Path |
+|----------|------|
+| Training logs | <code>artifacts/logs/train_metrics.jsonl</code> |
+| Eval logs | <code>artifacts/logs/eval_metrics.jsonl</code> |
+| Loss curves | <code>artifacts/plots/loss_curves.png</code> |
+| Final adapter | <code>artifacts/checkpoints/final/adapter/</code> |
+| Run manifest | <code>artifacts/run_manifest.json</code> |
+| EQ-Bench results | <code>artifacts/eval/eq_bench_*.json</code> |</p>
+<hr>
+<h2>9. Hardware Requirements</h2>
+<p>| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| GPU | GTX 1650 (4GB) | 8GB+ VRAM |
+| CPU | Intel i5 | Intel i7+ |
+| RAM | 16 GB | 32 GB |
+| CUDA | 11.8+ | 12.0+ |</p>
+<hr>
+<h2>10. Known Limitations</h2>
+<ul>
+<li><strong>VRAM</strong>: GTX 1650 (4GB) limits batch size and sequence length</li>
+<li><strong>Safety KL</strong>: Implemented but skipped during training due to VRAM constraints</li>
+<li><strong>DPO</strong>: Config exists but not integrated (requires reference model)</li>
+<li><strong>BF16</strong>: Not supported on GTX 1650; FP16 + AMP used instead</li>
+</ul>
+<h3>Large Files</h3>
+<p>Trained checkpoints exceed GitHub's 100MB limit. Regenerate locally:</p>
+<pre><code>python main.py all --config config/example_config.json
+</code></pre>
+<hr>
+<h2>11. Documentation</h2>
+<p>For complete technical details, see <a href="FINAL_SUBMISSION.md">FINAL_SUBMISSION.md</a>:</p>
+<ul>
+<li>Multi-head implementation details with code snippets</li>
+<li>EQ-Bench 3 evaluation methodology and results</li>
+<li>Side-by-side conversation comparisons</li>
+<li>Safety sheet with red-team analysis</li>
+<li>Reproducibility guide with hyperparameters</li>
+</ul>
+<hr>
+<h2>License</h2>
+<p>MIT</p></div> </section>  </main> <footer class="site-footer" id="site-footer" role="contentinfo"> <div class="inner footer-grid"> <div class="footer__col footer__brand"> <div class="footer__brand-grid"> <div class="brand-monogram"> <div class="monogram-wrapper" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:999px;overflow:hidden;flex:0 0 36px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071024;font-weight:800;font-size:12px" aria-hidden="false"> <a class="monogram-link" href="https://github.com/manideepsp" target="_blank" rel="noopener" aria-label="View manideepsp on GitHub" style="display:inline-block;width:36px;height:36px;flex:0 0 36px;"> <img src="https://github.com/manideepsp.png?s=36" alt="manideepsp avatar" width="36" height="36" class style="display:block;width:100%;height:100%;object-fit:contain;border-radius:999px;" loading="lazy"> </a> </div> </div> <div class="brand-name"> <a class="footer__name logo text-2xl font-bold" href="/Portfolio-ManideepSP/">Manideep Sriperambudhuru</a> </div> <div class="brand-tag text-sm">AI • Data • ML</div> <div class="brand-email text-sm"><a href="mailto:manideepsp.16@gmail.com">manideepsp.16@gmail.com</a></div> </div> </div> <div class="footer__col footer__links"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Explore</h4> <ul class="footer-nav" style="margin:0;padding:0;list-style:none;"> <li><a href="/Portfolio-ManideepSP/">Home</a></li> <li><a href="/Portfolio-ManideepSP/projects">Projects</a></li> <li><a href="/Portfolio-ManideepSP/resume">Resume</a></li> <li><a href="/Portfolio-ManideepSP/about">About</a></li> <li><a href="/Portfolio-ManideepSP/contact">Contact</a></li> </ul> </div> <div class="footer__col footer__contact"> <h4 class="text-sm font-semibold" style="margin:0 0 8px;">Connect</h4> <div class="socials" style="display:flex;gap:10px;align-items:center;"> <a class="social-link" href="https://github.com/manideepsp" target="_blank" rel="noopener" aria-label="GitHub"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#github"></use></svg> </a> <a class="social-link" href="mailto:manideepsp.16@gmail.com" aria-label="Email"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#mail"></use></svg> </a> <a class="social-link" href="https://www.linkedin.com/in/manideepsp" target="_blank" rel="noopener" aria-label="LinkedIn"> <svg aria-hidden="true"><use href="/Portfolio-ManideepSP/icons.svg#linkedin"></use></svg> </a> </div> <a class="back-to-top text-sm" href="#top" style="display:inline-block;margin-top:10px;color:var(--muted);">Back to top ↑</a> </div> </div> <div class="inner footer__credits" style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.03);padding-top:18px;"> <p class="text-sm" style="color:var(--muted);margin:0;">&copy; 2026 Manideep Sriperambudhuru. Built with ❤.</p> </div> </footer> </div> <script type="module" src="/Portfolio-ManideepSP/lib/sr.js" defer></script> </body> </html> 
